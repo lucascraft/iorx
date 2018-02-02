@@ -2,6 +2,10 @@ package ubiquisense.iorx.qx;
 
 import java.util.List;
 
+import ubiquisense.iorx.io.IXCmdInterpreter;
+import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.io.Port;
+
 
 public interface CmdPipe {
 	Tx getTx();
@@ -19,5 +23,8 @@ public interface CmdPipe {
 	void setName(String value);
 	PRIORITY getPriority();
 	void setPriority(PRIORITY value);
-
+	Port getPort();
+	IXFrameInterpreter getInputInterpreter();
+	IXCmdInterpreter getOuutputInterpreter();
+	void send(Cmd cmd);
 }

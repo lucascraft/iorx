@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.Qx;
@@ -17,6 +18,8 @@ public class AbstractQx implements Qx {
 	
 	@Inject
 	CmdPipe pipe;
+	
+	Port port;
 	
 	long ttl;
 	

@@ -5,6 +5,10 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import ubiquisense.iorx.io.IXCmdInterpreter;
+import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.io.Port;
+import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;
@@ -34,6 +38,12 @@ public class CmdPipeImpl implements CmdPipe
 	CmdEngine cmdEngine;
 	
 	PRIORITY priority;
+	
+	Port port;
+	
+	IXFrameInterpreter inputInterpreter;
+
+	IXCmdInterpreter ouutputInterpreter;
 	
 	public Tx getTx()
 	{
@@ -119,4 +129,24 @@ public class CmdPipeImpl implements CmdPipe
 		priority = value;
 	}
 
+
+	@Override
+	public Port getPort() {
+		return port;
+	}
+
+	@Override
+	public IXFrameInterpreter getInputInterpreter() {
+		return inputInterpreter;
+	}
+
+	@Override
+	public IXCmdInterpreter getOuutputInterpreter() {
+		return ouutputInterpreter;
+	}
+
+	@Override
+	public void send(Cmd cmd) {
+		
+	}
 }
