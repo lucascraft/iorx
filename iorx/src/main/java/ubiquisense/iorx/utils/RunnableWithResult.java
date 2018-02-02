@@ -1,4 +1,4 @@
-package ubiquisense.iorx.cm;
+package ubiquisense.iorx.utils;
 
 public interface  RunnableWithResult<T> {
 	void run();

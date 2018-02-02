@@ -8,15 +8,14 @@ import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.Event;
+import ubiquisense.iorx.qx.IQxEventHandler;
 
 public class ChannelImpl implements Channel {
 
 
 	protected List<IXCmdInterpreter> cmdInterpretrers;
-
 	protected List<IXFrameInterpreter> frameInterpreters;
-
-	protected List<AbstractQxEventHandler> eventListeners;
+	protected List<IQxEventHandler> eventListeners;
 
 	protected static final byte[] LAST_FRAME_EDEFAULT = null;
 
@@ -31,7 +30,7 @@ public class ChannelImpl implements Channel {
 		return frameInterpreters;
 	}
 
-	public List<AbstractQxEventHandler> getEventListeners() {
+	public List<IQxEventHandler> getEventListeners() {
 		return eventListeners;
 	}
 
@@ -119,12 +118,13 @@ public class ChannelImpl implements Channel {
 		getCmdInterpretrers().remove(cmdListener);
 	}
 
-	public void addQxEventListener(AbstractQxEventHandler eventListener) {
+	public void addQxEventListener(IQxEventHandler eventListener) {
 		getEventListeners().add(eventListener);
 	}
 
-	public void removeQxEventListener(AbstractQxEventHandler eventListener) {
+	public void removeQxEventListener(IQxEventHandler eventListener) {
 		getEventListeners().remove(eventListener);
 	}
+
 
 }

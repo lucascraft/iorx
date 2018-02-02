@@ -1,4 +1,4 @@
-package ubiquisense.iorx.cm;
+package ubiquisense.iorx.utils;
 
 public class Platform {
 	public static  boolean inDebugMode() {

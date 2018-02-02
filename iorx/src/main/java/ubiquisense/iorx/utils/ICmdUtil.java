@@ -1,4 +1,4 @@
-package ubiquisense.iorx.cm;
+package ubiquisense.iorx.utils;
 
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.PRIORITY;
@@ -15,12 +15,12 @@ public interface ICmdUtil {
 	 */
 	<T extends Cmd> T stampCmd(T cmd);
 	
-//	/**
-//	 * Generate a pseudo random command 
-//	 * 
-//	 * @return a pseudo generated command
-//	 */
-//	XCmd generateRamdomCmd();
+	/**
+	 * Generate a pseudo random command 
+	 * 
+	 * @return a pseudo generated command
+	 */
+	Cmd generateRamdomCmd();
 
 	/**
 	 * Generate a random PRIORITY

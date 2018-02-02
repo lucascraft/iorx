@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import ubiquisense.iorx.cm.CmdUtil;
-import ubiquisense.iorx.cm.Platform;
-import ubiquisense.iorx.cm.RunnableWithResult;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;

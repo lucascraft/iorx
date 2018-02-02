@@ -1,7 +1,9 @@
 package ubiquisense.iorx.qx.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 
@@ -13,10 +15,13 @@ import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;
 import ubiquisense.iorx.qx.Event;
+import ubiquisense.iorx.qx.IQxEventHandler;
 import ubiquisense.iorx.qx.PRIORITY;
 import ubiquisense.iorx.qx.Qx;
+import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.utils.EngineUtil;
 
 public class CmdPipeImpl implements CmdPipe
 {
@@ -30,7 +35,6 @@ public class CmdPipeImpl implements CmdPipe
 	List<Event> rxEvents;
 	
 	String id;
-	
 	String name;
 	
 	EngineApplication engineApplication;
@@ -38,12 +42,24 @@ public class CmdPipeImpl implements CmdPipe
 	CmdEngine cmdEngine;
 	
 	PRIORITY priority;
+	QxProcessingStrategy strategy;
 	
 	Port port;
 	
 	IXFrameInterpreter inputInterpreter;
-
 	IXCmdInterpreter ouutputInterpreter;
+	Set<IQxEventHandler> qxEventHandlers;
+	
+	String transportProtocol;
+	String communicationProtocol;
+	
+	boolean locked;
+	String address;
+	int speed;
+	
+	boolean activated;
+	
+	Set<Integer> ports;
 	
 	public Tx getTx()
 	{
@@ -59,6 +75,8 @@ public class CmdPipeImpl implements CmdPipe
 	public CmdPipeImpl() {
 		txEvents = new ArrayList<>();
 		rxEvents = new ArrayList<>();
+		ports = new HashSet<>();
+		qxEventHandlers = new HashSet<>();
 	}
 	
 	@Override
@@ -141,12 +159,112 @@ public class CmdPipeImpl implements CmdPipe
 	}
 
 	@Override
-	public IXCmdInterpreter getOuutputInterpreter() {
+	public IXCmdInterpreter getOutputInterpreter() {
 		return ouutputInterpreter;
 	}
 
 	@Override
 	public void send(Cmd cmd) {
+		EngineUtil.INSTANCE.sendCmd(tx, cmd);
+	}
+	
+	@Override
+	public boolean isActivated()
+	{
+		return activated;
+	}
+
+	@Override
+	public void receive(byte[] frame)
+	{
+		EngineUtil.INSTANCE.sendCmd(tx, getInputInterpreter().byteArray2Cmd(frame));
+	}
+
+	@Override
+	public Set<Integer> getPorts() {
+		return null;
+	}
+
+	@Override
+	public String getTransportProtocol() {
+		return transportProtocol;
+	}
+
+	@Override
+	public String getCommunicationProtocol() {
+		return communicationProtocol;
+	}
+
+	@Override
+	public void setTransportProtocol(String value) {
+		transportProtocol = value;
+	}
+
+	@Override
+	public void setCommunicationProtocol(String value) {
+		communicationProtocol = value;
+	}
+	
+	@Override
+	public boolean isLocked() {
+		return locked;
+	}
+	
+	@Override
+	public void setLocked(boolean value) {
+		locked = value;
+	}
+	
+	@Override
+	public String getAddr() {
+		return address;
+	}
+	
+	@Override
+	public void setAddr(String addr) {
+		address = addr;
+	}
+
+	@Override
+	public void deactivateAll() {
+		// TODO Auto-generated method stub
 		
+	}
+	
+	public void finalize()  {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	@Override
+	public void setPort(Port value) {
+		port = value;
+	}
+
+	@Override
+	public void setOutputInterpreter(IXCmdInterpreter interpreter) {
+		ouutputInterpreter = interpreter;		
+	}
+
+	@Override
+	public void setInputInterpreter(IXFrameInterpreter interpreter) {
+		inputInterpreter = interpreter;		
+	}
+
+	@Override
+	public void removeQxEventHandler(IQxEventHandler evtHandler) {
+		qxEventHandlers.remove(evtHandler);
+	}
+
+	@Override
+	public void addQxEventHandler(IQxEventHandler evtHandler) {
+		qxEventHandlers.add(evtHandler);
 	}
 }

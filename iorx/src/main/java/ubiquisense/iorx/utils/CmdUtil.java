@@ -1,4 +1,4 @@
-package ubiquisense.iorx.cm;
+package ubiquisense.iorx.utils;
 
 import java.util.HashMap;
 import java.util.Map;

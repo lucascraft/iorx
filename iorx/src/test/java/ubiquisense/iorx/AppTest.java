@@ -16,7 +16,8 @@ import ubiquisense.iorx.qx.Tx;
 /**
  * Unit test for simple App.
  */
-public class AppTest {
+public class AppTest 
+{
 	Injector injector;
 
 	CmdPipe pipe;
@@ -47,6 +48,6 @@ public class AppTest {
 		pipe.setClient(engineClient);
 		pipe.setId("Engine_1");
 		
-
+		
 	}
 }

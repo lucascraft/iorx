@@ -10,11 +10,13 @@ import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
+import ubiquisense.iorx.utils.EngineUtil;
 
 public class AbstractQx implements Qx {
 
 	List<Cmd> commands;
 	boolean deliver;
+	QxProcessingStrategy strategy;
 	
 	@Inject
 	CmdPipe pipe;
@@ -22,6 +24,7 @@ public class AbstractQx implements Qx {
 	Port port;
 	
 	long ttl;
+	int max;
 	
 	@Inject
 	public AbstractQx(){
@@ -46,7 +49,7 @@ public class AbstractQx implements Qx {
 
 	@Override
 	public int getMax() {
-		return 25000;
+		return max;
 	}
 	
 	@Override
@@ -57,6 +60,25 @@ public class AbstractQx implements Qx {
 	@Override
 	public QxProcessingStrategy getStrategy() {
 		return QxProcessingStrategy.NEWEST_MOST_URGENT;
+	}
+	
+	@Override
+	public void setStrategy(QxProcessingStrategy value) {
+		strategy = value;
+	}
+	
+	@Override
+	public void setMax(int value) {
+		max = value;
+	}
+	@Override
+	public void setTtl(int value) {
+		ttl = value;
+	}
+
+	@Override
+	public void postCommand(Cmd cmd) {
+		EngineUtil.INSTANCE.sendCmd(this, cmd);
 	}
 
 }
