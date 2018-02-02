@@ -2,6 +2,7 @@ package ubiquisense.iorx;
 
 import com.google.inject.AbstractModule;
 
+import ubiquisense.iorx.qx.ByteCmd;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
@@ -9,6 +10,7 @@ import ubiquisense.iorx.qx.EngineApplication;
 import ubiquisense.iorx.qx.Event;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.qx.impl.ByteCmdImpl;
 import ubiquisense.iorx.qx.impl.CmdEngineImpl;
 import ubiquisense.iorx.qx.impl.CmdImpl;
 import ubiquisense.iorx.qx.impl.CmdPipeImpl;
@@ -29,5 +31,6 @@ public class ConfigurationModule extends AbstractModule
 		bind(CmdEngine.class).to(CmdEngineImpl.class);
 		bind(EngineApplication.class).to(EngineApplicationImpl.class);
 		bind(Event.class).to(EventImpl.class);
+		bind(ByteCmd.class).to(ByteCmdImpl.class);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import ubiquisense.iorx.cm.CmdUtil;
 import ubiquisense.iorx.cm.Platform;
 import ubiquisense.iorx.cm.RunnableWithResult;
 import ubiquisense.iorx.io.Channel;
@@ -17,6 +18,7 @@ import ubiquisense.iorx.qx.EVENT_KIND;
 import ubiquisense.iorx.qx.Event;
 import ubiquisense.iorx.qx.PRIORITY;
 import ubiquisense.iorx.qx.Qx;
+import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.TimeInfo;
 import ubiquisense.iorx.qx.Tx;
@@ -765,18 +767,17 @@ public class EngineUtil {
 		return cmd;
 	}
 
-	// /**
-	// * Send a randomly created {@link Cmd} to the given queue
-	// *
-	// * @param queue a given Qx queue to send the randomly created {@link Cmd}
-	// *
-	// * @return the randomly created {@link Cmd}
-	// */
-	// public Cmd sendRandomCmd(Qx queue) {
-	// return sendCmd(queue, CmdUtil.INSTANCE.generateRamdomCmd());
-	// }
-	
-	
+	 /**
+	 * Send a randomly created {@link Cmd} to the given queue
+	 *
+	 * @param queue a given Qx queue to send the randomly created {@link Cmd}
+	 *
+	 * @return the randomly created {@link Cmd}
+	 */
+	 public Cmd sendRandomCmd(Qx queue) {
+		 return sendCmd(queue, CmdUtil.INSTANCE.generateRamdomCmd());
+	 }
+
 	//
 	//
 	// Very likely to be Safe ... isn't it ?
@@ -845,39 +846,39 @@ public class EngineUtil {
 		return cmd;
 	}
 
-	
-	 /**
+	/**
 	 * Get the oldest {@link Cmd} command with most urgent {@link PRIORITY} level
-	 from all existing {@link Cmd} list from a given {@link Qx} queue
+	 * from all existing {@link Cmd} list from a given {@link Qx} queue
 	 *
-	 * @param tx a given Qx queue to send the randomly created {@link Cmd}
+	 * @param tx
+	 *            a given Qx queue to send the randomly created {@link Cmd}
 	 *
 	 * @return the oldest {@link Cmd} command with most urgent {@link PRIORITY}
-	 level
+	 *         level
 	 */
-	 public Cmd consumeNewestMostUrgentCmd(final Qx qx) {
-	 Cmd cmd = null;
-	 try {
-		 RunnableWithResult<Cmd> r = new RunnableWithResult.Impl<Cmd>() {
-			 public void run() {
-				 PRIORITY priority = getHighestPriorityCmdFromQueue(qx);
-			 for (Cmd c : qx.getCommands()) {
-				 if (c.getPriority().equals(priority)) {
-				 setResult(c);
-				 break;
-				 }
-			 }
-			 qx.getCommands().clear();
-			 }
-		 };
-		 r.run();
-		 cmd = r.getResult();
-	 } catch (Exception e) {
-	 e.printStackTrace();
-	 }
-	 return cmd;
-	 }
-	
+	public Cmd consumeNewestMostUrgentCmd(final Qx qx) {
+		Cmd cmd = null;
+		try {
+			RunnableWithResult<Cmd> r = new RunnableWithResult.Impl<Cmd>() {
+				public void run() {
+					PRIORITY priority = getHighestPriorityCmdFromQueue(qx);
+					for (Cmd c : qx.getCommands()) {
+						if (c.getPriority().equals(priority)) {
+							setResult(c);
+							break;
+						}
+					}
+					qx.getCommands().clear();
+				}
+			};
+			r.run();
+			cmd = r.getResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cmd;
+	}
+
 	public int getEventQueueSize(Event e) {
 		return !(e.getCmd() instanceof CompoundCmd) ? 1 : getEventQueueSize(Arrays.asList(new Event[] { e }));
 	}
@@ -908,122 +909,117 @@ public class EngineUtil {
 		}
 		return ret;
 	}
-	//
-	// /**
-	// * Get the oldest {@link Cmd} command with most urgent {@link PRIORITY} level
-	// from all existing {@link Cmd} list from a given {@link Qx} queue
-	// *
-	// * @param tx a given Qx queue to send the randomly created {@link Cmd}
-	// *
-	// * @return the oldest {@link Cmd} command with most urgent {@link PRIORITY}
-	// level
-	// */
-	// public Cmd consumeNewestAndFlushCmd(final Qx qx) {
-	// try {
-	// return (Cmd) qxTransactionalEditingDomain.runExclusive(
-	// new RunnableWithResult.Impl<Cmd>() {
-	// public void run() {
-	// int size = getQueueSize(qx.getCommands());
-	// if (size > 0) {
-	// if (qx.getMax() < size) {
-	// if (Platform.inDebugMode()) {
-	// System.out.println("THRESHOLD " + qx.getClass().getName() + " of "+
-	// qx.getMax() + " RAISED !!!");
-	// }
-	// int idx = qx.getMax() - qx.getMax() / 4;
-	// idx = idx > 0 ? idx : 1;
-	// idx = idx >= qx.getCommands().size() ? qx.getCommands().size() - 1 : idx;
-	// List<Cmd> lst = qx.getCommands().subList(
-	// 0,
-	// idx
-	// );
-	// qx.eSetDeliver(false);
-	// qx.getCommands().removeAll(lst);
-	// qx.eSetDeliver(true);
-	// }
-	//
-	// if (size > 1) {
-	// for (int i=qx.getCommands().size()-1; i>0; i--) {
-	// Cmd c = qx.getCommands().get(i);
-	// long delay = System.currentTimeMillis() - c.getStamp();
-	// if (qx.getTtl() < delay) {
-	// if (Platform.inDebugMode()) {
-	// System.out.println(qx.getClass().getName() + " Cmd FLUSH BECAUSE OF delay
-	// over TTL : " + delay + " > "+ qx.getTtl());
-	// }
-	// qx.eSetDeliver(false);
-	// int idx = qx.getCommands().indexOf(c);
-	// qx.getCommands().removeAll(
-	// qx.getCommands().subList(
-	// 0,
-	// idx < 1 ? 1 : idx -1
-	// )
-	// );
-	// qx.eSetDeliver(true);
-	// break;
-	// }
-	// }
-	// } else if (!qx.getCommands().isEmpty()) {
-	// Cmd c = qx.getCommands().get(0);
-	//
-	// long delay = System.currentTimeMillis() - c.getStamp();
-	// if (qx.getTtl() < delay) {
-	// if (Platform.inDebugMode()) {
-	// System.out.println(qx.getClass().getName() + " Cmd FLUSH BECAUSE OF delay
-	// over TTL : " + delay + " > "+ qx.getTtl());
-	// }
-	// qx.eSetDeliver(false);
-	// qx.getCommands().remove(0);
-	// qx.eSetDeliver(true);
-	// }
-	// }
-	//
-	// if (Platform.inDebugMode()) {
-	// System.out.println(qx.getClass().getName() + " Cmd queue size : " + size);
-	// }
-	//
-	// if (!qx.getCommands().isEmpty()) {
-	// qx.eSetDeliver(false);
-	// setResult(qx.getCommands().remove(0));
-	// qx.eSetDeliver(true);
-	// }
-	// }
-	// }
-	// }
-	// );
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// return null;
-	// }
-	// }
-	//
-	// /**
-	// * Consumes the oldest {@link Cmd} command with most urgent {@link PRIORITY}
-	// level from all existing {@link Cmd} list from a given {@link Qx} queue
-	// *
-	// * @param qx a given Qx queue to send the randomly created {@link Cmd}
-	// * @param strategy a given {@link QxProcessingStrategy} queue to choose a
-	// behavior for {@link Cmd} consumption
-	// *
-	// * @return the oldest {@link Cmd} command with most urgent {@link PRIORITY}
-	// level consumed
-	// */
-	// public Cmd consumeCmd(Qx qx) {
-	// switch(qx.getStrategy()) {
-	// case OLDEST_MOST_URGENT:
-	//// return consumeOldestMostUrgentCmd(qx);
-	// case PICK_NFLUSH:
-	// case NEWEST_MOST_URGENT:
-	//// return consumeNewestMostUrgentCmd(qx);
-	// case PREDICATE:
-	// case ROUND_ROBIN:
-	// case TIME_RANGE_EXCLUSIVE:
-	// case TIME_RANGE_INCLUSIVE:
-	// default:
-	// return consumeNewestAndFlushCmd(qx);
-	//// return consumeOldestMostUrgentCmd(qx);
-	// }
-	// }
-	//
+
+	/**
+	 * Get the oldest {@link Cmd} command with most urgent {@link PRIORITY} level
+	 * from all existing {@link Cmd} list from a given {@link Qx} queue
+	 *
+	 * @param tx
+	 *            a given Qx queue to send the randomly created {@link Cmd}
+	 *
+	 * @return the oldest {@link Cmd} command with most urgent {@link PRIORITY}
+	 *         level
+	 */
+	public Cmd consumeNewestAndFlushCmd(final Qx qx) {
+		try {
+			RunnableWithResult.Impl<Cmd> r = new RunnableWithResult.Impl<Cmd>() {
+				public void run() {
+					int size = getQueueSize(qx.getCommands());
+					if (size > 0) {
+						if (qx.getMax() < size) {
+							if (Platform.inDebugMode()) {
+								System.out.println(
+										"THRESHOLD " + qx.getClass().getName() + " of " + qx.getMax() + " RAISED !!!");
+							}
+							int idx = qx.getMax() - qx.getMax() / 4;
+							idx = idx > 0 ? idx : 1;
+							idx = idx >= qx.getCommands().size() ? qx.getCommands().size() - 1 : idx;
+							List<Cmd> lst = qx.getCommands().subList(0, idx);
+							qx.eSetDeliver(false);
+							qx.getCommands().removeAll(lst);
+							qx.eSetDeliver(true);
+						}
+
+						if (size > 1) {
+							for (int i = qx.getCommands().size() - 1; i > 0; i--) {
+								Cmd c = qx.getCommands().get(i);
+								long delay = System.currentTimeMillis() - c.getStamp();
+								if (qx.getTtl() < delay) {
+									if (Platform.inDebugMode()) {
+										System.out.println(
+												qx.getClass().getName() + " Cmd FLUSH BECAUSE OF delay over TTL : "
+														+ delay + " > " + qx.getTtl());
+									}
+									qx.eSetDeliver(false);
+									int idx = qx.getCommands().indexOf(c);
+									qx.getCommands().removeAll(qx.getCommands().subList(0, idx < 1 ? 1 : idx - 1));
+									qx.eSetDeliver(true);
+									break;
+								}
+							}
+						} else if (!qx.getCommands().isEmpty()) {
+							Cmd c = qx.getCommands().get(0);
+
+							long delay = System.currentTimeMillis() - c.getStamp();
+							if (qx.getTtl() < delay) {
+								if (Platform.inDebugMode()) {
+									System.out.println(qx.getClass().getName()
+											+ " Cmd FLUSH BECAUSE OF delay over TTL : " + delay + " > " + qx.getTtl());
+								}
+								qx.eSetDeliver(false);
+								qx.getCommands().remove(0);
+								qx.eSetDeliver(true);
+							}
+						}
+
+						if (Platform.inDebugMode()) {
+							System.out.println(qx.getClass().getName() + " Cmd queue size : " + size);
+						}
+
+						if (!qx.getCommands().isEmpty()) {
+							qx.eSetDeliver(false);
+							setResult(qx.getCommands().remove(0));
+							qx.eSetDeliver(true);
+						}
+					}
+				}
+			};
+			r.run();
+			return r.getResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Consumes the oldest {@link Cmd} command with most urgent {@link PRIORITY}
+	 * level from all existing {@link Cmd} list from a given {@link Qx} queue
+	 *
+	 * @param qx
+	 *            a given Qx queue to send the randomly created {@link Cmd}
+	 * @param strategy
+	 *            a given {@link QxProcessingStrategy} queue to choose a behavior
+	 *            for {@link Cmd} consumption
+	 *
+	 * @return the oldest {@link Cmd} command with most urgent {@link PRIORITY}
+	 *         level consumed
+	 */
+	public Cmd consumeCmd(Qx qx) {
+		switch (qx.getStrategy()) {
+		case OLDEST_MOST_URGENT:
+			return consumeOldestMostUrgentCmd(qx);
+		case PICK_NFLUSH:
+		case NEWEST_MOST_URGENT:
+			return consumeNewestMostUrgentCmd(qx);
+		case PREDICATE:
+		case ROUND_ROBIN:
+		case TIME_RANGE_EXCLUSIVE:
+		case TIME_RANGE_INCLUSIVE:
+		default:
+			return consumeNewestAndFlushCmd(qx);
+		// return consumeOldestMostUrgentCmd(qx);
+		}
+	}
 
 }

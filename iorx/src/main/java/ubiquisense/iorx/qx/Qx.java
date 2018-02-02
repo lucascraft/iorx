@@ -2,7 +2,6 @@ package ubiquisense.iorx.qx;
 
 import java.util.List;
 
-import ubiquisense.iorx.io.Port;
 
 public interface Qx 
 {
@@ -17,5 +16,4 @@ public interface Qx
 	long getTtl();
 	
 	QxProcessingStrategy getStrategy();
-	
 }

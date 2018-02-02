@@ -23,17 +23,14 @@ public class ChannelImpl implements Channel {
 	protected byte[] lastFrame = LAST_FRAME_EDEFAULT;
 
 
-	@SuppressWarnings("unchecked")
 	public List<IXCmdInterpreter> getCmdInterpretrers() {
 		return cmdInterpretrers;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<IXFrameInterpreter> getFrameInterpreters() {
 		return frameInterpreters;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<AbstractQxEventHandler> getEventListeners() {
 		return eventListeners;
 	}
