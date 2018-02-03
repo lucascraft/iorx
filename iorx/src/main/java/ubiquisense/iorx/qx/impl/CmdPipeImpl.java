@@ -80,6 +80,7 @@ public class CmdPipeImpl implements CmdPipe
 		rxEvents = new ArrayList<>();
 		ports = new HashSet<>();
 		qxEventHandlers = new HashSet<>();
+		ports = new HashSet<>();
 		adapters = new HashSet<>();
 		activated = true;
 	}
@@ -187,7 +188,7 @@ public class CmdPipeImpl implements CmdPipe
 
 	@Override
 	public Set<Integer> getPorts() {
-		return null;
+		return ports;
 	}
 
 	@Override

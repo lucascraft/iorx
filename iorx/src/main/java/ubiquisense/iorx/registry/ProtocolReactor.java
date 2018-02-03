@@ -2,6 +2,8 @@ package ubiquisense.iorx.registry;
 
 import java.util.Set;
 
+import org.reflections.Reflections;
+
 import com.google.common.collect.Sets;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
@@ -13,10 +15,12 @@ import ubiquisense.iorx.qx.evt.IQxEventHandler;
 public class ProtocolReactor extends GuiceRegistery 
 {
 	public final static ProtocolReactor INSTANCE = new ProtocolReactor();
+	
 	public Set<ProtocolWithSpecificTransportConfig> getProtocols()
 	{
 		Set<ProtocolWithSpecificTransportConfig> configs = Sets.newHashSet();
-		injector.getScopeBindings().forEach((k, v) -> { if (k.isAnnotation() && "NAmed".equals(k.getName())) { System.out.println(k.getName());} });
+		Set<Class<?>> annotatedClasses = new Reflections("").getTypesAnnotatedWith(javax.inject.Named.class, true);
+		annotatedClasses.forEach(c -> configs.add(getProtocolWithSpecificTransport(c.getAnnotation(javax.inject.Named.class).value())));
 		return configs;
 	}
 	

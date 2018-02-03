@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
-import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
+import ubiquisense.iorx.protocols.midi.internal.MidiQxCmdHandler;
+import ubiquisense.iorx.protocols.osc.internal.OSCQxCmdHandler;
 import ubiquisense.iorx.registry.ProtocolReactor;
 import ubiquisense.iorx.registry.ProtocolWithSpecificTransportConfig;
 
@@ -36,6 +36,13 @@ public class ProtocolRegistryMatchingTest {
 			midiConfigs.getFrameInterpreter() instanceof MidiQxCmdHandler &&
 			midiConfigs.getEventHandler() instanceof MidiQxCmdHandler
 		);
+		
+		
+		Set<ProtocolWithSpecificTransportConfig> allConfigs = ProtocolReactor.INSTANCE.getProtocols();
+		
+		assertTrue(allConfigs.size()>=2);
+		
+
 
 	}
 }

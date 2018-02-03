@@ -1,5 +1,27 @@
 package ubiquisense.iorx.utils;
 
+import java.io.IOException;
+import java.io.ObjectInputFilter.Status;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceEvent;
+import javax.jmdns.ServiceInfo;
+import javax.jmdns.ServiceListener;
+import javax.jmdns.ServiceTypeListener;
+import javax.jmdns.impl.JmDNSImpl;
+
+import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
+
+import ubiquisense.iorx.xp.IXCPDeviceLifecycleListener;
+
 /**
  * Resonsible on receiving/emmiting OSC commands in an agent fashion
  * 
@@ -8,7 +30,7 @@ package ubiquisense.iorx.utils;
  * @author lucas bigeardel
  *
  */
-public class DnsSdUtil { /*implements ServiceListener, ServiceTypeListener{
+public class DnsSdUtil implements ServiceListener, ServiceTypeListener{
 
 	private JmDNSImpl dnsSdRegistry;
     @SuppressWarnings("unused")
@@ -19,14 +41,14 @@ public class DnsSdUtil { /*implements ServiceListener, ServiceTypeListener{
 	private MulticastSocket multicastSocket;
     
     private List<IXCPDeviceLifecycleListener> deviceListeners;
-    private Map<String, ISmartDnsServiceManager> dnsServicesMap;
+//    private Map<String, ISmartDnsServiceManager> dnsServicesMap;
     @SuppressWarnings("unused")
 	private OSCByteArrayToJavaConverter converter;
     
     public final static DnsSdUtil INSTANCE = new DnsSdUtil();
 
 	public DnsSdUtil() {
-		dnsServicesMap = dnsServiceRegistrations();
+//		dnsServicesMap = dnsServiceRegistrations();
 		deviceListeners = new ArrayList<IXCPDeviceLifecycleListener>();
 		converter = new OSCByteArrayToJavaConverter();
         try {
@@ -100,24 +122,24 @@ public class DnsSdUtil { /*implements ServiceListener, ServiceTypeListener{
 	}
 	
 	private void initServicesFromRegistry() {
-		for (String key : dnsServicesMap.keySet()) {
-			final ISmartDnsServiceManager dnsService = dnsServicesMap.get(key);
-			if (		dnsService instanceof ISmartDnsServiceManager  &&	dnsService.getServiceInfo() instanceof ServiceInfo ) {
-//				try {
-					//registry.registerService(dnsService.getServiceInfo());
-					new Job(UUID.randomUUID().toString()) {
-						@Override
-						protected IStatus run(IProgressMonitor monitor) {
-							dnsService.init();
-							dnsService.connect();
-							return Status.OK_STATUS;
-						}
-					}.schedule(2500);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-			}
-		}
+//		for (String key : dnsServicesMap.keySet()) {
+//			final ISmartDnsServiceManager dnsService = dnsServicesMap.get(key);
+//			if (		dnsService instanceof ISmartDnsServiceManager  &&	dnsService.getServiceInfo() instanceof ServiceInfo ) {
+////				try {
+//					//registry.registerService(dnsService.getServiceInfo());
+//					new Job(UUID.randomUUID().toString()) {
+//						@Override
+//						protected IStatus run(IProgressMonitor monitor) {
+//							dnsService.init();
+//							dnsService.connect();
+//							return Status.OK_STATUS;
+//						}
+//					}.schedule(2500);
+////				} catch (IOException e) {
+////					e.printStackTrace();
+////				}
+//			}
+//		}
 	}
 	
 
@@ -162,27 +184,27 @@ public class DnsSdUtil { /*implements ServiceListener, ServiceTypeListener{
 //		return dnsServiceRegistrations().get(serviceID);
 //	}
 	
-	
-	public Map<String, ISmartDnsServiceManager> dnsServiceRegistrations() {
-		Map<String, ISmartDnsServiceManager> dnsServiceManagers = new HashMap<String, ISmartDnsServiceManager>();
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("net.sf.smbt.quantic.bonjour");
-		if (point == null) return null;
-		IExtension[] extensions = point.getExtensions();
-		for (int i = 0; i < extensions.length; i++) {
-			for (IConfigurationElement elem : extensions[i].getConfigurationElements()) {
-				try {
-					ISmartDnsServiceManager dnsServiceManager = (ISmartDnsServiceManager) elem.createExecutableExtension("manager");
-					dnsServiceManagers.put(elem.getAttribute("id"), dnsServiceManager);
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return dnsServiceManagers;
-	}
-	
-	
+//	
+//	public Map<String, ISmartDnsServiceManager> dnsServiceRegistrations() {
+//		Map<String, ISmartDnsServiceManager> dnsServiceManagers = new HashMap<String, ISmartDnsServiceManager>();
+//		IExtensionRegistry registry = Platform.getExtensionRegistry();
+//		IExtensionPoint point = registry.getExtensionPoint("net.sf.smbt.quantic.bonjour");
+//		if (point == null) return null;
+//		IExtension[] extensions = point.getExtensions();
+//		for (int i = 0; i < extensions.length; i++) {
+//			for (IConfigurationElement elem : extensions[i].getConfigurationElements()) {
+//				try {
+//					ISmartDnsServiceManager dnsServiceManager = (ISmartDnsServiceManager) elem.createExecutableExtension("manager");
+//					dnsServiceManagers.put(elem.getAttribute("id"), dnsServiceManager);
+//				} catch (CoreException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return dnsServiceManagers;
+//	}
+//	
+//	
 	
 	
 	
@@ -208,10 +230,10 @@ public void serviceAdded(ServiceEvent event)
     final String name = event.getName();
 
     for (IXCPDeviceLifecycleListener l : deviceListeners){
-    	l.onDeviceAdd(
-    		SupervisorUtils.INSTANCE.initXCPDevice(event), 
-    		System.currentTimeMillis()
-    	);
+//    	l.onDeviceAdd(
+//    		SupervisorUtils.INSTANCE.initXCPDevice(event), 
+//    		System.currentTimeMillis()
+//    	);
     }
     
    System.out.println("ADD: " + name);
@@ -368,5 +390,5 @@ private void dislayInfo(ServiceInfo service)
 
         System.out.println(buf.toString());
     }
-    */
+}
 }

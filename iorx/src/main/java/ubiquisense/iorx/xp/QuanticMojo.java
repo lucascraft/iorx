@@ -46,10 +46,11 @@ import ubiquisense.iorx.registry.Orchestror;
 import ubiquisense.iorx.registry.OrchestrorUtil;
 import ubiquisense.iorx.registry.ProtocolReactor;
 import ubiquisense.iorx.registry.ProtocolWithSpecificTransportConfig;
+import ubiquisense.iorx.utils.DnsSdUtil;
 import ubiquisense.iorx.utils.EngineUtil;
 import ubiquisense.iorx.utils.NetConfigUtil;
 
-public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBuilder, IDxxpManager {
+public final class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBuilder, IDxxpManager {
 //	//private QHub qHub;
 //	private Supervisor supervisor;
 //	private TopologyCache topology;
@@ -70,14 +71,14 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 //		return getCepEventHandler().getkBuilder();
 //	}
 //	
-//	public final static QuanticMojo INSTANCE = new QuanticMojo();
+	public final static QuanticMojo INSTANCE = new QuanticMojo();
 //	
 	public QuanticMojo() {
 		lifecycleListeners = new ConcurrentLinkedQueue<ICmdPipeLifecycleListener>();
 //		pubsubEventHandler = new PubSubEvtHandler();
 //		
 //		cepEventHandler = new GlobalCmdEventHandler();
-//		genesis();
+		genesis();
 		netCfgUtil = NetConfigUtil.INSTANCE;
 	}
 //	
@@ -92,40 +93,40 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 	public void removeLifecycleListener(ICmdPipeLifecycleListener listener) {
 		lifecycleListeners.remove(listener);
 	}
-//	
-//	/*
-//	 * OK, just kidding ... init is fair enough
-//	 */
-//	void genesis() {
-//		//qHub = EzquantFactory.eINSTANCE.createQHub();
+	
+	/*
+	 * OK, just kidding ... init is fair enough
+	 */
+	void genesis() {
+		//qHub = EzquantFactory.eINSTANCE.createQHub();
 //		topology = EzxtopologyFactory.eINSTANCE.createTopologyCache();
-//		//qHub.setTopology(topology);
-//		
-//		//dxxpResourcesManager = initDxxpResourcesManager();
-//
-//		//TopologyManager.INSTANCE.startContinuousDiscovery();
-//		
-//		initPresets();
-//		initTopologyAgentAndSupervisor();
-//	}
-//	
-//	void initPresets() {
-//		//
-//		// auto connect without waiting discovery proposals for core and user defined settings
-//		//
-//	}
-//	
-//	void initTopologyAgentAndSupervisor() {
+		//qHub.setTopology(topology);
+		
+		//dxxpResourcesManager = initDxxpResourcesManager();
+
+		//TopologyManager.INSTANCE.startContinuousDiscovery();
+		
+		initPresets();
+		initTopologyAgentAndSupervisor();
+	}
+	
+	void initPresets() {
+		//
+		// auto connect without waiting discovery proposals for core and user defined settings
+		//
+	}
+	
+	void initTopologyAgentAndSupervisor() {
 //		supervisor = new Supervisor(topology);
-//		
-//		//openUdpPipe("osc", "localhost:4444");
-////		@SuppressWarnings("unused")
-////		DnsSdUtil dsnSD = DnsSdUtil.INSTANCE;
-//		//qHub.setAgent(dnsAgent);
-//		//qHub.setSupervisor(supervisor);
-//
-//		//dnsAgent.addDeviceListener(supervisor);
-//	}
+		
+		//openUdpPipe("osc", "localhost:4444");
+//		@SuppressWarnings("unused")
+		DnsSdUtil dsnSD = DnsSdUtil.INSTANCE;
+		//qHub.setAgent(dnsAgent);
+		//qHub.setSupervisor(supervisor);
+
+		//dnsAgent.addDeviceListener(supervisor);
+	}
 //	
 ////	EZDaapManager initDxxpResourcesManager() {
 ////		return EzdaapFactory.eINSTANCE.createEZDaapManager();
@@ -572,7 +573,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 		pipe.setAddr(portID);
 		if (acceptedPorts != null && acceptedPorts.length > 0) {
 			for (int p : acceptedPorts) {
-				pipe.getPorts().add(new Integer(p));
+				pipe.getPorts().add(p);
 			}
 		}
 		return notifyPipe(true, pipe);

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
+import ubiquisense.iorx.protocols.midi.internal.MidiQxCmdHandler;
 import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;

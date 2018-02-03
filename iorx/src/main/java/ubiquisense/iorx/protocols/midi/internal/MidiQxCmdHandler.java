@@ -33,7 +33,7 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.protocols.midi;
+package ubiquisense.iorx.protocols.midi.internal;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -50,7 +50,6 @@ import ubiquisense.iorx.comm.rxtx.Serial;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.AbstractMidiCmd;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 import ubiquisense.iorx.qx.ByteCmd;

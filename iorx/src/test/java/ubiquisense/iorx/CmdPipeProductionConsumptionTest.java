@@ -39,7 +39,5 @@ public class CmdPipeProductionConsumptionTest extends GuiceInjectionTest {
 		{
 			pipe.send(CmdUtil.INSTANCE.generateRamdomCmd());
 		}
-		
-//		while(t.isAlive());
 	}
 }

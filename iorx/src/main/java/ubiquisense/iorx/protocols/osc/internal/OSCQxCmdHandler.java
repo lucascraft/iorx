@@ -1,22 +1,20 @@
-package ubiquisense.iorx.protocols.osc;
+package ubiquisense.iorx.protocols.osc.internal;
 
-import javax.inject.Named;
 
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.illposed.osc.OSCPacket;
 import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.protocols.osc.internal.OscCmd;
-import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.evt.EVENT_KIND;
 import ubiquisense.iorx.qx.evt.Event;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
-@Named("osc")  @Singleton
+@javax.inject.Named("osc")  @Singleton
 public class OSCQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter{
 	private OSCByteArrayToJavaConverter converter;
 	public OSCQxCmdHandler() {

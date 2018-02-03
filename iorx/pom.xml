@@ -54,11 +54,11 @@
 	</properties>
 
 	<dependencies>
-        <dependency>
-            <groupId>com.github.github</groupId>
-            <artifactId>github-maven-core</artifactId>
-            <version>0.12</version>
-        </dependency>
+		<dependency>
+			<groupId>com.github.github</groupId>
+			<artifactId>github-maven-core</artifactId>
+			<version>0.12</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -104,6 +104,11 @@
 			<artifactId>rxtx</artifactId>
 			<version>2.1.7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.11</version>
+		</dependency>
 	</dependencies>
 	<organization>
 		<name>ubiquisense</name>
@@ -114,12 +119,12 @@
 		<url>https://github.com/lucascraft/iorx</url>
 		<developerConnection>lucascraft</developerConnection>
 	</scm>
-	
+
 	<distributionManagement>
-	<repository>
-      <id>github</id>
-      <name>IORX</name>
-      <url>https://github.com/lucascraft/iorx</url>
-    </repository>	
+		<repository>
+			<id>github</id>
+			<name>IORX</name>
+			<url>https://github.com/lucascraft/iorx</url>
+		</repository>
 	</distributionManagement>
 </project>
