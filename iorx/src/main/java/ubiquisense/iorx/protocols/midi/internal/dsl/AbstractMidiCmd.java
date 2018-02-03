@@ -6,7 +6,7 @@
  */
 package ubiquisense.iorx.protocols.midi.internal.dsl;
 
-import ubiquisense.iorx.qx.Cmd;
+import ubiquisense.iorx.cmd.Cmd;
 
 public interface AbstractMidiCmd extends Cmd {
 	byte getAddr();

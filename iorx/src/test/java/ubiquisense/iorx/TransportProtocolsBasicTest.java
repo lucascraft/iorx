@@ -4,9 +4,8 @@ import java.util.UUID;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.xp.QuanticMojo;
-import ubiquisense.iorx.xp.TRANSPORT_PROTOCOL;
+import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 public class TransportProtocolsBasicTest extends GuiceInjectionTest {
 	

@@ -9,7 +9,7 @@ import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.OutputJob;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 public class PortImpl implements Port {
 	@Inject

@@ -2,13 +2,13 @@ package ubiquisense.iorx.io.impl;
 
 import java.util.List;
 
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.AbstractQxEventHandler;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.evt.Event;
-import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
 public class ChannelImpl implements Channel {
 

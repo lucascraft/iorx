@@ -6,7 +6,7 @@
  */
 package ubiquisense.iorx.protocols.raw.internal;
 
-import ubiquisense.iorx.qx.Cmd;
+import ubiquisense.iorx.cmd.Cmd;
 
 public interface RawCmd extends Cmd {
 	byte[] getBytes();

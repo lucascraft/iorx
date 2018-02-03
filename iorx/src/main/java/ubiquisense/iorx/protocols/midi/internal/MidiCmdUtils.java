@@ -45,6 +45,7 @@ import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
+import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.protocols.midi.internal.dsl.AbstractMidiCmd;
 import ubiquisense.iorx.protocols.midi.internal.dsl.ActiveSensing;
 import ubiquisense.iorx.protocols.midi.internal.dsl.ChannelPressure;
@@ -95,7 +96,6 @@ import ubiquisense.iorx.protocols.midi.internal.dsl.impl.TimingClockImpl;
 import ubiquisense.iorx.protocols.midi.internal.dsl.impl.TimingTickImpl;
 import ubiquisense.iorx.protocols.midi.internal.dsl.impl.TuneRequestImpl;
 import ubiquisense.iorx.protocols.midi.internal.dsl.impl.UnofficialBusSelectImpl;
-import ubiquisense.iorx.qx.Cmd;
 
 public class MidiCmdUtils<possibleCommands> {
 	public final static MidiCmdUtils INSTANCE = new MidiCmdUtils();

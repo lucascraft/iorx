@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
 import ubiquisense.iorx.utils.CmdUtil;
@@ -26,7 +26,7 @@ public class CmdPipeBasicTest extends GuiceInjectionTest {
 		assertEquals("Only one rx queue allowed in normal pipes", 1, rxQueues.size());
 		assertEquals("Only one tx queue allowed in normal pipes", 1, txQueues.size());
 		
-		for (int i = 1; i<10000; i++)
+		for (int i = 1; i<100; i++)
 		{
 			pipe.send(CmdUtil.INSTANCE.generateRamdomCmd());
 		}

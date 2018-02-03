@@ -4,7 +4,7 @@ import java.util.Set;
 
 import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.OutputJob;
-import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 public interface Port 
 {

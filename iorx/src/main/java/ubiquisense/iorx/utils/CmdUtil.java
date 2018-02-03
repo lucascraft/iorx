@@ -8,13 +8,13 @@ import java.util.UUID;
 
 import com.google.common.collect.Lists;
 
-import ubiquisense.iorx.qx.ByteCmd;
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.CompoundCmd;
-import ubiquisense.iorx.qx.PRIORITY;
-import ubiquisense.iorx.qx.impl.ByteCmdImpl;
-import ubiquisense.iorx.qx.impl.CmdImpl;
-import ubiquisense.iorx.qx.impl.CompoundCmdImpl;
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CompoundCmd;
+import ubiquisense.iorx.cmd.PRIORITY;
+import ubiquisense.iorx.cmd.impl.CmdImpl;
+import ubiquisense.iorx.cmd.impl.CompoundCmdImpl;
+import ubiquisense.iorx.protocols.raw.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmdImpl;
 
 public final class CmdUtil implements ICmdUtil {
     private Random randomizer;

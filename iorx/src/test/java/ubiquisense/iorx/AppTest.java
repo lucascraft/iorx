@@ -7,13 +7,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import ubiquisense.iorx.cmd.CmdEngine;
+import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.pipe.EngineApplication;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
-import ubiquisense.iorx.qx.CmdEngine;
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.EngineApplication;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
-import ubiquisense.iorx.xp.QuanticMojo;
 
 /**
  * Unit test for simple App.

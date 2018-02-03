@@ -35,7 +35,7 @@ public class L2CAPoutJobImpl extends OutputJobImpl implements L2CAPoutJob {
 		Object o = getJob();
 		if (o instanceof Thread) {
 			Thread j = (Thread) o;
-			j.stop();
+			j.interrupt();
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class L2CAPoutJobImpl extends OutputJobImpl implements L2CAPoutJob {
 		Object o = getJob();
 		if (o instanceof Thread) {
 			Thread j = (Thread) o;
-			j.stop();
+			j.interrupt();
 		}
 	}
 

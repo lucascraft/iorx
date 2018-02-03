@@ -1,554 +1,548 @@
 package ubiquisense.iorx.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.CompoundCmd;
-import ubiquisense.iorx.qx.PRIORITY;
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CompoundCmd;
+import ubiquisense.iorx.cmd.PRIORITY;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
-import ubiquisense.iorx.qx.TimeInfo;
 import ubiquisense.iorx.qx.Tx;
-import ubiquisense.iorx.qx.evt.EVENT_KIND;
-import ubiquisense.iorx.qx.evt.Event;
-import ubiquisense.iorx.qx.impl.EventImpl;
 
 public class EngineUtil {
 
-	/**
-	 * Create an event given a {@link EVENT_KIND} and its associated {@link Command}
-	 *
-	 * @param kind
-	 *            an event kind (RX_ADDED, RX_REMOVED, TX_ADDED, TX_REMOVED)
-	 * @param command
-	 *            {@link Cmd} command associated to the event it raises
-	 * 
-	 * @return the newly created {@link EVENT_KIND} event
-	 */
-	public Event createEvent(EVENT_KIND kind, Cmd command) {
-		return createEvent(kind, command, null, System.currentTimeMillis());
-	}
-
-	/**
-	 * Create an event given a {@link EVENT_KIND} and its associated {@link Command}
-	 * on a particular {@link Qx} queue
-	 *
-	 * @param kind
-	 *            an event kind (RX_ADDED, RX_REMOVED, TX_ADDED, TX_REMOVED)
-	 * @param command
-	 *            {@link Cmd} command associated to the event it raises
-	 * @param Qx
-	 *            queue the event comes from
-	 * 
-	 * @return the newly created {@link EVENT_KIND} event
-	 */
-	public Event createEvent(EVENT_KIND kind, Cmd command, Qx qx) {
-		return createEvent(kind, command, qx, System.currentTimeMillis());
-	}
-
-	/**
-	 * Create an event given a {@link EVENT_KIND} and its associated {@link Command}
-	 * on a particular {@link Qx} queue
-	 *
-	 * @param kind
-	 *            an event kind (RX_ADDED, RX_REMOVED, TX_ADDED, TX_REMOVED)
-	 * @param command
-	 *            {@link Cmd} command associated to the event it raises
-	 * @param Qx
-	 *            queue the event comes from
-	 * @param time
-	 *            the time stamp giving the moment the event happened
-	 * 
-	 * @return the newly created {@link EVENT_KIND} event
-	 */
-	public Event createEvent(EVENT_KIND kind, Cmd command, Qx qx, long time) {
-		Event evt = new EventImpl();
-		evt.setKind(kind);
-		evt.setCmd(command);
-		evt.setQx(qx);
-		evt.setTime(time);
-		return evt;
-	}
+//	/**
+//	 * Create an event given a {@link EVENT_KIND} and its associated {@link Command}
+//	 *
+//	 * @param kind
+//	 *            an event kind (RX_ADDED, RX_REMOVED, TX_ADDED, TX_REMOVED)
+//	 * @param command
+//	 *            {@link Cmd} command associated to the event it raises
+//	 * 
+//	 * @return the newly created {@link EVENT_KIND} event
+//	 */
+//	public Event createEvent(EVENT_KIND kind, Cmd command) {
+//		return createEvent(kind, command, null, System.currentTimeMillis());
+//	}
+//
+//	/**
+//	 * Create an event given a {@link EVENT_KIND} and its associated {@link Command}
+//	 * on a particular {@link Qx} queue
+//	 *
+//	 * @param kind
+//	 *            an event kind (RX_ADDED, RX_REMOVED, TX_ADDED, TX_REMOVED)
+//	 * @param command
+//	 *            {@link Cmd} command associated to the event it raises
+//	 * @param Qx
+//	 *            queue the event comes from
+//	 * 
+//	 * @return the newly created {@link EVENT_KIND} event
+//	 */
+//	public Event createEvent(EVENT_KIND kind, Cmd command, Qx qx) {
+//		return createEvent(kind, command, qx, System.currentTimeMillis());
+//	}
+//
+//	/**
+//	 * Create an event given a {@link EVENT_KIND} and its associated {@link Command}
+//	 * on a particular {@link Qx} queue
+//	 *
+//	 * @param kind
+//	 *            an event kind (RX_ADDED, RX_REMOVED, TX_ADDED, TX_REMOVED)
+//	 * @param command
+//	 *            {@link Cmd} command associated to the event it raises
+//	 * @param Qx
+//	 *            queue the event comes from
+//	 * @param time
+//	 *            the time stamp giving the moment the event happened
+//	 * 
+//	 * @return the newly created {@link EVENT_KIND} event
+//	 */
+//	public Event createEvent(EVENT_KIND kind, Cmd command, Qx qx, long time) {
+//		Event evt = new EventImpl();
+//		evt.setKind(kind);
+//		evt.setCmd(command);
+//		evt.setQx(qx);
+//		evt.setTime(time);
+//		return evt;
+//	}
 
 	//
 	// Time range
 	//
 
-	/**
-	 * Generically retrieves the events belonging to a given time range expressed as
-	 * a {@link TimeInfo}.
-	 * 
-	 * @param qx
-	 *            a Qx queue from which we want to retrieve the events
-	 * @param a
-	 *            {@link TimeInfo} time range from which bounds we want the events
-	 *            fitting
-	 * 
-	 * @return a list of {@link Event} events corresponding to to the given time
-	 *         range and queue
-	 */
-	public <T extends Qx> List<Event> getEventsFromTimeInfo(Qx qx, TimeInfo timeInfo) {
-		return getEventsWithinGivenTimeRange(qx, timeInfo.getStart(),
-				timeInfo.getStart() + (timeInfo.getDuration() * 1000), true, true,
-				qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
-						: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
-	}
-
-	/**
-	 * Specifically retrieves the *create* events belonging to a given time range
-	 * expressed as a {@link TimeInfo}.
-	 * 
-	 * @param qx
-	 *            a Qx queue from which we want to retrieve the events
-	 * @param a
-	 *            {@link TimeInfo} time range from which bounds we want the events
-	 *            fitting
-	 * 
-	 * @return a list of *create* {@link Event} events corresponding to to the given
-	 *         time range and queue
-	 */
-	public <T extends Qx> List<Event> getCreateEventsFromTimeInfo(Qx qx, TimeInfo timeInfo) {
-		return getEventsWithinGivenTimeRange(qx, timeInfo.getStart(), timeInfo.getStart() + timeInfo.getDuration(),
-				true, true, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
-	}
-
-	/**
-	 * Specifically retrieves the *delete* events belonging to a given time range
-	 * expressed as a {@link TimeInfo}.
-	 * 
-	 * @param qx
-	 *            a Qx queue from which we want to retrieve the events
-	 * @param a
-	 *            {@link TimeInfo} time range from which bounds we want the events
-	 *            fitting
-	 * 
-	 * @return a list of *delete* {@link Event} events corresponding to to the given
-	 *         time range and queue
-	 */
-	public <T extends Qx> List<Event> getDeleteEventsFromTimeInfo(Qx qx, TimeInfo timeInfo) {
-		return getEventsWithinGivenTimeRange(qx, timeInfo.getStart(), timeInfo.getStart() + timeInfo.getDuration(),
-				true, true, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
-	}
-
-	/**
-	 * Generically retrieves the events belonging to a given time range expressed as
-	 * lower and upper time bounds.
-	 * 
-	 * @param qx
-	 *            a Qx queue from which we want to retrieve the events
-	 * @param timeFrom
-	 *            lower time bound
-	 * @param timeTo
-	 *            upper time bound
-	 * @param lowerInclusive
-	 *            true if lower bound inclusive, false otherwise
-	 * @param upperInclusive
-	 *            true if upper bound inclusive, false otherwise
-	 * @param kindsToRetrieve
-	 *            a collection of kinds to retrieve among (RX_ADDED, RX_REMOVED,
-	 *            TX_ADDED, TX_REMOVED)
-	 * 
-	 * @return a list of {@link Event} events corresponding to to the given time
-	 *         range and queue
-	 */
-	public <T extends Qx> List<Event> getEventsWithinGivenTimeRange(final T qx, long timeFrom, long timeTo,
-			boolean lowerInclusive, boolean upperInclusive, EVENT_KIND... kindsToRetrieve) {
-		assert (timeFrom < timeTo);
-
-		Predicate<Event> predicate = e -> {
-			if (lowerInclusive && upperInclusive) {
-				if (e.getTime() > timeFrom && e.getTime() < timeTo) {
-					return true;
-				}
-			} else if (lowerInclusive && !upperInclusive) {
-				if (e.getTime() >= timeFrom) {
-					return true;
-				}
-			} else if (!lowerInclusive && upperInclusive) {
-				if (e.getTime() <= timeTo) {
-					return true;
-				}
-			} else {
-				if (e.getTime() < timeTo && e.getTime() > timeFrom) {
-					return true;
-				}
-			}
-			return false;
-		};
-
-		return getEvents(qx, kindsToRetrieve).stream().filter(predicate).collect(Collectors.toList());
-	}
+//	/**
+//	 * Generically retrieves the events belonging to a given time range expressed as
+//	 * a {@link TimeInfo}.
+//	 * 
+//	 * @param qx
+//	 *            a Qx queue from which we want to retrieve the events
+//	 * @param a
+//	 *            {@link TimeInfo} time range from which bounds we want the events
+//	 *            fitting
+//	 * 
+//	 * @return a list of {@link Event} events corresponding to to the given time
+//	 *         range and queue
+//	 */
+//	public <T extends Qx> List<Event> getEventsFromTimeInfo(Qx qx, TimeInfo timeInfo) {
+//		return getEventsWithinGivenTimeRange(qx, timeInfo.getStart(),
+//				timeInfo.getStart() + (timeInfo.getDuration() * 1000), true, true,
+//				qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
+//						: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *create* events belonging to a given time range
+//	 * expressed as a {@link TimeInfo}.
+//	 * 
+//	 * @param qx
+//	 *            a Qx queue from which we want to retrieve the events
+//	 * @param a
+//	 *            {@link TimeInfo} time range from which bounds we want the events
+//	 *            fitting
+//	 * 
+//	 * @return a list of *create* {@link Event} events corresponding to to the given
+//	 *         time range and queue
+//	 */
+//	public <T extends Qx> List<Event> getCreateEventsFromTimeInfo(Qx qx, TimeInfo timeInfo) {
+//		return getEventsWithinGivenTimeRange(qx, timeInfo.getStart(), timeInfo.getStart() + timeInfo.getDuration(),
+//				true, true, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *delete* events belonging to a given time range
+//	 * expressed as a {@link TimeInfo}.
+//	 * 
+//	 * @param qx
+//	 *            a Qx queue from which we want to retrieve the events
+//	 * @param a
+//	 *            {@link TimeInfo} time range from which bounds we want the events
+//	 *            fitting
+//	 * 
+//	 * @return a list of *delete* {@link Event} events corresponding to to the given
+//	 *         time range and queue
+//	 */
+//	public <T extends Qx> List<Event> getDeleteEventsFromTimeInfo(Qx qx, TimeInfo timeInfo) {
+//		return getEventsWithinGivenTimeRange(qx, timeInfo.getStart(), timeInfo.getStart() + timeInfo.getDuration(),
+//				true, true, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
+//	}
+//
+//	/**
+//	 * Generically retrieves the events belonging to a given time range expressed as
+//	 * lower and upper time bounds.
+//	 * 
+//	 * @param qx
+//	 *            a Qx queue from which we want to retrieve the events
+//	 * @param timeFrom
+//	 *            lower time bound
+//	 * @param timeTo
+//	 *            upper time bound
+//	 * @param lowerInclusive
+//	 *            true if lower bound inclusive, false otherwise
+//	 * @param upperInclusive
+//	 *            true if upper bound inclusive, false otherwise
+//	 * @param kindsToRetrieve
+//	 *            a collection of kinds to retrieve among (RX_ADDED, RX_REMOVED,
+//	 *            TX_ADDED, TX_REMOVED)
+//	 * 
+//	 * @return a list of {@link Event} events corresponding to to the given time
+//	 *         range and queue
+//	 */
+//	public <T extends Qx> List<Event> getEventsWithinGivenTimeRange(final T qx, long timeFrom, long timeTo,
+//			boolean lowerInclusive, boolean upperInclusive, EVENT_KIND... kindsToRetrieve) {
+//		assert (timeFrom < timeTo);
+//
+//		Predicate<Event> predicate = e -> {
+//			if (lowerInclusive && upperInclusive) {
+//				if (e.getTime() > timeFrom && e.getTime() < timeTo) {
+//					return true;
+//				}
+//			} else if (lowerInclusive && !upperInclusive) {
+//				if (e.getTime() >= timeFrom) {
+//					return true;
+//				}
+//			} else if (!lowerInclusive && upperInclusive) {
+//				if (e.getTime() <= timeTo) {
+//					return true;
+//				}
+//			} else {
+//				if (e.getTime() < timeTo && e.getTime() > timeFrom) {
+//					return true;
+//				}
+//			}
+//			return false;
+//		};
+//
+//		return getEvents(qx, kindsToRetrieve).stream().filter(predicate).collect(Collectors.toList());
+//	}
 
 	//
 	// To a given time
 	//
 
-	// Create
-	/**
-	 * Specifically retrieves the *create* events that happened from the very
-	 * beginning to a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either Tx or Rx)
-	 * @param time
-	 *            a time until which the create events happened
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getCreateEventsToGivenTime(final T qx, long time) {
-		return getCreateEventsToGivenTime(qx, time, true);
-	}
-
-	/**
-	 * Specifically retrieves the *create* events that happened from the very
-	 * beginning to a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time until which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getCreateEventsToGivenTime(final T qx, long time, boolean inclusive) {
-		return getEventsToGivenTime(qx, time, inclusive, EVENT_KIND.RX_READY, EVENT_KIND.TX_READY);
-	}
-
-	// Delete
-	/**
-	 * Specifically retrieves the *delete* events that happened from the very
-	 * beginning to a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time until which the create events happened
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getDeleteEventsToGivenTime(final T qx, long time) {
-		return getCreateEventsToGivenTime(qx, time, true);
-	}
-
-	/**
-	 * Specifically retrieves the *delete* events that happened from the very
-	 * beginning to a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time until which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getDeleteEventsToGivenTime(final T qx, long time, boolean inclusive) {
-		return getEventsToGivenTime(qx, time, inclusive, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
-	}
-
-	// All
-	/**
-	 * Specifically retrieves *all* events that happened from the very beginning to
-	 * a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time until which the create events happened
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getEventsToGivenTime(final T qx, long time) {
-		return getEventsToGivenTime(qx, time, true);
-	}
-
-	/**
-	 * Specifically retrieves *all* events that happened from the very beginning to
-	 * a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time until which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getEventsToGivenTime(final T qx, long time, boolean inclusive) {
-		return getEventsToGivenTime(qx, time, inclusive,
-				qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
-						: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
-	}
-
-	/**
-	 * Specifically retrieves the *create* events that happened from the very
-	 * beginning to a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time until which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * @param kindsToRetrieve
-	 *            a collection of kinds to retrieve among (RX_ADDED, RX_REMOVED,
-	 *            TX_ADDED, TX_REMOVED)
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getEventsToGivenTime(final T qx, long time, boolean inclusive,
-			EVENT_KIND... kindsToRetrieve) {
-		return getEventsWithinGivenTimeRange(qx, Long.MIN_VALUE, time, true, inclusive, kindsToRetrieve);
-	}
-
-	//
-	// From a given time
-	//
-
-	// Create
-	/**
-	 * Specifically retrieves the *create* events that happened from the very
-	 * beginning to a given time (inclusive).
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getCreateEventsFromGivenTime(final T qx, long time) {
-		return getCreateEventsFromGivenTime(qx, time, true);
-	}
-
-	/**
-	 * Specifically retrieves the *create* events that happened from the very
-	 * beginning to a given time.
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getCreateEventsFromGivenTime(final T qx, long time, boolean inclusive) {
-		return getEventsFromGivenTime(qx, time, inclusive,
-				qx instanceof Rx ? EVENT_KIND.RX_READY : EVENT_KIND.TX_READY);
-	}
-
-	// Delete
-	/**
-	 * Specifically retrieves the *delete* events that happened from a given time
-	 * until now.
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getDeleteEventsFromGivenTime(final T qx, long time) {
-		return getCreateEventsFromGivenTime(qx, time, true);
-	}
-
-	/**
-	 * Specifically retrieves the *delete* events that happened from a given time
-	 * until now.
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getDeleteEventsFromGivenTime(final T qx, long time, boolean inclusive) {
-		return getEventsFromGivenTime(qx, time, inclusive, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
-	}
-
-	// All
-	/**
-	 * Specifically retrieves *all* events that happened from a given time until
-	 * now.
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getEventsFromGivenTime(final T qx, long time) {
-		return getEventsFromGivenTime(qx, time, true);
-	}
-
-	/**
-	 * Specifically retrieves *all* events that happened from a given time until
-	 * now.
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getEventsFromGivenTime(final T qx, long time, boolean inclusive) {
-		return getEventsFromGivenTime(qx, time, inclusive,
-				qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
-						: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
-	}
-
-	/**
-	 * Specifically retrieves *all* events that happened from a given time until
-	 * now.
-	 * 
-	 * @param qx
-	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
-	 * @param time
-	 *            a time from which the create events happened
-	 * @param true
-	 *            if events should be temporally considered in a inclusive maner,
-	 *            false otherwise
-	 * @param kindsToRetrieve
-	 *            a collection of kinds to retrieve among (RX_ADDED, RX_REMOVED,
-	 *            TX_ADDED, TX_REMOVED)
-	 * 
-	 * @return a list of {@link Event} corresponding to given time and queue
-	 *         parameters
-	 */
-	public <T extends Qx> List<Event> getEventsFromGivenTime(final T qx, long time, boolean inclusive,
-			EVENT_KIND... kindsToRetrieve) {
-		return getEventsWithinGivenTimeRange(qx, time, Long.MAX_VALUE, inclusive, true, kindsToRetrieve);
-	}
-
+//	// Create
+//	/**
+//	 * Specifically retrieves the *create* events that happened from the very
+//	 * beginning to a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either Tx or Rx)
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getCreateEventsToGivenTime(final T qx, long time) {
+//		return getCreateEventsToGivenTime(qx, time, true);
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *create* events that happened from the very
+//	 * beginning to a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getCreateEventsToGivenTime(final T qx, long time, boolean inclusive) {
+//		return getEventsToGivenTime(qx, time, inclusive, EVENT_KIND.RX_READY, EVENT_KIND.TX_READY);
+//	}
+//
+//	// Delete
+//	/**
+//	 * Specifically retrieves the *delete* events that happened from the very
+//	 * beginning to a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getDeleteEventsToGivenTime(final T qx, long time) {
+//		return getCreateEventsToGivenTime(qx, time, true);
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *delete* events that happened from the very
+//	 * beginning to a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getDeleteEventsToGivenTime(final T qx, long time, boolean inclusive) {
+//		return getEventsToGivenTime(qx, time, inclusive, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
+//	}
+//
+//	// All
+//	/**
+//	 * Specifically retrieves *all* events that happened from the very beginning to
+//	 * a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getEventsToGivenTime(final T qx, long time) {
+//		return getEventsToGivenTime(qx, time, true);
+//	}
+//
+//	/**
+//	 * Specifically retrieves *all* events that happened from the very beginning to
+//	 * a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getEventsToGivenTime(final T qx, long time, boolean inclusive) {
+//		return getEventsToGivenTime(qx, time, inclusive,
+//				qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
+//						: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *create* events that happened from the very
+//	 * beginning to a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time until which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * @param kindsToRetrieve
+//	 *            a collection of kinds to retrieve among (RX_ADDED, RX_REMOVED,
+//	 *            TX_ADDED, TX_REMOVED)
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getEventsToGivenTime(final T qx, long time, boolean inclusive,
+//			EVENT_KIND... kindsToRetrieve) {
+//		return getEventsWithinGivenTimeRange(qx, Long.MIN_VALUE, time, true, inclusive, kindsToRetrieve);
+//	}
+//
+//	//
+//	// From a given time
+//	//
+//
+//	// Create
+//	/**
+//	 * Specifically retrieves the *create* events that happened from the very
+//	 * beginning to a given time (inclusive).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getCreateEventsFromGivenTime(final T qx, long time) {
+//		return getCreateEventsFromGivenTime(qx, time, true);
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *create* events that happened from the very
+//	 * beginning to a given time.
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getCreateEventsFromGivenTime(final T qx, long time, boolean inclusive) {
+//		return getEventsFromGivenTime(qx, time, inclusive,
+//				qx instanceof Rx ? EVENT_KIND.RX_READY : EVENT_KIND.TX_READY);
+//	}
+//
+//	// Delete
+//	/**
+//	 * Specifically retrieves the *delete* events that happened from a given time
+//	 * until now.
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getDeleteEventsFromGivenTime(final T qx, long time) {
+//		return getCreateEventsFromGivenTime(qx, time, true);
+//	}
+//
+//	/**
+//	 * Specifically retrieves the *delete* events that happened from a given time
+//	 * until now.
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getDeleteEventsFromGivenTime(final T qx, long time, boolean inclusive) {
+//		return getEventsFromGivenTime(qx, time, inclusive, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
+//	}
+//
+//	// All
+//	/**
+//	 * Specifically retrieves *all* events that happened from a given time until
+//	 * now.
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getEventsFromGivenTime(final T qx, long time) {
+//		return getEventsFromGivenTime(qx, time, true);
+//	}
+//
+//	/**
+//	 * Specifically retrieves *all* events that happened from a given time until
+//	 * now.
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getEventsFromGivenTime(final T qx, long time, boolean inclusive) {
+//		return getEventsFromGivenTime(qx, time, inclusive,
+//				qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
+//						: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
+//	}
+//
+//	/**
+//	 * Specifically retrieves *all* events that happened from a given time until
+//	 * now.
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue (Either {@link Tx} or {@link Rx})
+//	 * @param time
+//	 *            a time from which the create events happened
+//	 * @param true
+//	 *            if events should be temporally considered in a inclusive maner,
+//	 *            false otherwise
+//	 * @param kindsToRetrieve
+//	 *            a collection of kinds to retrieve among (RX_ADDED, RX_REMOVED,
+//	 *            TX_ADDED, TX_REMOVED)
+//	 * 
+//	 * @return a list of {@link Event} corresponding to given time and queue
+//	 *         parameters
+//	 */
+//	public <T extends Qx> List<Event> getEventsFromGivenTime(final T qx, long time, boolean inclusive,
+//			EVENT_KIND... kindsToRetrieve) {
+//		return getEventsWithinGivenTimeRange(qx, time, Long.MAX_VALUE, inclusive, true, kindsToRetrieve);
+//	}
+//
 	//
 	// Not Temporal + General
 	//
 
-	/**
-	 * Generically retrieves the events from a given Qx (Either {@link Tx} or
-	 * {@link Rx}).
-	 * 
-	 * @param qx
-	 *            a given Qx queue
-	 * @param kindsToRetrieve
-	 *            {@link EVENT_KIND} events kind(s) to retrieve
-	 * 
-	 * @return a list of compatible {@link Event} corresponding to given parameters,
-	 *         a void list otherwise
-	 */
-	public List<Event> getEvents(final Qx qx, EVENT_KIND... kindsToRetrieve) {
-		List<Event> lst = new ArrayList<Event>();
-		List<EVENT_KIND> kinds = Arrays.asList(kindsToRetrieve);
-
-		boolean txDone = kinds.contains(EVENT_KIND.TX_DONE);
-		boolean txReady = kinds.contains(EVENT_KIND.TX_READY);
-		boolean rxDone = kinds.contains(EVENT_KIND.RX_DONE);
-		boolean rxReady = kinds.contains(EVENT_KIND.RX_READY);
-
-		for (Event evt : ((CmdPipe) qx.getEngine()).getRxEvents()) {
-			if (evt.getQx().equals(qx)) {
-				if (rxDone && ((Event) evt).getKind().equals(EVENT_KIND.RX_DONE)) {
-					lst.add(((Event) evt));
-				} else if (rxReady && ((Event) evt).getKind().equals(EVENT_KIND.RX_READY)) {
-					lst.add(((Event) evt));
-				}
-			}
-		}
-
-		for (Event evt : ((CmdPipe) qx.getEngine()).getTxEvents()) {
-			if (evt.getQx().equals(qx)) {
-				if (txDone && ((Event) evt).getKind().equals(EVENT_KIND.TX_DONE)) {
-					lst.add(((Event) evt));
-				} else if (txReady && ((Event) evt).getKind().equals(EVENT_KIND.TX_READY)) {
-					lst.add(((Event) evt));
-				}
-			}
-		}
-
-		return lst;
-	}
-
-	//
-	// Not temporal + Specific
-	//
-
-	/**
-	 * Generically retrieves all events from a given Qx (Either {@link Tx} or
-	 * {@link Rx}).
-	 * 
-	 * @return a list of all compatible {@link Event} corresponding to given
-	 *         parameters, a void list otherwise
-	 */
-	public List<Event> getAllEvents(final Qx qx) {
-		return getEvents(qx, qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
-				: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
-	}
-
-	/**
-	 * Generically retrieves *create* events from a given Qx (Either {@link Tx} or
-	 * {@link Rx}).
-	 * 
-	 * @return a list of all compatible {@link Event} corresponding to given
-	 *         parameters, a void list otherwise
-	 */
-	public List<Event> getCreateEvents(final Qx qx) {
-		return getEvents(qx, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
-	}
-
-	/**
-	 * Generically retrieves *delete* events from a given Qx (Either {@link Tx} or
-	 * {@link Rx}).
-	 * 
-	 * @return a list of all compatible {@link Event} corresponding to given
-	 *         parameters, a void list otherwise
-	 */
-	public List<Event> getDeleteEvents(final Qx qx) {
-		return getEvents(qx, qx instanceof Rx ? EVENT_KIND.RX_READY : EVENT_KIND.TX_READY);
-	}
+//	/**
+//	 * Generically retrieves the events from a given Qx (Either {@link Tx} or
+//	 * {@link Rx}).
+//	 * 
+//	 * @param qx
+//	 *            a given Qx queue
+//	 * @param kindsToRetrieve
+//	 *            {@link EVENT_KIND} events kind(s) to retrieve
+//	 * 
+//	 * @return a list of compatible {@link Event} corresponding to given parameters,
+//	 *         a void list otherwise
+//	 */
+//	public List<Event> getEvents(final Qx qx, EVENT_KIND... kindsToRetrieve) {
+//		List<Event> lst = new ArrayList<Event>();
+//		List<EVENT_KIND> kinds = Arrays.asList(kindsToRetrieve);
+//
+//		boolean txDone = kinds.contains(EVENT_KIND.TX_DONE);
+//		boolean txReady = kinds.contains(EVENT_KIND.TX_READY);
+//		boolean rxDone = kinds.contains(EVENT_KIND.RX_DONE);
+//		boolean rxReady = kinds.contains(EVENT_KIND.RX_READY);
+//
+//		for (Event evt : ((CmdPipe) qx.getEngine()).getRxEvents()) {
+//			if (evt.getQx().equals(qx)) {
+//				if (rxDone && ((Event) evt).getKind().equals(EVENT_KIND.RX_DONE)) {
+//					lst.add(((Event) evt));
+//				} else if (rxReady && ((Event) evt).getKind().equals(EVENT_KIND.RX_READY)) {
+//					lst.add(((Event) evt));
+//				}
+//			}
+//		}
+//
+//		for (Event evt : ((CmdPipe) qx.getEngine()).getTxEvents()) {
+//			if (evt.getQx().equals(qx)) {
+//				if (txDone && ((Event) evt).getKind().equals(EVENT_KIND.TX_DONE)) {
+//					lst.add(((Event) evt));
+//				} else if (txReady && ((Event) evt).getKind().equals(EVENT_KIND.TX_READY)) {
+//					lst.add(((Event) evt));
+//				}
+//			}
+//		}
+//
+//		return lst;
+//	}
+//
+//	//
+//	// Not temporal + Specific
+//	//
+//
+//	/**
+//	 * Generically retrieves all events from a given Qx (Either {@link Tx} or
+//	 * {@link Rx}).
+//	 * 
+//	 * @return a list of all compatible {@link Event} corresponding to given
+//	 *         parameters, a void list otherwise
+//	 */
+//	public List<Event> getAllEvents(final Qx qx) {
+//		return getEvents(qx, qx instanceof Rx ? new EVENT_KIND[] { EVENT_KIND.RX_DONE, EVENT_KIND.RX_READY }
+//				: new EVENT_KIND[] { EVENT_KIND.TX_DONE, EVENT_KIND.TX_READY });
+//	}
+//
+//	/**
+//	 * Generically retrieves *create* events from a given Qx (Either {@link Tx} or
+//	 * {@link Rx}).
+//	 * 
+//	 * @return a list of all compatible {@link Event} corresponding to given
+//	 *         parameters, a void list otherwise
+//	 */
+//	public List<Event> getCreateEvents(final Qx qx) {
+//		return getEvents(qx, qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE);
+//	}
+//
+//	/**
+//	 * Generically retrieves *delete* events from a given Qx (Either {@link Tx} or
+//	 * {@link Rx}).
+//	 * 
+//	 * @return a list of all compatible {@link Event} corresponding to given
+//	 *         parameters, a void list otherwise
+//	 */
+//	public List<Event> getDeleteEvents(final Qx qx) {
+//		return getEvents(qx, qx instanceof Rx ? EVENT_KIND.RX_READY : EVENT_KIND.TX_READY);
+//	}
 
 	//
 	// ...
@@ -603,9 +597,11 @@ public class EngineUtil {
 		private Qx queue;
 		private T cmd;
 
-		public void setParameters(Qx q, T c) {
+		public QxRunnable<T> setParameters(Qx q, T c) {
 			queue = q;
 			cmd = c;
+			cmd.setQx(q);
+			return this;
 		}
 
 		@Override
@@ -679,8 +675,7 @@ public class EngineUtil {
 	public synchronized <T extends Cmd> T sendCmd(final Qx queue, final T cmd) {
 		if (queue != null && cmd != null) {
 			try {
-				qxRunner.setParameters(queue, cmd);
-				new Thread(qxRunner).run();
+				new Thread(qxRunner.setParameters(queue, cmd)).run();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

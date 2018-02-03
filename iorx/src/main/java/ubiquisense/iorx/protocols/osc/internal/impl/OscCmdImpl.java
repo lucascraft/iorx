@@ -9,8 +9,8 @@ package ubiquisense.iorx.protocols.osc.internal.impl;
 
 import com.illposed.osc.OSCPacket;
 
+import ubiquisense.iorx.cmd.impl.CmdImpl;
 import ubiquisense.iorx.protocols.osc.internal.OscCmd;
-import ubiquisense.iorx.qx.impl.CmdImpl;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public class OscCmdImpl extends CmdImpl implements OscCmd {

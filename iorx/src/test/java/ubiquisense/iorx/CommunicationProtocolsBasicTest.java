@@ -7,11 +7,11 @@ import org.junit.Test;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
+import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
-import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
 public class CommunicationProtocolsBasicTest extends GuiceInjectionTest {
 	

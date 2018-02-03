@@ -6,8 +6,8 @@
  */
 package ubiquisense.iorx.protocols.midi.internal.dsl.impl;
 
+import ubiquisense.iorx.cmd.impl.CmdImpl;
 import ubiquisense.iorx.protocols.midi.internal.dsl.AbstractMidiCmd;
-import ubiquisense.iorx.qx.impl.CmdImpl;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public abstract class AbstractMidiCmdImpl extends CmdImpl implements AbstractMidiCmd {

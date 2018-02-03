@@ -1,7 +1,7 @@
 package ubiquisense.iorx.utils;
 
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.PRIORITY;
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.PRIORITY;
 
 public interface ICmdUtil {
 	

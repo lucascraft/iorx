@@ -8,19 +8,19 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.notifications.Add;
-import ubiquisense.iorx.qx.notifications.AddMany;
-import ubiquisense.iorx.qx.notifications.Notification;
-import ubiquisense.iorx.qx.notifications.Remove;
-import ubiquisense.iorx.qx.notifications.RemoveMany;
+import ubiquisense.iorx.changes.Add;
+import ubiquisense.iorx.changes.AddMany;
+import ubiquisense.iorx.changes.Notification;
+import ubiquisense.iorx.changes.Remove;
+import ubiquisense.iorx.changes.RemoveMany;
+import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public class NotificationBasicTest 
 {
 	
 	@Test
-	public void testNotificationBasicCreatyion()
+	public void testNotificationBasicCreation()
 	{
 		Cmd cmdToAdd = CmdUtil.INSTANCE.generateRamdomCmd();
 		Add<Cmd> add = new Add<Cmd>(cmdToAdd);

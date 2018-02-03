@@ -42,8 +42,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.utils.Platform;
 
 

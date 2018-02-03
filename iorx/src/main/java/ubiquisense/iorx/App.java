@@ -5,8 +5,7 @@ import java.util.HashMap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.xp.QuanticMojo;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 /**
  * Hello world!

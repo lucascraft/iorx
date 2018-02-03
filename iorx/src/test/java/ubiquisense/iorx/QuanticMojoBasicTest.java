@@ -9,8 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.xp.QuanticMojo;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 public class QuanticMojoBasicTest extends GuiceInjectionTest
 {

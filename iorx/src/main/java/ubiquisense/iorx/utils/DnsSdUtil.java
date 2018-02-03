@@ -20,7 +20,7 @@ import javax.jmdns.impl.JmDNSImpl;
 
 import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
-import ubiquisense.iorx.xp.IXCPDeviceLifecycleListener;
+import ubiquisense.iorx.discovery.IXCPDeviceLifecycleListener;
 
 /**
  * Resonsible on receiving/emmiting OSC commands in an agent fashion

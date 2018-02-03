@@ -42,13 +42,13 @@ import com.illposed.osc.OSCBundle;
 import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CompoundCmd;
+import ubiquisense.iorx.cmd.impl.CompoundCmdImpl;
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.protocols.osc.internal.impl.OscCmdImpl;
 import ubiquisense.iorx.protocols.osc.internal.impl.OscRcvCmdImpl;
 import ubiquisense.iorx.protocols.osc.internal.impl.OscSndCmdImpl;
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.CompoundCmd;
-import ubiquisense.iorx.qx.impl.CompoundCmdImpl;
 import ubiquisense.iorx.utils.CmdUtil;
 
 

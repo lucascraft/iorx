@@ -6,15 +6,15 @@ import com.google.inject.name.Named;
 import com.illposed.osc.OSCPacket;
 import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.event.EVENT_KIND;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.osc.internal.OscCmd;
 import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.evt.EVENT_KIND;
-import ubiquisense.iorx.qx.evt.Event;
-import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
 @javax.inject.Named("osc")  @Singleton
 public class OSCQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter{

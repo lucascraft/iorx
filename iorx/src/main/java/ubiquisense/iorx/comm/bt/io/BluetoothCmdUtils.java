@@ -35,8 +35,8 @@
 
 package ubiquisense.iorx.comm.bt.io;
 
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.impl.CmdImpl;
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.impl.CmdImpl;
 
 @Deprecated
 public class BluetoothCmdUtils {

@@ -9,15 +9,15 @@ import com.google.inject.Inject;
 
 import rx.Observable;
 import rx.functions.Action1;
+import ubiquisense.iorx.changes.Add;
+import ubiquisense.iorx.changes.AddMany;
+import ubiquisense.iorx.changes.Remove;
+import ubiquisense.iorx.changes.RemoveMany;
+import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
-import ubiquisense.iorx.qx.notifications.Add;
-import ubiquisense.iorx.qx.notifications.AddMany;
-import ubiquisense.iorx.qx.notifications.Remove;
-import ubiquisense.iorx.qx.notifications.RemoveMany;
 import ubiquisense.iorx.utils.EngineUtil;
 
 public class AbstractQx implements Qx {

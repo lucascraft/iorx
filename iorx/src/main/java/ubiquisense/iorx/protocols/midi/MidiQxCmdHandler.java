@@ -45,21 +45,21 @@ import javax.sound.midi.ShortMessage;
 
 import com.google.inject.Singleton;
 
+import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CompoundCmd;
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
 import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.event.EVENT_KIND;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.AbstractMidiCmd;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
-import ubiquisense.iorx.qx.ByteCmd;
-import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.CompoundCmd;
+import ubiquisense.iorx.protocols.raw.ByteCmd;
 import ubiquisense.iorx.qx.Qx;
-import ubiquisense.iorx.qx.evt.EVENT_KIND;
-import ubiquisense.iorx.qx.evt.Event;
-import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
 @Named("midi") @Singleton
 public class MidiQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {

@@ -40,8 +40,8 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.protocols.midi.internal.MidiReceiver;
-import ubiquisense.iorx.qx.CmdPipe;
 
 
 public class MidiInputJob extends AbstarctMidiIO implements IMidiIn {

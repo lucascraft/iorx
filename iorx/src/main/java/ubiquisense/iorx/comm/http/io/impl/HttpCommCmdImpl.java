@@ -5,10 +5,10 @@ package ubiquisense.iorx.comm.http.io.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import ubiquisense.iorx.cmd.impl.CmdImpl;
 import ubiquisense.iorx.comm.http.io.HttpCommCmd;
 import ubiquisense.iorx.comm.http.io.HttpMethod;
 import ubiquisense.iorx.comm.http.io.Property;
-import ubiquisense.iorx.qx.impl.CmdImpl;
 
 
 public class HttpCommCmdImpl extends CmdImpl implements HttpCommCmd {

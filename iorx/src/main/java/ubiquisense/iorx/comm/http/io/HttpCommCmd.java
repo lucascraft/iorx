@@ -22,7 +22,7 @@ import java.util.List;
  * @model
  * @generated
  */
-public interface HttpCommCmd extends ubiquisense.iorx.qx.Cmd {
+public interface HttpCommCmd extends ubiquisense.iorx.cmd.Cmd {
 	List<Property> getProperties();
 
 	HttpMethod getMethod();

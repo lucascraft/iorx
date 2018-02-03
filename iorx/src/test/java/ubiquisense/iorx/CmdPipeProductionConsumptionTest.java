@@ -4,11 +4,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.qx.CmdEngine;
-import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.cmd.CmdEngine;
+import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
-import ubiquisense.iorx.qx.impl.QxMonitorJob;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public class CmdPipeProductionConsumptionTest extends GuiceInjectionTest {

@@ -6,7 +6,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import ubiquisense.iorx.registry.ConfigurationModule;
-import ubiquisense.iorx.xp.QuanticMojo;
 
 public abstract class GuiceInjectionTest {
 	protected Injector injector;

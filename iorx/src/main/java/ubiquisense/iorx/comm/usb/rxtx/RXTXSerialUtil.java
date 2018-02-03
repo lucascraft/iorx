@@ -46,12 +46,12 @@ import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
 import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.event.EVENT_KIND;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.event.EventImpl;
+import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.evt.EVENT_KIND;
-import ubiquisense.iorx.qx.evt.Event;
-import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.qx.impl.EventImpl;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 public class RXTXSerialUtil implements IRXTXSerialUtils {
 	

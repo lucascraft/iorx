@@ -10,8 +10,10 @@ import java.util.Map;
 import javax.bluetooth.L2CAPConnection;
 import javax.microedition.io.Connector;
 
+import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.InputJobImpl;
+import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.bt.BluetoothPortImpl;
 import ubiquisense.iorx.comm.bt.io.BTCommunicator;
 import ubiquisense.iorx.comm.bt.io.L2CAPInJob;
@@ -31,15 +33,13 @@ import ubiquisense.iorx.comm.udp.io.UdpInputPortJob;
 import ubiquisense.iorx.comm.usb.USBPortImpl;
 import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
 import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
+import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.qx.CmdEngine;
-import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.EngineApplication;
-import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.xp.TRANSPORT_PROTOCOL;
+import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.pipe.EngineApplication;
 
 public class NetConfigUtil {
 

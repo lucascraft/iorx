@@ -26,7 +26,7 @@ public class L2CAPInJobImpl extends InputJobImpl implements L2CAPInJob {
 		Object o = getJob();
 		if (o instanceof Thread) {
 			Thread j = (Thread) o;
-			j.stop();
+			j.interrupt();
 		}
 	}
 	
@@ -34,7 +34,7 @@ public class L2CAPInJobImpl extends InputJobImpl implements L2CAPInJob {
 		Object o = getJob();
 		if (o instanceof Thread) {
 			Thread j = (Thread) o;
-			j.stop();
+			j.interrupt();
 		}
 	}
 } //L2CAPInJobImpl

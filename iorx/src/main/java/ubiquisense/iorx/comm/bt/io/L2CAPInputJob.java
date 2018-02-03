@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.bluetooth.L2CAPConnection;
 
-import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.pipe.CmdPipe;
 
 
 public class L2CAPInputJob extends Thread {
@@ -13,7 +13,7 @@ public class L2CAPInputJob extends Thread {
 	private CmdPipe btPipe;
 	private String portId;
 	
-	public L2CAPInputJob(ubiquisense.iorx.qx.CmdPipe pipe, L2CAPConnection connection, String btAddr) throws IOException, InterruptedException {
+	public L2CAPInputJob(ubiquisense.iorx.pipe.CmdPipe pipe, L2CAPConnection connection, String btAddr) throws IOException, InterruptedException {
 		super("bt input " + btAddr);
 		incoming	= connection;
 		btPipe		= pipe;
@@ -38,7 +38,7 @@ public class L2CAPInputJob extends Thread {
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			stop();
+			interrupt();
 		}
 		start();
 	}

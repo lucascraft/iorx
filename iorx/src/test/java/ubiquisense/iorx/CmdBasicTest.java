@@ -4,7 +4,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.qx.Cmd;
+import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public class CmdBasicTest extends GuiceInjectionTest {
