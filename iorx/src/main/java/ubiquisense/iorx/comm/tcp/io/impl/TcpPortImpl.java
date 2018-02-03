@@ -38,14 +38,12 @@ public class TcpPortImpl extends PortImpl implements TcpPort {
 	public void finalize() {
 		for (InputJob iJob : getInputJobs()) {
 			TcpInputPortJob ij = (TcpInputPortJob) iJob.getJob();
-			ij.sleep();
-			ij.cancel();
+			ij.stop();
 			iJob.close();
 		}
 		for (OutputJob oJob : getOutputJobs()) {
 			TcpInputPortJob oj = (TcpInputPortJob) oJob.getJob();
-			oj.sleep();
-			oj.cancel();
+			oj.stop();
 			oJob.close();
 		}
 		if (getChannel() instanceof Socket) {

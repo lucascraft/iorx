@@ -38,15 +38,12 @@ package ubiquisense.iorx.comm;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ubiquisense.iorx.qx.Rx;
-import ubiquisense.iorx.utils.JobImpl;
 
 
-public abstract class AbstractInputJob extends JobImpl{
+public abstract class AbstractInputJob extends Thread {
 	protected volatile ConcurrentLinkedQueue<Rx> rxList;
 	public AbstractInputJob(String id) {
 		super(id);
-		setSystem(true);
-		setPriority(INTERACTIVE);
 		rxList = new ConcurrentLinkedQueue<Rx>();
 	}
 	public synchronized void addRx(final Rx rx) {

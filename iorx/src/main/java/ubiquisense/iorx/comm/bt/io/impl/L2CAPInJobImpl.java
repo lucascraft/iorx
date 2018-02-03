@@ -8,7 +8,6 @@ package ubiquisense.iorx.comm.bt.io.impl;
 
 import ubiquisense.iorx.comm.bt.io.L2CAPInJob;
 import ubiquisense.iorx.comm.impl.InputJobImpl;
-import ubiquisense.iorx.utils.Job;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,27 +19,22 @@ import ubiquisense.iorx.utils.Job;
  * @generated
  */
 public class L2CAPInJobImpl extends InputJobImpl implements L2CAPInJob {
-	protected L2CAPInJobImpl() {
-		super();
-	}
 
 	
 	@Override
 	public void close() {
 		Object o = getJob();
-		if (o instanceof Job) {
-			Job j = (Job) o;
-			j.cancel();
-			j.done(Job.ASYNC_FINISH);
+		if (o instanceof Thread) {
+			Thread j = (Thread) o;
+			j.stop();
 		}
 	}
 	
 	public void finalize()  {
 		Object o = getJob();
-		if (o instanceof Job) {
-			Job j = (Job) o;
-			j.cancel();
-			j.done(Job.ASYNC_FINISH);
+		if (o instanceof Thread) {
+			Thread j = (Thread) o;
+			j.stop();
 		}
 	}
 } //L2CAPInJobImpl

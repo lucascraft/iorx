@@ -46,7 +46,7 @@ public class TcpInputPortJob extends AbstractInputJob {
 		return portID;
 	}
 	@Override
-	public int run() {
+	public void run() {
 		try {
 			if (socket==null || !socket.isConnected()) {
 				socket = serverSocket.accept();
@@ -78,9 +78,8 @@ public class TcpInputPortJob extends AbstractInputJob {
 			e.printStackTrace();
 		}
 		if (!serverSocket.isClosed()) {
-			schedule();
+			start();
 		}
-		return 0;
 	}
 	@Override
 	public synchronized void close() {

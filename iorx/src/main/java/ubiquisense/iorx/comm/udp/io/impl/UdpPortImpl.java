@@ -39,16 +39,12 @@ public class UdpPortImpl extends PortImpl implements UdpPort {
 	public void finalize() {
 		for (InputJob iJob : getInputJobs()) {
 			UdpInputPortJob ij = (UdpInputPortJob) iJob.getJob();
-			ij.sleep();
-			ij.cancel();
-			ij.done(0);
+			ij.stop();;
 			ij.close();
 		}
 		for (OutputJob oJob : getOutputJobs()) {
 			UdpInputPortJob oj = (UdpInputPortJob) oJob.getJob();
-			oj.sleep();
-			oj.cancel();
-			oj.done(0);
+			oj.stop();
 			oj.close();
 		}
 		if (getChannel() instanceof DatagramSocket) {

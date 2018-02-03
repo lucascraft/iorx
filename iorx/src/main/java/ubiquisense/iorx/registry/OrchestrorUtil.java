@@ -1,4 +1,4 @@
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.registry;
 
 import java.util.ArrayList;
 import java.util.List;

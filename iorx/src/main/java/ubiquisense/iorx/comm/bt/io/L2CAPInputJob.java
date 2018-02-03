@@ -6,18 +6,15 @@ import java.io.IOException;
 import javax.bluetooth.L2CAPConnection;
 
 import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.utils.JobImpl;
 
 
-public class L2CAPInputJob extends JobImpl {
+public class L2CAPInputJob extends Thread {
 	private L2CAPConnection incoming;
 	private CmdPipe btPipe;
 	private String portId;
 	
 	public L2CAPInputJob(ubiquisense.iorx.qx.CmdPipe pipe, L2CAPConnection connection, String btAddr) throws IOException, InterruptedException {
 		super("bt input " + btAddr);
-		setPriority(INTERACTIVE);
-		setSystem(true);
 		incoming	= connection;
 		btPipe		= pipe;
 		portId = btAddr;
@@ -28,7 +25,7 @@ public class L2CAPInputJob extends JobImpl {
 	}
 
 	@Override
-	public int run() {
+	public void run() {
 		try {
 			if (incoming != null) {
 				byte[] buf = new byte[incoming.getReceiveMTU()];
@@ -41,10 +38,9 @@ public class L2CAPInputJob extends JobImpl {
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			done(ASYNC_FINISH);
+			stop();
 		}
-		schedule();
-		return 0;
+		start();
 	}
 
 }

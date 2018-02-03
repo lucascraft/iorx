@@ -1,5 +1,8 @@
-package ubiquisense.iorx.qx;
+package ubiquisense.iorx.qx.evt;
 
+import ubiquisense.iorx.qx.Cmd;
+import ubiquisense.iorx.qx.CmdPipe;
+import ubiquisense.iorx.qx.Qx;
 
 public interface Event {
 	EVENT_KIND getKind();

@@ -1,6 +1,6 @@
 package ubiquisense.iorx.utils;
 
-public interface  RunnableWithResult<T> {
+public interface  RunnableWithResult<T> extends Runnable {
 	void run();
 	int getStatus();
 	void setStatus(int value);

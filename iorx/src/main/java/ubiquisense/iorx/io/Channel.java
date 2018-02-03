@@ -3,8 +3,8 @@ package ubiquisense.iorx.io;
 import java.util.List;
 
 import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.Event;
-import ubiquisense.iorx.qx.IQxEventHandler;
+import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
 public interface Channel {
 	List<IXCmdInterpreter> getCmdInterpretrers();

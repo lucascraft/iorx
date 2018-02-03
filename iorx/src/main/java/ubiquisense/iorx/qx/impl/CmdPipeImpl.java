@@ -14,13 +14,14 @@ import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;
-import ubiquisense.iorx.qx.Event;
-import ubiquisense.iorx.qx.IQxEventHandler;
 import ubiquisense.iorx.qx.PRIORITY;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.qx.evt.IQxEventHandler;
+import ubiquisense.iorx.qx.notif.NotificationAdapter;
 import ubiquisense.iorx.utils.EngineUtil;
 
 public class CmdPipeImpl implements CmdPipe
@@ -50,6 +51,8 @@ public class CmdPipeImpl implements CmdPipe
 	IXCmdInterpreter ouutputInterpreter;
 	Set<IQxEventHandler> qxEventHandlers;
 	
+	Set<NotificationAdapter<Cmd>> adapters;
+	
 	String transportProtocol;
 	String communicationProtocol;
 	
@@ -77,6 +80,8 @@ public class CmdPipeImpl implements CmdPipe
 		rxEvents = new ArrayList<>();
 		ports = new HashSet<>();
 		qxEventHandlers = new HashSet<>();
+		adapters = new HashSet<>();
+		activated = true;
 	}
 	
 	@Override
@@ -177,7 +182,7 @@ public class CmdPipeImpl implements CmdPipe
 	@Override
 	public void receive(byte[] frame)
 	{
-		EngineUtil.INSTANCE.sendCmd(tx, getInputInterpreter().byteArray2Cmd(frame));
+		EngineUtil.INSTANCE.sendCmd(rx, getInputInterpreter().byteArray2Cmd(frame));
 	}
 
 	@Override
@@ -227,8 +232,10 @@ public class CmdPipeImpl implements CmdPipe
 
 	@Override
 	public void deactivateAll() {
-		// TODO Auto-generated method stub
-		
+		for(CmdPipe e : cmdEngine.getEngines())
+		{
+			e.deactivateAll();
+		}
 	}
 	
 	public void finalize()  {
@@ -266,5 +273,9 @@ public class CmdPipeImpl implements CmdPipe
 	@Override
 	public void addQxEventHandler(IQxEventHandler evtHandler) {
 		qxEventHandlers.add(evtHandler);
+	}
+	@Override
+	public Set<NotificationAdapter<Cmd>> eAdapters() {
+		return adapters;
 	}
 }

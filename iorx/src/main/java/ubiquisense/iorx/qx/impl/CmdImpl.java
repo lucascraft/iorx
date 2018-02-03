@@ -2,10 +2,13 @@ package ubiquisense.iorx.qx.impl;
 
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.PRIORITY;
+import ubiquisense.iorx.qx.Qx;
 
-public class CmdImpl implements Cmd {
+public class CmdImpl implements Cmd 
+{
 	long stamp;
 	PRIORITY priority;
+	Qx qx;
 	
 	@Override
 	public void setStamp(long time) {
@@ -25,5 +28,15 @@ public class CmdImpl implements Cmd {
 	@Override
 	public void setPriority(PRIORITY value) {
 		priority = value;
+	}
+
+	@Override
+	public Qx getQx() {
+		return qx;
+	}
+
+	@Override
+	public void setQx(Qx qx) {
+		this.qx = qx;
 	}
 }

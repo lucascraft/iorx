@@ -43,7 +43,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.Event;
+import ubiquisense.iorx.qx.evt.Event;
 import ubiquisense.iorx.utils.Platform;
 
 

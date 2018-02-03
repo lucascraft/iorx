@@ -53,7 +53,7 @@ public class UdpInputPortJob extends AbstractInputJob {
 		return portID;
 	}
 	@Override
-	public int run() {
+	public void run() {
 		synchronized(channel) {
 			if (channel.connected()) {
 				channel.receive(new byte[15360]);
@@ -75,8 +75,7 @@ public class UdpInputPortJob extends AbstractInputJob {
 				}
 			}
 		}
-		schedule();
-		return 0;
+		start();
 	}
 	@Override
 	public synchronized void close() {

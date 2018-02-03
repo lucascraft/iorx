@@ -1,4 +1,4 @@
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.registry;
 
 import com.google.inject.Inject;
 

@@ -16,4 +16,5 @@ public interface Qx
 	void setMax(int value);
 	void setTtl(int value);
 	void postCommand(Cmd cmd);
+	Cmd consumeCommand();
 }

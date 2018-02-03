@@ -2,34 +2,23 @@ package ubiquisense.iorx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Before;
 import org.junit.Test;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.qx.impl.QxMonitorJob;
+import ubiquisense.iorx.utils.CmdUtil;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest extends GuiceInjectionTest
-{
-		CmdPipe pipe;
-		CmdEngine engineClient;
+public class CmdPipeProductionConsumptionTest extends GuiceInjectionTest {
 
-	@Before
-	public void initEngines()
-	{
-		pipe = injector.getInstance(CmdPipe.class);
-		engineClient = injector.getInstance(CmdEngine.class);
-	}
 	
 	@Test
-	public void testApp() {
+	public void testTxRxProdConsCmd()
+	{
+		CmdPipe pipe = injector.getInstance(CmdPipe.class);
+		CmdEngine engineClient = injector.getInstance(CmdEngine.class);
 
 		assertNotNull(injector);
 		assertNotNull(pipe);
@@ -46,6 +35,14 @@ public class AppTest extends GuiceInjectionTest
 		pipe.setClient(engineClient);
 		pipe.setId("Engine_1");
 		
+		Thread t =new Thread(new QxMonitorJob(pipe));
+		t.start();
 		
+		for (int i = 1; i<10000; i++)
+		{
+			pipe.send(CmdUtil.INSTANCE.generateRamdomCmd());
+		}
+		
+		while(t.isAlive());
 	}
 }

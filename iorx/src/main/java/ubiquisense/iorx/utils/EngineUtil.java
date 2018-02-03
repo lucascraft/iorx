@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import ubiquisense.iorx.io.Channel;
+import com.google.common.collect.Sets;
+
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.CompoundCmd;
-import ubiquisense.iorx.qx.EVENT_KIND;
-import ubiquisense.iorx.qx.Event;
 import ubiquisense.iorx.qx.PRIORITY;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.TimeInfo;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.qx.evt.EVENT_KIND;
+import ubiquisense.iorx.qx.evt.Event;
 import ubiquisense.iorx.qx.impl.EventImpl;
 
 public class EngineUtil {
@@ -557,8 +559,8 @@ public class EngineUtil {
 	 * @return a list of all compatible {@link Qx} queues to given parameters, a
 	 *         void list otherwise
 	 */
-	public Collection<Qx> getXxQueues(final CmdPipe engine, Class<?> qxSubType) {
-		return engine.getQueues().stream().filter(q -> q.getClass().equals(qxSubType)).collect(Collectors.toSet());
+	public Set<Qx> getXxQueues(final CmdPipe engine, Class<?> qxSubType) {
+		return engine.getQueues().stream().filter(q -> Sets.newHashSet(q.getClass().getInterfaces()).contains(qxSubType)).collect(Collectors.toSet());
 	}
 
 	//
@@ -570,8 +572,8 @@ public class EngineUtil {
 	 * @return a list of all compatible {@link Rx} queues to given parameters, a
 	 *         void list otherwise
 	 */
-	public Collection<Rx> getRxQueues(CmdPipe engine) {
-		return Arrays.asList(getXxQueues(engine, Rx.class).toArray(new Rx[0]));
+	public Set<Rx> getRxQueues(CmdPipe engine) {
+		return Sets.newHashSet(getXxQueues(engine, Rx.class).toArray(new Rx[0]));
 	}
 
 	//
@@ -583,97 +585,19 @@ public class EngineUtil {
 	 * @return a list of all compatible {@link Tx} queues to given parameters, a
 	 *         void list otherwise
 	 */
-	public Collection<Tx> getTxQueues(CmdPipe engine) {
-		return Arrays.asList(getXxQueues(engine, Tx.class).toArray(new Tx[0]));
+	public Set<Tx> getTxQueues(CmdPipe engine) {
+		return Sets.newHashSet(getXxQueues(engine, Tx.class).toArray(new Tx[0]));
 	}
 
 	private static QxRunnable<Cmd> qxRunner;
-	private static QxSyncRunnable<Cmd> qxSyncRunner;
 
 	public static EngineUtil INSTANCE = new EngineUtil();
 
 	/** Constructor */
 	public EngineUtil() {
 		qxRunner = new QxRunnable<Cmd>();
-		qxSyncRunner = new QxSyncRunnable<Cmd>();
 	}
 
-	public synchronized Cmd syncSend(Cmd cmd, Qx qx) {
-		return syncSend(cmd, qx, 10000l);
-	}
-
-	public synchronized Cmd syncSend(final Cmd cmd, final Qx tx, final long duration) {
-		final CmdPipe pipe = tx.getEngine();
-
-		try {
-			qxSyncRunner.setParameters(pipe.getTx(), pipe.getRx(), cmd, duration);
-			qxSyncRunner.run();
-		} catch (Exception ie) {
-			ie.printStackTrace();
-		}
-
-		return qxSyncRunner.getResult();
-	}
-
-	class QxSyncRunnable<T extends Cmd> implements RunnableWithResult<T> {
-		private Qx tx;
-		@SuppressWarnings("unused")
-		private Qx rx;
-		private T cmd;
-		private T lastCmd;
-		private long duration;
-
-		public void setParameters(Qx t, Qx r, T c, long delay) {
-			tx = t;
-			rx = r;
-			cmd = c;
-			duration = delay;
-			lastCmd = null;
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public void run() {
-			CmdPipe pipe = (CmdPipe) tx.getEngine();
-
-			pipe.send(cmd);
-
-			Channel channel = tx.getEngine().getPort().getChannel();
-
-			long stop = System.currentTimeMillis() + duration;
-			long present = System.currentTimeMillis();
-			while (present < stop) {
-				present = System.currentTimeMillis();
-				if (channel != null) {
-					if (channel.getLastFrame() != null) {
-						lastCmd = (T) pipe.getInputInterpreter().byteArray2Cmd(channel.getLastFrame());
-						break;
-					}
-				}
-			}
-			channel.setLastFrame(null);
-		}
-
-		@Override
-		public int getStatus() {
-			return 0;
-		}
-
-		@Override
-		public void setStatus(int arg0) {
-
-		}
-
-		@Override
-		public T getResult() {
-			return lastCmd;
-		}
-
-		@Override
-		public void setResult(T value) {
-
-		}
-	}
 
 	class QxRunnable<T extends Cmd> implements Runnable {
 		private Qx queue;
@@ -756,7 +680,7 @@ public class EngineUtil {
 		if (queue != null && cmd != null) {
 			try {
 				qxRunner.setParameters(queue, cmd);
-				qxRunner.run();
+				new Thread(qxRunner).run();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -802,7 +726,7 @@ public class EngineUtil {
 					setResult(priority);
 				}
 			};
-			r.run();
+			new Thread(r).run();
 			priority = r.getResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -835,7 +759,7 @@ public class EngineUtil {
 					qx.getCommands().remove(getResult());
 				}
 			};
-			r.run();
+			new Thread(r).run();
 			cmd = r.getResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -868,7 +792,7 @@ public class EngineUtil {
 					qx.getCommands().clear();
 				}
 			};
-			r.run();
+			new Thread(r).run();
 			cmd = r.getResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -981,7 +905,7 @@ public class EngineUtil {
 					}
 				}
 			};
-			r.run();
+			new Thread(r).run();
 			return r.getResult();
 		} catch (Exception e) {
 			e.printStackTrace();

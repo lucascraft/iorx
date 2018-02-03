@@ -1,9 +1,12 @@
 package ubiquisense.iorx.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import com.google.common.collect.Lists;
 
 import ubiquisense.iorx.qx.ByteCmd;
 import ubiquisense.iorx.qx.Cmd;
@@ -66,6 +69,18 @@ public final class CmdUtil implements ICmdUtil {
         cmd.setPriority(getRandomPRIORITY());
         cmd.setStamp(System.currentTimeMillis());
         return cmd;
+    }
+	
+	/**
+	 * Generate basic random anonymous {@link XCmd}
+	 */
+	public synchronized List<Cmd> generateRamdomCmd(int nb) {
+		List<Cmd> comands = Lists.newArrayList();
+		for (int i = 0; i<nb;i++)
+		{
+			comands.add(generateRamdomCmd());
+		}
+		return comands;
     }
 //	
 	/**

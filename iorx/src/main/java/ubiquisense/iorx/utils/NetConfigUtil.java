@@ -1,27 +1,48 @@
 package ubiquisense.iorx.utils;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.bluetooth.L2CAPConnection;
+import javax.microedition.io.Connector;
+
+import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.bt.BluetoothPortImpl;
+import ubiquisense.iorx.comm.bt.io.BTCommunicator;
+import ubiquisense.iorx.comm.bt.io.L2CAPInJob;
 import ubiquisense.iorx.comm.bt.io.L2CAPInputJob;
+import ubiquisense.iorx.comm.bt.io.impl.L2CAPInJobImpl;
 import ubiquisense.iorx.comm.http.HttpCommPortImpl;
+import ubiquisense.iorx.comm.http.io.BasicHttpCommunicator;
+import ubiquisense.iorx.comm.http.io.HttpCommunicator;
+import ubiquisense.iorx.comm.impl.InputJobImpl;
 import ubiquisense.iorx.comm.midi.UbiPortImpl;
+import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
+import ubiquisense.iorx.comm.rxtx.ISerialCommunicator;
 import ubiquisense.iorx.comm.rxtx.RXTXSerialUtil;
 import ubiquisense.iorx.comm.tcp.TcpPortImpl;
+import ubiquisense.iorx.comm.tcp.io.TcpChannel;
 import ubiquisense.iorx.comm.tcp.io.TcpInputPortJob;
 import ubiquisense.iorx.comm.udp.UdpPortImpl;
+import ubiquisense.iorx.comm.udp.io.UdpChannel;
 import ubiquisense.iorx.comm.udp.io.UdpInputPortJob;
 import ubiquisense.iorx.comm.usb.USBPortImpl;
+import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;
-import ubiquisense.iorx.qx.IQxEventHandler;
+import ubiquisense.iorx.qx.evt.IQxEventHandler;
+import ubiquisense.iorx.qx.impl.QxMonitorJob;
+import ubiquisense.iorx.registry.Orchestror;
+import ubiquisense.iorx.registry.OrchestrorUtil;
 import ubiquisense.iorx.xp.TRANSPORT_PROTOCOL;
 
 public class NetConfigUtil {
@@ -54,14 +75,6 @@ public class NetConfigUtil {
 		return eventHandlersMap;
 	}
 
-	/*
-	 * public EObject getModel3(String pathname) throws IOException { return
-	 * getModel2(URI.createURI(pathname)); } public EObject getModel2(URI uri)
-	 * throws IOException { XtextResourceSet set =
-	 * injector.getInstance(XtextResourceSet.class);
-	 * set.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE); return
-	 * set.getResource(uri, true).getContents().get(0); }
-	 */
 	public synchronized CmdPipe getCmdEngineByCmdIDFromOrchestrors(
 			final List<Orchestror> orchestrors, final String engineID) {
 		for (Orchestror orchestror : orchestrors) {
@@ -188,11 +201,11 @@ public class NetConfigUtil {
 				System.out.println("Connect to HTTP URL : " + portID);
 			}
 			HttpCommPortImpl httpPort = new HttpCommPortImpl();
-//			HttpCommunicator c = new BasicHttpCommunicator();
-//			c.setPortID(portID);
-//			c.setAcceptedPorts(acceptedPorts);
-//			httpPort.setChannel(c);
-//			httpPort.setEngine(engine);
+			HttpCommunicator c = new BasicHttpCommunicator();
+			c.setPortID(portID);
+			c.setAcceptedPorts(acceptedPorts);
+			httpPort.setChannel(c);
+			httpPort.setEngine(engine);
 			return httpPort;
 		case BLUETOOTH:
 			if (Platform.inDebugMode()) {
@@ -203,37 +216,36 @@ public class NetConfigUtil {
 					+ ":11;authenticate=false;encrypt=false;master=false";
 			String addrIn = "btl2cap://" + portID
 					+ ":13;authenticate=false;encrypt=false;master=false";
-//			try {
-//				L2CAPConnection outgoing = (L2CAPConnection) Connector.open(
-//						addrOut, Connector.WRITE, true);
-//				L2CAPConnection incoming = (L2CAPConnection) Connector.open(
-//						addrIn, Connector.READ, true);
-//				L2CAPInJob in = (L2CAPInJob) EcoreUtil
-//						.create(BtcommPackage.Literals.L2CAP_IN_JOB);
-//				if (!l2capInputJobs.containsKey(portID)) {
-//					L2CAPInputJob btInputJob = new L2CAPInputJob(engine,
-//							incoming, portID);
-//					l2capInputJobs.put(portID, btInputJob);
-//					in.setJob(btInputJob);
-//					btInputJob.schedule();
-//				} else {
-//					in.setJob(l2capInputJobs.get(portID));
-//				}
-//				in.setId("BT_L2CAP_input_" + portID);
-//				btPort.getInputJobs().add(in);
-//
-//				btPort.setChannel(new BTCommunicator(incoming, outgoing));
-//			} catch (IOException ioe) {
-//				ioe.printStackTrace();
-//			} catch (InterruptedException ite) {
-//				ite.printStackTrace();
-//			}
-//			btPort.setEngine(engine);
+			try {
+				L2CAPConnection outgoing = (L2CAPConnection) Connector.open(
+						addrOut, Connector.WRITE, true);
+				L2CAPConnection incoming = (L2CAPConnection) Connector.open(
+						addrIn, Connector.READ, true);
+				L2CAPInJob in = new L2CAPInJobImpl();
+				if (!l2capInputJobs.containsKey(portID)) {
+					L2CAPInputJob btInputJob = new L2CAPInputJob(engine,
+							incoming, portID);
+					l2capInputJobs.put(portID, btInputJob);
+					in.setJob(btInputJob);
+					btInputJob.start();
+				} else {
+					in.setJob(l2capInputJobs.get(portID));
+				}
+				in.setId("BT_L2CAP_input_" + portID);
+				btPort.getInputJobs().add(in);
+
+				btPort.setChannel(new BTCommunicator(incoming, outgoing));
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			} catch (InterruptedException ite) {
+				ite.printStackTrace();
+			}
+			btPort.setEngine(engine);
 			return btPort;
 		case MIDI:
 			UbiPortImpl ubiPort = new UbiPortImpl();
-//			ubiPort.setChannel(new MidiCommunicator(engine));
-//			ubiPort.setEngine(engine);
+			ubiPort.setChannel(new MidiCommunicator(engine));
+			ubiPort.setEngine(engine);
 			return ubiPort;
 //		case XBEE:
 //			XBeeCommunicator comm = new XBeeCommunicator(engine, portID, speed);
@@ -247,93 +259,91 @@ public class NetConfigUtil {
 				return null;
 			}
 			USBPortImpl usbPort =new USBPortImpl();
-//			if (speed > 0) {
-//				ISerialCommunicator serialCommunicator = RXTXSerialUtil.INSTANCE
-//						.openPort(usbPort, portID, speed, options);
-//				if (serialCommunicator == null
-//						|| serialCommunicator.getSerialPort() == null) {
-//					return null;
-//				}
-//				usbPort.setEngine(engine);
-//				usbPort.setChannel(serialCommunicator);
-//				return usbPort;
-//			}
+			if (speed > 0) {
+				ISerialCommunicator serialCommunicator = RXTXSerialUtil.INSTANCE
+						.openPort(usbPort, portID, speed, options);
+				if (serialCommunicator == null
+						|| serialCommunicator.getSerialPort() == null) {
+					return null;
+				}
+				usbPort.setEngine(engine);
+				usbPort.setChannel(serialCommunicator);
+				return usbPort;
+			}
 			return null;
 		case TCP:
 			TcpPortImpl ipPort = new TcpPortImpl();
 			String[] parts = portID.split(":");
-//			String tag = parts == null ? "_incoming_" : "_" + parts[0] + "_";
-//			if (acceptedPorts != null) {
-//				for (int inPort : acceptedPorts) {
-//					if (!tcpInputJobs.containsKey(new Integer(inPort))) {
-//						TcpInputPortJob tcpInputPortJob = new TcpInputPortJob(
-//								inPort);
-//						tcpInputPortJob.schedule();
-//						tcpInputJobs.put(new Integer(inPort), tcpInputPortJob);
-//					}
-//					tcpInputJobs.get(new Integer(inPort)).addRx(engine.getRx());
-//
-//					InputJob inputJob = EngineFactory.eINSTANCE
-//							.createInputJob();
-//					inputJob.setId("TCP" + tag + inPort);
-//					inputJob.setJob(tcpInputJobs.get(new Integer(inPort)));
-//
-//					ipPort.getInputJobs().add(inputJob);
-//					if (Platform.inDebugMode()) {
-//						System.out.println("Listen to " + inPort + " port");
-//					}
-//				}
-//			}
-//			if (parts != null && parts.length > 0 && !parts[0].equals("")) {
-//				InetAddress address = null;
-//				try {
-//					address = InetAddress.getByName(parts[0]);
-//				} catch (UnknownHostException e) {
-//					e.printStackTrace();
-//				}
-//				int port = Integer.valueOf(parts[1]);
-//				Channel channel = new TcpChannel(address, port);
-//				ipPort.setChannel(channel);
-//				channel.debug();
-//			}
-//			ipPort.setEngine(engine);
+			String tag = parts == null ? "_incoming_" : "_" + parts[0] + "_";
+			if (acceptedPorts != null) {
+				for (int inPort : acceptedPorts) {
+					if (!tcpInputJobs.containsKey(inPort)) {
+						TcpInputPortJob tcpInputPortJob = new TcpInputPortJob(
+								inPort);
+						tcpInputPortJob.start();
+						tcpInputJobs.put(inPort, tcpInputPortJob);
+					}
+					tcpInputJobs.get(inPort).addRx(engine.getRx());
+
+					InputJob inputJob = new InputJobImpl();
+					inputJob.setId("TCP" + tag + inPort);
+					inputJob.setJob(tcpInputJobs.get(inPort));
+
+					ipPort.getInputJobs().add(inputJob);
+					if (Platform.inDebugMode()) {
+						System.out.println("Listen to " + inPort + " port");
+					}
+				}
+			}
+			if (parts != null && parts.length > 0 && !parts[0].equals("")) {
+				InetAddress address = null;
+				try {
+					address = InetAddress.getByName(parts[0]);
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
+				int port = Integer.valueOf(parts[1]);
+				Channel channel = new TcpChannel(address, port);
+				ipPort.setChannel(channel);
+				channel.debug();
+			}
+			ipPort.setEngine(engine);
 			return ipPort;
 		case UDP:
 			UdpPortImpl udpPort = new UdpPortImpl();
 			String[] parts2 = portID.split(":");
 			String tag2 = parts2 == null ? "_incoming_" : "_" + parts2[0] + "_";
-//			if (acceptedPorts != null) {
-//				for (int inPort : acceptedPorts) {
-//					if (!udpInputJobs.containsKey(new Integer(inPort))) {
-//						UdpInputPortJob udpInputPortJob = new UdpInputPortJob(inPort);
-//						udpInputPortJob.schedule();
-//						udpInputJobs.put(new Integer(inPort), udpInputPortJob);
-//					}
-//					udpInputJobs.get(new Integer(inPort)).addRx(engine.getRx());
-//
-//					InputJob inputJob = EngineFactory.eINSTANCE
-//							.createInputJob();
-//					inputJob.setId("UDP" + tag2 + inPort);
-//					inputJob.setJob(udpInputJobs.get(new Integer(inPort)));
-//
-//					udpPort.getInputJobs().add(inputJob);
-//					if (Platform.inDebugMode()) {
-//						System.out.println("Listen to " + inPort + " port");
-//					}
-//				}
-//			}
-//			if (!portID.contains(":") && acceptedPorts.length > 0) {
-//				udpPort.setChannel(new UdpChannel(parts2[0], Integer
-//						.valueOf(acceptedPorts[0])));
-//			} else if (parts2 != null && parts2.length > 1
-//					&& !parts2[0].equals("")) {
-//				udpPort.setChannel(new UdpChannel(parts2[0], Integer
-//						.valueOf(parts2[1])));
-//			}
-//			if (udpPort.getChannel() != null) {
-//				udpPort.getChannel().debug();
-//			}
-//			udpPort.setEngine(engine);
+			if (acceptedPorts != null) {
+				for (int inPort : acceptedPorts) {
+					if (!udpInputJobs.containsKey(inPort)) {
+						UdpInputPortJob udpInputPortJob = new UdpInputPortJob(inPort);
+						udpInputPortJob.start();
+						udpInputJobs.put(inPort, udpInputPortJob);
+					}
+					udpInputJobs.get(inPort).addRx(engine.getRx());
+
+					InputJob inputJob = new InputJobImpl();
+					inputJob.setId("UDP" + tag2 + inPort);
+					inputJob.setJob(udpInputJobs.get(inPort));
+
+					udpPort.getInputJobs().add(inputJob);
+					if (Platform.inDebugMode()) {
+						System.out.println("Listen to " + inPort + " port");
+					}
+				}
+			}
+			if (!portID.contains(":") && acceptedPorts.length > 0) {
+				udpPort.setChannel(new UdpChannel(parts2[0], Integer
+						.valueOf(acceptedPorts[0])));
+			} else if (parts2 != null && parts2.length > 1
+					&& !parts2[0].equals("")) {
+				udpPort.setChannel(new UdpChannel(parts2[0], Integer
+						.valueOf(parts2[1])));
+			}
+			if (udpPort.getChannel() != null) {
+				udpPort.getChannel().debug();
+			}
+			udpPort.setEngine(engine);
 			return udpPort;
 		default: {
 			throw new UnsupportedOperationException(
@@ -362,28 +372,28 @@ public class NetConfigUtil {
 					if (port != null) {
 						if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.UDP.getLiteral())) { // UDP
-//							for (InputJob jUdp : port.getInputJobs()) {
-//								udpInputJobs.remove(((UdpInputPortJob) jUdp
-//										.getJob()).getPortID());
-//							}
+							for (InputJob jUdp : port.getInputJobs()) {
+								udpInputJobs.remove(((UdpInputPortJob) jUdp
+										.getJob()).getPortID());
+							}
 						} else if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.TCP.getLiteral())) { // TCP
-//							for (InputJob jTcp : port.getInputJobs()) {
-//								tcpInputJobs.remove(((TcpInputPortJob) jTcp
-//										.getJob()).getPortID());
-//							}
+							for (InputJob jTcp : port.getInputJobs()) {
+								tcpInputJobs.remove(((TcpInputPortJob) jTcp
+										.getJob()).getPortID());
+							}
 						} else if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.BLUETOOTH.getLiteral())) { // Bluetooth
-//							for (final InputJob jL2Cap : port.getInputJobs()) {
-//								if (jL2Cap != null
-//										&& (jL2Cap.getJob() instanceof L2CAPInputJob)) {
-//									L2CAPInputJob btInputJob = (L2CAPInputJob) jL2Cap
-//											.getJob();
-//									l2capInputJobs.remove(btInputJob
-//											.getPortId());
-//									jL2Cap.close();
-//								}
-//							}
+							for (final InputJob jL2Cap : port.getInputJobs()) {
+								if (jL2Cap != null
+										&& (jL2Cap.getJob() instanceof L2CAPInputJob)) {
+									L2CAPInputJob btInputJob = (L2CAPInputJob) jL2Cap
+											.getJob();
+									l2capInputJobs.remove(btInputJob
+											.getPortId());
+									jL2Cap.close();
+								}
+							}
 						} else if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.HTTP.getLiteral())) { // HTTP
 							// NONE
@@ -394,7 +404,7 @@ public class NetConfigUtil {
 							// NONE
 						} else if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.USB.getLiteral())) {
-//							RXTXSerialUtil.INSTANCE.closePort(pipe.getAddr());
+							RXTXSerialUtil.INSTANCE.closePort(pipe.getAddr());
 						}
 					}
 					port.finalize();
@@ -408,9 +418,9 @@ public class NetConfigUtil {
 								&& o.getApplication() != null
 								&& o.getApplication().equals(app)) {
 							Object r = pipe.getClient().getRunner();
-							if (r instanceof QxMonitorJob) {
-								((QxMonitorJob) r).cancel();
-							}
+//							if (r instanceof QxMonitorJob) {
+//								((QxMonitorJob) r).wait();
+//							}
 							o.setApplication(null);
 							toBeRemoved.add(o);
 						}

@@ -35,23 +35,21 @@
 
 package ubiquisense.iorx.comm.rxtx;
 
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
-import gnu.io.UnsupportedCommOperationException;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TooManyListenersException;
 
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.EVENT_KIND;
-import ubiquisense.iorx.qx.Event;
-import ubiquisense.iorx.qx.IQxEventHandler;
+import ubiquisense.iorx.qx.evt.EVENT_KIND;
+import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.qx.evt.IQxEventHandler;
 import ubiquisense.iorx.qx.impl.EventImpl;
-import ubiquisense.iorx.utils.JobImpl;
 
 public class RXTXSerialUtil implements IRXTXSerialUtils {
 	
@@ -66,7 +64,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	/** Ctor */
 	public RXTXSerialUtil() {
 		portMap 	= new HashMap<String, Serial>();
-		engineMap 	= new HashMap<String, Port>();
+		engineMap 	= new HashMap<String, Port>(); 
 		inputJob 	= new SerialInputJob();
 //		if (!Platform.getOS().equals(Platform.OS_WIN32)) {
 //			try {
@@ -123,7 +121,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 					new SerialPortEventListener() {
 						public void serialEvent(SerialPortEvent event) {
 							inputJob.setParameters(serial, event, portID);
-							inputJob.schedule();
+							inputJob.start();
 						}
 					}
 				);
@@ -194,7 +192,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	}
 	
 	
-	final class SerialInputJob extends JobImpl {
+	final class SerialInputJob extends Thread {
 		public long execptionNb;
 		private Serial serial;
 		private String portID;
@@ -203,8 +201,6 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 		public SerialInputJob() {
 			super("Serial Input Job");
 			execptionNb = 0l;
-			setSystem(true);
-			setPriority(INTERACTIVE);
 		}
 		public void setParameters(Serial serial, SerialPortEvent event, String portID) {
 			this.serial = serial;
@@ -212,7 +208,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 			this.portID = portID;
 		}
 		@Override
-		public int run() {
+		public void run() {
 			switch (event.getEventType()) {
 				case SerialPortEvent.DATA_AVAILABLE:
 				{
@@ -282,8 +278,6 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 					break;
 				}
 			}
-
-			return 0;
 		}
 	}
 	

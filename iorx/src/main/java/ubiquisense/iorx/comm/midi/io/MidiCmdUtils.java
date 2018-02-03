@@ -103,23 +103,23 @@ public class MidiCmdUtils<possibleCommands> {
 	
 	public MidiCmdUtils() {
 		possibleCommands = new HashMap<Object, Cmd>();
-		possibleCommands.put("NOTE_ON", new NoteONImpl());
-		possibleCommands.put("NOTE_OFF", new NoteOFFImpl());
-		possibleCommands.put("ACTIVE_SENSING",		new ActiveSensingImpl());
-		possibleCommands.put("CHANNEL_PRESSURE",	new ChannelPressureImpl());
-		possibleCommands.put("CONTINUE_SONG",		new ContinueSongImpl());
-		possibleCommands.put("CONTROLLER_CHANGE",	new ControllerChangeImpl());
-		possibleCommands.put("END_OF_EXCLUSIVE",	new EndOfExclusiveImpl());
-		possibleCommands.put("KEY_PRESSURE",		new KeyPressureImpl());
-		possibleCommands.put("MIDI_MESSAGE",		new DSLMidiMessageImpl());
-		possibleCommands.put("PITCH_BEND", new PitchBendImpl());
-		possibleCommands.put("PROGRAM_CHANGE",		new ProgramChangeImpl());
-		possibleCommands.put("SONG_POSITION",		new SongPositionImpl());
-		possibleCommands.put("SONG_SELECT",		new SongSelectImpl());
-		possibleCommands.put("START_SONG",new StartSongImpl());
-		possibleCommands.put("STOP_SONG",new StopSongImpl());
-		possibleCommands.put("SYSTEM_EXCLUSIVE",	new SystemExclusiveImpl());
-		possibleCommands.put("SYSTEM_RESET",		new SystemResetImpl());
+		possibleCommands.put(MidiCmdEnum.NOTE_ON, new NoteONImpl());
+		possibleCommands.put(MidiCmdEnum.NOTE_OFF, new NoteOFFImpl());
+		possibleCommands.put(MidiCmdEnum.ACTIVE_SENSING,		new ActiveSensingImpl());
+		possibleCommands.put(MidiCmdEnum.CHANNEL_PRESSURE,	new ChannelPressureImpl());
+		possibleCommands.put(MidiCmdEnum.CONTINUE_SONG,		new ContinueSongImpl());
+		possibleCommands.put(MidiCmdEnum.CONTROLLER_CHANGE,	new ControllerChangeImpl());
+		possibleCommands.put(MidiCmdEnum.END_OF_EXCLUSIVE,	new EndOfExclusiveImpl());
+		possibleCommands.put(MidiCmdEnum.KEY_PRESSURE,		new KeyPressureImpl());
+		possibleCommands.put(MidiCmdEnum.MIDI_MESSAGE,		new DSLMidiMessageImpl());
+		possibleCommands.put(MidiCmdEnum.PITCH_BEND, new PitchBendImpl());
+		possibleCommands.put(MidiCmdEnum.PROGRAM_CHANGE,		new ProgramChangeImpl());
+		possibleCommands.put(MidiCmdEnum.SONG_POSITION,		new SongPositionImpl());
+		possibleCommands.put(MidiCmdEnum.SONG_SELECT,		new SongSelectImpl());
+		possibleCommands.put(MidiCmdEnum.START_SONG,new StartSongImpl());
+		possibleCommands.put(MidiCmdEnum.STOP_SONG,new StopSongImpl());
+		possibleCommands.put(MidiCmdEnum.SYSTEM_EXCLUSIVE,	new SystemExclusiveImpl());
+		possibleCommands.put(MidiCmdEnum.SYSTEM_RESET,		new SystemResetImpl());
 	}
 	
 	public Cmd createRandomMidiCommand() {

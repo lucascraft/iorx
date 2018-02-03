@@ -5,4 +5,6 @@ public interface Cmd {
 	long getStamp();
 	PRIORITY getPriority();
 	void setPriority(PRIORITY value);
+	Qx getQx();
+	void setQx(Qx qx);
 }

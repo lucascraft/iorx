@@ -7,8 +7,8 @@ import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.Event;
-import ubiquisense.iorx.qx.IQxEventHandler;
+import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
 public class ChannelImpl implements Channel {
 

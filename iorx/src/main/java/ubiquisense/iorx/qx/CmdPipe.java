@@ -6,6 +6,9 @@ import java.util.Set;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
+import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.qx.evt.IQxEventHandler;
+import ubiquisense.iorx.qx.notif.NotificationAdapter;
 
 
 public interface CmdPipe {
@@ -48,4 +51,5 @@ public interface CmdPipe {
 	int getSpeed();
 	void setSpeed(int value);
 	void setPort(Port value);
+	Set<NotificationAdapter<Cmd>> eAdapters();
 }

@@ -1,5 +1,7 @@
 package ubiquisense.iorx.comm.impl;
 
-public class InputJobImpl extends IOJobImpl {
+import ubiquisense.iorx.comm.InputJob;
+
+public class InputJobImpl extends IOJobImpl implements InputJob{
 
 }

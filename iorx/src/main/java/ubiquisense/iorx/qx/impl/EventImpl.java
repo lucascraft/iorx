@@ -2,9 +2,12 @@ package ubiquisense.iorx.qx.impl;
 
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;
-import ubiquisense.iorx.qx.EVENT_KIND;
-import ubiquisense.iorx.qx.Event;
 import ubiquisense.iorx.qx.Qx;
+import ubiquisense.iorx.qx.Rx;
+import ubiquisense.iorx.qx.evt.EVENT_KIND;
+import ubiquisense.iorx.qx.evt.Event;
+import ubiquisense.iorx.qx.notif.Change;
+import ubiquisense.iorx.qx.notif.Notification;
 
 public class EventImpl implements Event 
 {
@@ -20,6 +23,9 @@ public class EventImpl implements Event
 	CmdPipe cmdPipe;
 	
 	String topic;
+	
+	public EventImpl() {
+	}
 
 	@Override
 	public EVENT_KIND getKind() {
@@ -89,6 +95,29 @@ public class EventImpl implements Event
 	@Override
 	public void getCmdPipe(CmdPipe pipe) {
 		cmdPipe = pipe;
+	}
+	
+	
+	
+
+	public EventImpl(Change<Cmd> cmdChange) {
+		cmd = cmdChange.getValue();
+		time = System.currentTimeMillis();
+		qx = cmdChange.getValue().getQx();
+		switch(cmdChange.getNotification())
+		{
+			case ADD: 
+			case ADD_MANY: 
+				evtKind = qx instanceof Rx ? EVENT_KIND.RX_READY : EVENT_KIND.TX_READY;
+				break;
+			case REMOVE: 
+			case REMOVE_MANY: 
+				evtKind = qx instanceof Rx ? EVENT_KIND.RX_DONE : EVENT_KIND.TX_DONE;
+				break;
+			default:
+				evtKind = EVENT_KIND.UNKNOWN;
+		}
+		cmdPipe = qx.getEngine();
 	}
 
 }

@@ -8,7 +8,6 @@ package ubiquisense.iorx.comm.bt.io.impl;
 
 import ubiquisense.iorx.comm.bt.io.L2CAPoutJob;
 import ubiquisense.iorx.comm.impl.OutputJobImpl;
-import ubiquisense.iorx.utils.Job;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,18 +33,18 @@ public class L2CAPoutJobImpl extends OutputJobImpl implements L2CAPoutJob {
 	public void close() {
 		super.close();
 		Object o = getJob();
-		if (o instanceof Job) {
-			Job j = (Job) o;
-			j.cancel();
+		if (o instanceof Thread) {
+			Thread j = (Thread) o;
+			j.stop();
 		}
 	}
 	
 	@Override
 	public void finalize()  {
 		Object o = getJob();
-		if (o instanceof Job) {
-			Job j = (Job) o;
-			j.cancel();
+		if (o instanceof Thread) {
+			Thread j = (Thread) o;
+			j.stop();
 		}
 	}
 
