@@ -38,20 +38,21 @@ package ubiquisense.iorx.comm.usb.rxtx;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TooManyListenersException;
 
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
 import ubiquisense.iorx.comm.usb.io.Serial;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
-import ubiquisense.iorx.event.EventImpl;
 import ubiquisense.iorx.event.IQxEventHandler;
+import ubiquisense.iorx.event.impl.EventImpl;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.pipe.CmdPipe;
 
 public class RXTXSerialUtil implements IRXTXSerialUtils {
 	
@@ -304,5 +305,10 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 //				e.printStackTrace();
 //			}
 //		}
+	}
+	
+	public Set<String> getSerialList()
+	{
+		return portMap.keySet();
 	}
 }

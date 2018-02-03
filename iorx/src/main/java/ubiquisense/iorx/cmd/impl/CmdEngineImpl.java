@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.cmd.CmdEngine;
-import ubiquisense.iorx.pipe.CmdPipe;
-import ubiquisense.iorx.pipe.EngineApplication;
+import ubiquisense.iorx.cmd.CmdPipe;
 
 public class CmdEngineImpl implements CmdEngine {
 	List<CmdPipe> engines;

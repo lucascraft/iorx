@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import ubiquisense.iorx.cmd.CmdEngine;
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
 import ubiquisense.iorx.utils.CmdUtil;

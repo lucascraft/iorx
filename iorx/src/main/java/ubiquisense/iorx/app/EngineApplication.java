@@ -1,9 +1,10 @@
-package ubiquisense.iorx.pipe;
+package ubiquisense.iorx.app;
 
 import java.util.List;
 import java.util.Set;
 
 import ubiquisense.iorx.cmd.CmdEngine;
+import ubiquisense.iorx.cmd.CmdPipe;
 
 public interface EngineApplication {
 	void setId(String id);

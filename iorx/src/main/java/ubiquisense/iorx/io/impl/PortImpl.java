@@ -5,11 +5,11 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.OutputJob;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.pipe.CmdPipe;
 
 public class PortImpl implements Port {
 	@Inject

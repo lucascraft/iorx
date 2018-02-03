@@ -7,9 +7,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.cmd.CmdEngine;
-import ubiquisense.iorx.pipe.CmdPipe;
-import ubiquisense.iorx.pipe.EngineApplication;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;

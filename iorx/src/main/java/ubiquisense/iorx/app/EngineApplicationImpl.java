@@ -1,4 +1,4 @@
-package ubiquisense.iorx.pipe;
+package ubiquisense.iorx.app;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.Set;
 import com.google.inject.Inject;
 
 import ubiquisense.iorx.cmd.CmdEngine;
+import ubiquisense.iorx.cmd.CmdPipe;
 
 public class EngineApplicationImpl implements EngineApplication {
 	List<CmdPipe> engines;

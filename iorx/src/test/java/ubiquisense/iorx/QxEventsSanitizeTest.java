@@ -7,10 +7,10 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
-import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
 

@@ -109,6 +109,11 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.11</version>
 		</dependency>
+		<dependency>
+			<groupId>com.rapplogic</groupId>
+			<artifactId>xbee-api</artifactId>
+			<version>0.9.3</version>
+		</dependency>
 	</dependencies>
 	<organization>
 		<name>ubiquisense</name>

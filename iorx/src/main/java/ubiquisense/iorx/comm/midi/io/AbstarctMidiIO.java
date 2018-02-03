@@ -37,7 +37,7 @@ package ubiquisense.iorx.comm.midi.io;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
 
 public abstract class AbstarctMidiIO {
 	public volatile ConcurrentLinkedQueue<CmdPipe> rxList;

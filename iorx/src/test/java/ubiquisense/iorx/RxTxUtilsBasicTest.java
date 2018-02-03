@@ -1,18 +1,8 @@
 package ubiquisense.iorx;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Set;
-
 import org.junit.Test;
 
-import gnu.io.RXTXCommDriver;
 import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
-import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
-import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
-import ubiquisense.iorx.registry.ProtocolReactor;
-import ubiquisense.iorx.registry.CommProtocolConfig;
 
 public class RxTxUtilsBasicTest {
 

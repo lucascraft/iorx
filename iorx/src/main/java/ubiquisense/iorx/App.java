@@ -5,12 +5,8 @@ import java.util.HashMap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )

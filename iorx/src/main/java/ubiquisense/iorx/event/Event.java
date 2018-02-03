@@ -1,7 +1,7 @@
 package ubiquisense.iorx.event;
 
 import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.qx.Qx;
 
 public interface Event {

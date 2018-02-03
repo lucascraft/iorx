@@ -8,8 +8,8 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
-import ubiquisense.iorx.pipe.CmdPipe;
 
 public class QuanticMojoBasicTest extends GuiceInjectionTest
 {

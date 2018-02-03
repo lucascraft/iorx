@@ -1,6 +1,6 @@
 package ubiquisense.iorx.discovery;
 
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
 
 public interface ICmdPipeLifecycleListener {
 	void open(CmdPipe pipe);

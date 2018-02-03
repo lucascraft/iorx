@@ -43,9 +43,9 @@ import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 
 import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.cmd.CompoundCmd;
 import ubiquisense.iorx.cmd.impl.CompoundCmdImpl;
-import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.protocols.osc.internal.impl.OscCmdImpl;
 import ubiquisense.iorx.protocols.osc.internal.impl.OscRcvCmdImpl;
 import ubiquisense.iorx.protocols.osc.internal.impl.OscSndCmdImpl;

@@ -2,8 +2,7 @@ package ubiquisense.iorx.cmd;
 
 import java.util.List;
 
-import ubiquisense.iorx.pipe.CmdPipe;
-import ubiquisense.iorx.pipe.EngineApplication;
+import ubiquisense.iorx.app.EngineApplication;
 
 public interface CmdEngine {
 	List<CmdPipe> getEngines();

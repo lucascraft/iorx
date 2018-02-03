@@ -7,18 +7,18 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
+import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.changes.NotificationAdapter;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CmdEngine;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
+import ubiquisense.iorx.event.impl.QxEventAdapterImpl;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.pipe.CmdPipe;
-import ubiquisense.iorx.pipe.EngineApplication;
-import ubiquisense.iorx.pipe.QxEventAdapterImpl;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;

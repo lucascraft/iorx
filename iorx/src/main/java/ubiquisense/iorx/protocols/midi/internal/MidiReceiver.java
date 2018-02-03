@@ -44,8 +44,8 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.midi.io.MidiInputJob;
-import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.utils.Platform;
 
 

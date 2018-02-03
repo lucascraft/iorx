@@ -1,4 +1,4 @@
-package ubiquisense.iorx.pipe;
+package ubiquisense.iorx.event.impl;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import ubiquisense.iorx.changes.Notification;
 import ubiquisense.iorx.changes.NotificationAdapter;
 import ubiquisense.iorx.changes.Remove;
 import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.event.EventImpl;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.utils.Platform;
 

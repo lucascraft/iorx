@@ -1,9 +1,11 @@
-package ubiquisense.iorx.event;
+package ubiquisense.iorx.event.impl;
 
 import ubiquisense.iorx.changes.Change;
 import ubiquisense.iorx.changes.Notification;
 import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
+import ubiquisense.iorx.event.EVENT_KIND;
+import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.Rx;
 

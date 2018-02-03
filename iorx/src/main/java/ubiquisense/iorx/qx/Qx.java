@@ -3,7 +3,7 @@ package ubiquisense.iorx.qx;
 import java.util.List;
 
 import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.pipe.CmdPipe;
+import ubiquisense.iorx.cmd.CmdPipe;
 
 
 public interface Qx 

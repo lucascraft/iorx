@@ -1,12 +1,10 @@
-package ubiquisense.iorx.pipe;
+package ubiquisense.iorx.cmd;
 
 import java.util.List;
 import java.util.Set;
 
+import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.changes.NotificationAdapter;
-import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.cmd.CmdEngine;
-import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;

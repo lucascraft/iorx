@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 
 import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.cmd.CompoundCmd;
 import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.event.Event;
-import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;

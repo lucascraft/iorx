@@ -39,9 +39,9 @@ import javax.inject.Named;
 import javax.sound.midi.MidiDevice;
 
 import ubiquisense.iorx.cmd.Cmd;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.IChannelCloser;
 import ubiquisense.iorx.io.impl.ChannelImpl;
-import ubiquisense.iorx.pipe.CmdPipe;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 
 @Named("midi://")

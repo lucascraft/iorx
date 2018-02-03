@@ -14,6 +14,8 @@ import javax.sound.midi.MidiDevice;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import ubiquisense.iorx.app.EngineApplication;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
@@ -40,8 +42,6 @@ import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.pipe.CmdPipe;
-import ubiquisense.iorx.pipe.EngineApplication;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.registry.CommProtocolConfig;
 import ubiquisense.iorx.registry.ConfigurationModule;

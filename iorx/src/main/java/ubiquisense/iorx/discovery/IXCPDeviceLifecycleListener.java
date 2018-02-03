@@ -1,5 +1,6 @@
 package ubiquisense.iorx.discovery;
 
+import ubiquisense.iorx.topology.ledger.XCPDevice;
 
 public interface IXCPDeviceLifecycleListener {
 	/**
