@@ -11,7 +11,6 @@ import java.net.Socket;
 
 import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.OutputJob;
-import ubiquisense.iorx.comm.tcp.io.TcpInputPortJob;
 import ubiquisense.iorx.comm.tcp.io.TcpPort;
 import ubiquisense.iorx.io.impl.PortImpl;
 

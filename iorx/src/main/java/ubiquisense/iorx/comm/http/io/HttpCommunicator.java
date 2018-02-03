@@ -37,10 +37,14 @@ package ubiquisense.iorx.comm.http.io;
 
 import java.util.Map;
 
+import javax.inject.Named;
+
 import ubiquisense.iorx.io.impl.ChannelImpl;
 
-
+@Named("http://")
 public abstract class HttpCommunicator extends ChannelImpl {
+	public HttpCommunicator() {
+	}
     protected String portID;
     protected int[] acceptedPorts;
     protected String method;

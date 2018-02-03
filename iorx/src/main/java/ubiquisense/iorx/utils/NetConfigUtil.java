@@ -3,7 +3,6 @@ package ubiquisense.iorx.utils;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +22,15 @@ import ubiquisense.iorx.comm.http.io.BasicHttpCommunicator;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
 import ubiquisense.iorx.comm.midi.UbiPortImpl;
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
-import ubiquisense.iorx.comm.rxtx.ISerialCommunicator;
-import ubiquisense.iorx.comm.rxtx.RXTXSerialUtil;
 import ubiquisense.iorx.comm.tcp.TcpPortImpl;
 import ubiquisense.iorx.comm.tcp.io.TcpChannel;
-import ubiquisense.iorx.comm.tcp.io.TcpInputPortJob;
+import ubiquisense.iorx.comm.tcp.io.impl.TcpInputPortJob;
 import ubiquisense.iorx.comm.udp.UdpPortImpl;
 import ubiquisense.iorx.comm.udp.io.UdpChannel;
 import ubiquisense.iorx.comm.udp.io.UdpInputPortJob;
 import ubiquisense.iorx.comm.usb.USBPortImpl;
+import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
+import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
@@ -40,9 +39,6 @@ import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.qx.impl.QxMonitorJob;
-import ubiquisense.iorx.registry.Orchestror;
-import ubiquisense.iorx.registry.OrchestrorUtil;
 import ubiquisense.iorx.xp.TRANSPORT_PROTOCOL;
 
 public class NetConfigUtil {
@@ -73,22 +69,6 @@ public class NetConfigUtil {
 
 	public Map<String, IQxEventHandler> getEventHandlers() {
 		return eventHandlersMap;
-	}
-
-	public synchronized CmdPipe getCmdEngineByCmdIDFromOrchestrors(
-			final List<Orchestror> orchestrors, final String engineID) {
-		for (Orchestror orchestror : orchestrors) {
-			if (orchestror != null && orchestror.getApplication() != null) {
-				for (CmdPipe engine : orchestror.getApplication().getEngine()) {
-					if (engine instanceof CmdPipe) {
-						if (engine.getId().equals(engineID)) {
-							return engine;
-						}
-					}
-				}
-			}
-		}
-		return null;
 	}
 
 	public synchronized CmdPipe getCmdEngineByCmdID(
@@ -233,8 +213,10 @@ public class NetConfigUtil {
 				}
 				in.setId("BT_L2CAP_input_" + portID);
 				btPort.getInputJobs().add(in);
-
-				btPort.setChannel(new BTCommunicator(incoming, outgoing));
+				BTCommunicator btComm = new BTCommunicator();
+				btComm.setIncoming(incoming);
+				btComm.setOutgoing(outgoing);
+				btPort.setChannel(btComm);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			} catch (InterruptedException ite) {
@@ -244,7 +226,9 @@ public class NetConfigUtil {
 			return btPort;
 		case MIDI:
 			UbiPortImpl ubiPort = new UbiPortImpl();
-			ubiPort.setChannel(new MidiCommunicator(engine));
+			MidiCommunicator midiComm = new MidiCommunicator();
+			midiComm.setEngine(engine); 
+			ubiPort.setChannel(midiComm);
 			ubiPort.setEngine(engine);
 			return ubiPort;
 //		case XBEE:
@@ -409,25 +393,6 @@ public class NetConfigUtil {
 					}
 					port.finalize();
 
-					List<Orchestror> orchestrors = OrchestrorUtil.INSTANCE
-							.getOrchestrorRegistry();
-					EngineApplication app = pipe.getApplication();
-					List<Orchestror> toBeRemoved = new ArrayList<Orchestror>();
-					for (Orchestror o : orchestrors) {
-						if (o instanceof Orchestror
-								&& o.getApplication() != null
-								&& o.getApplication().equals(app)) {
-							Object r = pipe.getClient().getRunner();
-//							if (r instanceof QxMonitorJob) {
-//								((QxMonitorJob) r).wait();
-//							}
-							o.setApplication(null);
-							toBeRemoved.add(o);
-						}
-					}
-					for (Orchestror or : toBeRemoved) {
-						orchestrors.remove(or);
-					}
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}
@@ -511,28 +476,6 @@ public class NetConfigUtil {
 //		return cfgOrchestrorsMap;
 //	}
 
-	public synchronized CmdPipe getCmdEngineByID(
-			final List<Orchestror> orchestrors, final String engineID) {
-		List<CmdPipe> engines = new ArrayList<CmdPipe>();
-		for (Orchestror orchestror : orchestrors) {
-			engines.addAll(orchestror.getApplication().getEngine());
-		}
-		return getCmdEngineByCmdID(engines, engineID);
-	}
-
-	public CmdEngine getEngineClientByIDFromApp(EngineApplication engineApp,
-			String clientID) {
-		if (clientID != null && !clientID.equals("")) {
-			for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-				for (CmdEngine c : o.getApplication().getClients()) {
-					if (c.getId().equals(clientID)) {
-							return c;
-					}
-				}
-			}
-		}
-		return null;
-	}
 
 	public Map<String, IQxEventHandler> getQxEventHandlers() {
 		return eventHandlersMap;

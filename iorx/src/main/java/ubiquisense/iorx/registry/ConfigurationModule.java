@@ -1,12 +1,19 @@
-package ubiquisense.iorx;
+package ubiquisense.iorx.registry;
+
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
+import ubiquisense.iorx.comm.bt.io.BTCommunicator;
+import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
+import ubiquisense.iorx.comm.tcp.io.TcpChannel;
+import ubiquisense.iorx.comm.udp.io.UdpChannel;
+import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.protocols.midi.internal.MidiQxCmdHandler;
-import ubiquisense.iorx.protocols.osc.internal.OSCQxCmdHandler;
+import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
+import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.qx.ByteCmd;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdEngine;
@@ -61,6 +68,8 @@ public class ConfigurationModule extends AbstractModule
 		
 		// -- midi --
 		
+		
+		
 		bind(IXFrameInterpreter.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
 		bind(IXCmdInterpreter.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
 		bind(IQxEventHandler.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
@@ -70,6 +79,38 @@ public class ConfigurationModule extends AbstractModule
 		bind(IXFrameInterpreter.class).annotatedWith(Names.named("osc")).to(OSCQxCmdHandler.class);
 		bind(IXCmdInterpreter.class).annotatedWith(Names.named("osc")).to(OSCQxCmdHandler.class);
 		bind(IQxEventHandler.class).annotatedWith(Names.named("osc")).to(OSCQxCmdHandler.class);
+		
+		//
+		// Comunications
+		//
+		
+		
+		// --- udp:// ---
+		
+		bind(Channel.class).annotatedWith(Names.named("udp://")).to(UdpChannel.class);
+		
+		// --- tcp:// ---
+		
+		bind(Channel.class).annotatedWith(Names.named("tcp://")).to(TcpChannel.class);
+		
+		// --- usb:// ---
+		
+		bind(Channel.class).annotatedWith(Names.named("usb://")).to(Serial.class);
+		
+		// --- midi:// ---
+		
+		bind(Channel.class).annotatedWith(Names.named("midi://")).to(MidiCommunicator.class);
+		
+		// --- bt:// ---
+		
+		bind(Channel.class).annotatedWith(Names.named("bt://")).to(BTCommunicator.class);
+		
+		// --- http:// ---
+		
+		bind(Channel.class).annotatedWith(Names.named("bt://")).to(BTCommunicator.class);
+		
+		
+		
 		
 	}
 }

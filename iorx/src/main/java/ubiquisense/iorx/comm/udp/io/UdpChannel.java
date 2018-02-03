@@ -41,10 +41,16 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import javax.inject.Named;
+
 import ubiquisense.iorx.io.impl.ChannelImpl;
 import ubiquisense.iorx.utils.Platform;
 
+@Named("udp://")
 public class UdpChannel extends ChannelImpl {
+	public UdpChannel() {
+	}
+	
 	private volatile DatagramSocket socket;
 	public UdpChannel(String addr, int port) {
 		try {

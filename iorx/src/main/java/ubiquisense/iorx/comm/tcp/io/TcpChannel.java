@@ -40,10 +40,16 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.inject.Named;
+
 import ubiquisense.iorx.io.impl.ChannelImpl;
 import ubiquisense.iorx.utils.Platform;
 
+@Named("tcp://")
 public class TcpChannel extends ChannelImpl {
+	public TcpChannel() {
+	}
+	
 	private Socket socket;
 	public TcpChannel(InetAddress addr, int port) {
 		try {

@@ -9,11 +9,11 @@ import com.google.inject.name.Names;
 
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.protocols.midi.internal.MidiQxCmdHandler;
-import ubiquisense.iorx.protocols.osc.internal.OSCQxCmdHandler;
+import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
+import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
-public class ProtocolsBasicTest extends GuiceInjectionTest {
+public class CommunicationProtocolsBasicTest extends GuiceInjectionTest {
 	
 
 	

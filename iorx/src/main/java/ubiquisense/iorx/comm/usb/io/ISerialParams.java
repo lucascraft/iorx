@@ -33,18 +33,11 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.comm.rxtx;
+package ubiquisense.iorx.comm.usb.io;
 
-import gnu.io.SerialPort;
-import ubiquisense.iorx.io.Channel;
-
-
-public interface ISerialCommunicator extends ISerialReader, ISerialWriter, ISerialParams, Channel {
-	void stop();
-	void setDTR(boolean state);
-	void buffer(int count);
-	void bufferUntil(int what);
-	int available();
-	void clear();
-	SerialPort getSerialPort();
+public interface ISerialParams {
+	public int getBaudRate();
+	public int getParity();
+	public int getDataBits();
+	public int getStopBits();
 }

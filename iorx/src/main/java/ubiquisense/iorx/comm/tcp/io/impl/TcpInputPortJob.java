@@ -1,5 +1,5 @@
 
-package ubiquisense.iorx.comm.tcp.io;
+package ubiquisense.iorx.comm.tcp.io.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -7,17 +7,17 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.protocols.midi.internal.MidiQxCmdHandler;
-import ubiquisense.iorx.protocols.osc.internal.OSCQxCmdHandler;
+import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
+import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.registry.ProtocolReactor;
-import ubiquisense.iorx.registry.ProtocolWithSpecificTransportConfig;
+import ubiquisense.iorx.registry.CommProtocolConfig;
 
 public class ProtocolRegistryMatchingTest {
 
 	@Test
 	public void testProtocolReactorRegistryMatching()
 	{
-		ProtocolWithSpecificTransportConfig oscConfigs = ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport("osc");
+		CommProtocolConfig oscConfigs = ProtocolReactor.INSTANCE.getCommunicationProtocol("osc");
 		
 		assertNotNull(oscConfigs);
 		
@@ -27,7 +27,7 @@ public class ProtocolRegistryMatchingTest {
 			oscConfigs.getEventHandler() instanceof OSCQxCmdHandler
 		);
 		
-		ProtocolWithSpecificTransportConfig midiConfigs = ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport("midi");
+		CommProtocolConfig midiConfigs = ProtocolReactor.INSTANCE.getCommunicationProtocol("midi");
 
 		assertNotNull(midiConfigs);
 		
@@ -38,7 +38,7 @@ public class ProtocolRegistryMatchingTest {
 		);
 		
 		
-		Set<ProtocolWithSpecificTransportConfig> allConfigs = ProtocolReactor.INSTANCE.getProtocols();
+		Set<CommProtocolConfig> allConfigs = ProtocolReactor.INSTANCE.getProtocols();
 		
 		assertTrue(allConfigs.size()>=2);
 		

@@ -33,7 +33,7 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.comm.rxtx;
+package ubiquisense.iorx.comm.usb.rxtx;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,6 +44,8 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
+import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
+import ubiquisense.iorx.comm.usb.io.Serial;
 import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.evt.EVENT_KIND;

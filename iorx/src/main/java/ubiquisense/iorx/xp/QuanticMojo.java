@@ -2,8 +2,10 @@ package ubiquisense.iorx.xp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -12,7 +14,6 @@ import javax.sound.midi.MidiDevice;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import ubiquisense.iorx.ConfigurationModule;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
 import ubiquisense.iorx.io.Channel;
@@ -37,17 +38,14 @@ import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
-import ubiquisense.iorx.qx.CmdEngine;
 import ubiquisense.iorx.qx.CmdPipe;
 import ubiquisense.iorx.qx.EngineApplication;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.registry.Orchestror;
-import ubiquisense.iorx.registry.OrchestrorUtil;
+import ubiquisense.iorx.registry.ConfigurationModule;
 import ubiquisense.iorx.registry.ProtocolReactor;
-import ubiquisense.iorx.registry.ProtocolWithSpecificTransportConfig;
+import ubiquisense.iorx.registry.CommProtocolConfig;
 import ubiquisense.iorx.utils.DnsSdUtil;
-import ubiquisense.iorx.utils.EngineUtil;
 import ubiquisense.iorx.utils.NetConfigUtil;
 
 public final class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBuilder, IDxxpManager {
@@ -62,6 +60,7 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 //	
 //	
 	private ConcurrentLinkedQueue<ICmdPipeLifecycleListener> lifecycleListeners;
+	private Set<CmdPipe> localPipes;
 //	
 //	public GlobalCmdEventHandler getCepEventHandler() {
 //		return cepEventHandler;
@@ -75,7 +74,8 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 //	
 	public QuanticMojo() {
 		lifecycleListeners = new ConcurrentLinkedQueue<ICmdPipeLifecycleListener>();
-//		pubsubEventHandler = new PubSubEvtHandler();
+		localPipes = new HashSet<CmdPipe>();
+		//		pubsubEventHandler = new PubSubEvtHandler();
 //		
 //		cepEventHandler = new GlobalCmdEventHandler();
 		genesis();
@@ -235,27 +235,14 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 		return null;
 	}
 
-	public synchronized List<CmdPipe> getPipes() {
-		List<CmdPipe> pipes = new ArrayList<CmdPipe>();
-		for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-			if (o.getApplication() != null) {
-				for (CmdPipe engine : o.getApplication().getEngine()) {
-					if (engine != null) {
-						if (!pipes.contains(engine)) {
-							pipes.add(engine);
-						}
-					}
-				}
-			}
-		}
-		return pipes;
+	public synchronized Set<CmdPipe> getPipes() {
+		return localPipes;
 	}
 	
 	public synchronized CmdPipe getPipe(String pipeID) {
-		for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-			CmdPipe engine = netCfgUtil.getCmdEngineByCmdIDFromApp(o.getApplication(), pipeID);
-			if (engine != null) {
-				return engine;
+		for (CmdPipe p : getPipes()) {
+			if (pipeID.equals(p.getId())) {
+				return p;
 			}
 		}
 		return null;
@@ -382,55 +369,6 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 	}
 
 
-	public List<CmdEngine> getCmdEngines() {
-		List<CmdEngine> clients = new ArrayList<CmdEngine>();
-		for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-			if (o.getApplication() != null) {
-				for (CmdEngine c : o.getApplication().getClients()) {
-					if (c != null) {
-						if (!clients.contains(c)) {
-							clients.add(c);
-						}
-					}
-				}
-			}
-		}
-		return clients;
-	}
-
-	public CmdEngine getCmdEngine(String clientID) {
-		for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-			if (o.getApplication() != null) {
-				CmdEngine client = netCfgUtil.getCmdEngineByIDFromApp(o.getApplication(), clientID);
-				if (client != null) {
-					return client;
-				}
-			}
-		}
-		return null;
-	}
-
-	public List<EngineApplication> getEngineApplications() {
-		List<EngineApplication> apps = new ArrayList<EngineApplication>();
-		for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-			if (o.getApplication() != null) {
-				if (!apps.contains(o.getApplication())) {
-					apps.add(o.getApplication());
-				}
-			}
-		}
-		return apps;
-	}
-
-	public EngineApplication getEngineApplication(String applicationID) {
-		for (Orchestror o : OrchestrorUtil.INSTANCE.getOrchestrorRegistry()) {
-			if (o.getApplication() != null) {
-				return o.getApplication();
-			}
-		}
-		return null;
-	}
-
 	public Map<String, IQxEventHandler> getQxEventHandlers() {
 		return netCfgUtil.getQxEventHandlers();
 	}
@@ -461,32 +399,19 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 	//
 	//
 	
-	public ProtocolWithSpecificTransportConfig  getProtocolFromID (String protocolID) {
-		return ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID);
-	}
 	
-	private String getRawCommTag(String protocol) {
-		if ("usb://".equals(protocol)) 	return "USB";
-		if ("udp://".equals(protocol)) 	return "UDP";
-		if ("tcp://".equals(protocol)) 	return "TCP";
-		if ("xbee://".equals(protocol)) return "XBEE";
-		if ("bt://".equals(protocol)) 	return "BT";
-		if ("http://".equals(protocol)) return "HTTP";
-		if ("midi://".equals(protocol)) return "MIDI";
-		return "";
-	}
-
-	public CmdPipe createPipe(String comm, String protocolID, String pipeID, String portID, int acceptedPorts[], int speed, Map<Object, Object> options, boolean locked) {
-		EngineApplication app = buildEngineApp(pipeID, protocolID);
+	public CmdPipe createPipe(String transportID, String commProtocolID, String pipeID, String address, int acceptedPorts[], int speed, Map<Object, Object> options, boolean locked) {
+		EngineApplication app = buildEngineApp(pipeID, commProtocolID);
 		CmdPipe pipe = app.getEngine().size() == 1 ? app.getEngine().get(0) : null;
 
 		if (pipe == null) {
 			return null;
 		}
 		
-		Port port = netCfgUtil.resolvePort(comm, portID, acceptedPorts, speed, pipe, options, locked);
+		Port port = netCfgUtil.resolvePort(transportID, address, acceptedPorts, speed, pipe, options == null ? options = new HashMap<Object, Object>() : options, locked);
 			
-		if (port == null) {
+		if (port == null) 
+		{
 			return null;
 		}
 			
@@ -494,24 +419,18 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 		// check for custom communication channel
 		//
 			
-		ProtocolWithSpecificTransportConfig protocolConfig = ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID);
+		CommProtocolConfig protocolConfig = ProtocolReactor.INSTANCE.getCommunicationProtocol(commProtocolID);
 			
 		if (protocolConfig == null) return null;
 			
-		Channel communicationChannel = protocolConfig.getSpecificChannelsMap().get(getRawCommTag(comm));
-			
-		
-		if (communicationChannel instanceof Channel) {
-			port.setChannel(communicationChannel);
-			if (communicationChannel instanceof HttpCommunicator) {
-				HttpCommunicator communicator = (HttpCommunicator) communicationChannel;
-				communicator.init(pipeID, portID, acceptedPorts==null?new int[0]:acceptedPorts);
-			}
+		if (port.getChannel() instanceof HttpCommunicator) {
+			HttpCommunicator communicator = (HttpCommunicator) port.getChannel();
+			communicator.init(pipeID, address, acceptedPorts==null?new int[0]:acceptedPorts);
 		}
 		pipe.setPort(port);
 
-		pipe.setTransportProtocol(comm);
-		pipe.setCommunicationProtocol(protocolID);
+		pipe.setTransportProtocol(transportID);
+		pipe.setCommunicationProtocol(commProtocolID);
 		pipe.setId(pipeID);
 		pipe.setSpeed(speed);
 		pipe.setLocked(locked);
@@ -524,7 +443,7 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 			}
 		}
 		
-		comm = comm.replace("://", "");
+		String commTag2 = transportID.replace("://", "");
 	
 		boolean in	= pipe.getPort().getInputJobs().size() > 0;
 		boolean out = pipe.getPort().getOutputJobs().size() > 0;;
@@ -540,7 +459,7 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 			direction = "[-?-]";
 		}
 		
-		String name = direction + "[" + comm + "][" + ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID).getAlias() + "]" + " " + portID;
+		String name = direction + "[" + commTag2 + "][" + ProtocolReactor.INSTANCE.getCommunicationProtocol(commProtocolID).getAlias() + "]" + " " + address;
 		if (acceptedPorts != null) {
 			for (int aPort : acceptedPorts) {
 				name += "/" + aPort;
@@ -570,7 +489,7 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 		pipe.getTx().setStrategy(QxProcessingStrategy.PICK_NFLUSH);
 		pipe.getTx().setMax(32);
 		pipe.getTx().setTtl(24);
-		pipe.setAddr(portID);
+		pipe.setAddr(address);
 		if (acceptedPorts != null && acceptedPorts.length > 0) {
 			for (int p : acceptedPorts) {
 				pipe.getPorts().add(p);
@@ -843,7 +762,7 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 	
 	public List<CmdPipe> getEnginesByCommunication(String commID) {
 		String ID = "";
-		for (ProtocolWithSpecificTransportConfig protocolCfg : ProtocolReactor.INSTANCE.getProtocols()) {
+		for (CommProtocolConfig protocolCfg : ProtocolReactor.INSTANCE.getProtocols()) {
 			if (protocolCfg.getAlias().equals(commID)) {
 				ID = protocolCfg.getID();
 				break;
@@ -1111,7 +1030,7 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 
 		EngineApplication app = injector.getInstance(EngineApplication.class);
         
-        ProtocolWithSpecificTransportConfig protocol = ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID);
+        CommProtocolConfig protocol = ProtocolReactor.INSTANCE.getCommunicationProtocol(protocolID);
         
         if (protocol != null) {
 	        IXCmdInterpreter cmdInterpreter		= protocol.getCmdInterpreter();
@@ -1132,10 +1051,14 @@ public final class QuanticMojo { //  implements ServiceListener, IWarpManager, I
 	        cmdEngine.setCommunicationProtocol(protocolID);
         
 	        app.getEngine().add(cmdEngine);
+	        app.setId(appID);
+	        app.setName("Application Engine " + appID);
+        }
+        else
+        {
+        	throw new RuntimeException("protocol " + protocolID + " unknown");
         }
         
-        app.setId(appID);
-        app.setName("Application Engine " + appID);
         
         return app;
 	}

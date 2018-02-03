@@ -33,8 +33,9 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.comm.rxtx;
+package ubiquisense.iorx.comm.usb.rxtx;
 
+import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
 import ubiquisense.iorx.io.Port;
 
 public interface IRXTXSerialUtils {

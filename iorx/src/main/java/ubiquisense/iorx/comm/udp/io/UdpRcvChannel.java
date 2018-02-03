@@ -47,6 +47,8 @@ public class UdpRcvChannel extends ChannelImpl {
 	public byte[] getData() {
 		return data;
 	}
+	public UdpRcvChannel() {
+	}
 	public UdpRcvChannel(int port) {
 		try {
 			socket = new DatagramSocket(port);

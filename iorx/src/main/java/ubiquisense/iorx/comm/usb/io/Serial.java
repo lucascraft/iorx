@@ -39,7 +39,7 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - minor modifications
  ***********************************************************************************/
 
-package ubiquisense.iorx.comm.rxtx;
+package ubiquisense.iorx.comm.usb.io;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,12 +47,15 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import javax.inject.Named;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import ubiquisense.iorx.io.impl.ChannelImpl;
 
+@Named("usb://")
 public class Serial extends ChannelImpl implements ISerialCommunicator, SerialPortEventListener {
 
 	//

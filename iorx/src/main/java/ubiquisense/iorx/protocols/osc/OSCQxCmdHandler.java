@@ -1,4 +1,4 @@
-package ubiquisense.iorx.protocols.osc.internal;
+package ubiquisense.iorx.protocols.osc;
 
 
 import com.google.inject.Singleton;
@@ -9,6 +9,8 @@ import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.protocols.osc.internal.OscCmd;
+import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.evt.EVENT_KIND;
 import ubiquisense.iorx.qx.evt.Event;

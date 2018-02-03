@@ -35,6 +35,7 @@
 
 package ubiquisense.iorx.comm.midi.io;
 
+import javax.inject.Named;
 import javax.sound.midi.MidiDevice;
 
 import ubiquisense.iorx.comm.IChannelCloser;
@@ -43,13 +44,15 @@ import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;
 
-
+@Named("midi://")
 public class MidiCommunicator extends ChannelImpl implements IChannelCloser {
 	private MidiDevice device;
 	private IMidiIn in;
 	private IMidiOut out;
 	private CmdPipe engine;
-	public MidiCommunicator(CmdPipe engine) {
+	public MidiCommunicator() {
+	}
+	public void setEngine(CmdPipe engine) {
 		this.engine = engine;
 	}
 	public MidiDevice getDevice() {

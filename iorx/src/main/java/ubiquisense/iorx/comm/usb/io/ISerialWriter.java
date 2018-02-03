@@ -33,7 +33,7 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.comm.rxtx;
+package ubiquisense.iorx.comm.usb.io;
 
 import java.io.OutputStream;
 

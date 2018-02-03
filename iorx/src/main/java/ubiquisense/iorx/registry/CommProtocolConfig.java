@@ -8,23 +8,16 @@ import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
 
-public class ProtocolWithSpecificTransportConfig 
+public class CommProtocolConfig 
 {
     IXCmdInterpreter cmdInterpreter;
     IXFrameInterpreter frameInterpreter;
     IQxEventHandler eventHandler;
     String alias;
     String ID;
-    Map<String, Channel> chanelsMap;
-    
-    public Map<String, Channel>  getSpecificChannelsMap()
+ 
+    public CommProtocolConfig(String ID, String alias, IXCmdInterpreter cmdInterpreter, IXFrameInterpreter frameInterpreter, IQxEventHandler eventHandler) 
     {
-    	return chanelsMap;
-    }
-    
-    public ProtocolWithSpecificTransportConfig(String ID, String alias, IXCmdInterpreter cmdInterpreter, IXFrameInterpreter frameInterpreter, IQxEventHandler eventHandler) 
-    {
-    	chanelsMap = new HashMap<>();
     	this.cmdInterpreter = cmdInterpreter;
     	this.frameInterpreter = frameInterpreter;
     	this.eventHandler = eventHandler;
