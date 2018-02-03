@@ -6,7 +6,7 @@
  */
 package ubiquisense.iorx.comm.tcp.io.impl;
 
-import ubiquisense.iorx.comm.impl.OutputJobImpl;
+import ubiquisense.iorx.comm.OutputJobImpl;
 import ubiquisense.iorx.comm.tcp.io.TcpOutJob;
 
 /**

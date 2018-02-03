@@ -6,7 +6,7 @@
  */
 package ubiquisense.iorx.comm.udp.io.impl;
 
-import ubiquisense.iorx.comm.impl.InputJobImpl;
+import ubiquisense.iorx.comm.InputJobImpl;
 import ubiquisense.iorx.comm.udp.io.UdpInJob;
 
 /**

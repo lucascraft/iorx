@@ -461,7 +461,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 	//
 	
 	public ProtocolWithSpecificTransportConfig  getProtocolFromID (String protocolID) {
-		return ProtocolReactor.INSTANCE.getProtocolsWithSpecificTransportMap(protocolID);
+		return ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID);
 	}
 	
 	private String getRawCommTag(String protocol) {
@@ -493,7 +493,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 		// check for custom communication channel
 		//
 			
-		ProtocolWithSpecificTransportConfig protocolConfig = ProtocolReactor.INSTANCE.getProtocolsWithSpecificTransportMap(protocolID);
+		ProtocolWithSpecificTransportConfig protocolConfig = ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID);
 			
 		if (protocolConfig == null) return null;
 			
@@ -539,7 +539,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 			direction = "[-?-]";
 		}
 		
-		String name = direction + "[" + comm + "][" + ProtocolReactor.INSTANCE.getProtocolsWithSpecificTransportMap(protocolID).getAlias() + "]" + " " + portID;
+		String name = direction + "[" + comm + "][" + ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID).getAlias() + "]" + " " + portID;
 		if (acceptedPorts != null) {
 			for (int aPort : acceptedPorts) {
 				name += "/" + aPort;
@@ -842,7 +842,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 	
 	public List<CmdPipe> getEnginesByCommunication(String commID) {
 		String ID = "";
-		for (ProtocolWithSpecificTransportConfig protocolCfg : ProtocolReactor.INSTANCE.getProtocolsWithSpecificTransport()) {
+		for (ProtocolWithSpecificTransportConfig protocolCfg : ProtocolReactor.INSTANCE.getProtocols()) {
 			if (protocolCfg.getAlias().equals(commID)) {
 				ID = protocolCfg.getID();
 				break;
@@ -1110,7 +1110,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 
 		EngineApplication app = injector.getInstance(EngineApplication.class);
         
-        ProtocolWithSpecificTransportConfig protocol = ProtocolReactor.INSTANCE.getProtocolsWithSpecificTransportMap(protocolID);
+        ProtocolWithSpecificTransportConfig protocol = ProtocolReactor.INSTANCE.getProtocolWithSpecificTransport(protocolID);
         
         if (protocol != null) {
 	        IXCmdInterpreter cmdInterpreter		= protocol.getCmdInterpreter();
@@ -1128,6 +1128,7 @@ public class QuanticMojo { //  implements ServiceListener, IWarpManager, IPipeBu
 	        if (eventHandler != null) {
 	        	cmdEngine.addQxEventHandler(eventHandler);
 	        }
+	        cmdEngine.setCommunicationProtocol(protocolID);
         
 	        app.getEngine().add(cmdEngine);
         }

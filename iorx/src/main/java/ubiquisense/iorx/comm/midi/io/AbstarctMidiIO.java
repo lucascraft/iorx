@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import ubiquisense.iorx.qx.CmdPipe;
 
 public abstract class AbstarctMidiIO {
-	protected volatile ConcurrentLinkedQueue<CmdPipe> rxList;
+	public volatile ConcurrentLinkedQueue<CmdPipe> rxList;
 
 	public AbstarctMidiIO() {
 		rxList = new ConcurrentLinkedQueue<CmdPipe>();

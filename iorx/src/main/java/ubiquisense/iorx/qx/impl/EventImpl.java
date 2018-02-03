@@ -6,8 +6,8 @@ import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.evt.EVENT_KIND;
 import ubiquisense.iorx.qx.evt.Event;
-import ubiquisense.iorx.qx.notif.Change;
-import ubiquisense.iorx.qx.notif.Notification;
+import ubiquisense.iorx.qx.notifications.Change;
+import ubiquisense.iorx.qx.notifications.Notification;
 
 public class EventImpl implements Event 
 {

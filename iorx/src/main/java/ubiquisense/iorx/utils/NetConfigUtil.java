@@ -12,6 +12,7 @@ import javax.bluetooth.L2CAPConnection;
 import javax.microedition.io.Connector;
 
 import ubiquisense.iorx.comm.InputJob;
+import ubiquisense.iorx.comm.InputJobImpl;
 import ubiquisense.iorx.comm.bt.BluetoothPortImpl;
 import ubiquisense.iorx.comm.bt.io.BTCommunicator;
 import ubiquisense.iorx.comm.bt.io.L2CAPInJob;
@@ -20,7 +21,6 @@ import ubiquisense.iorx.comm.bt.io.impl.L2CAPInJobImpl;
 import ubiquisense.iorx.comm.http.HttpCommPortImpl;
 import ubiquisense.iorx.comm.http.io.BasicHttpCommunicator;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
-import ubiquisense.iorx.comm.impl.InputJobImpl;
 import ubiquisense.iorx.comm.midi.UbiPortImpl;
 import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
 import ubiquisense.iorx.comm.rxtx.ISerialCommunicator;

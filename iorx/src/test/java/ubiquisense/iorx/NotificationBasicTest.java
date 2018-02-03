@@ -9,11 +9,11 @@ import java.util.List;
 import org.junit.Test;
 
 import ubiquisense.iorx.qx.Cmd;
-import ubiquisense.iorx.qx.notif.Add;
-import ubiquisense.iorx.qx.notif.AddMany;
-import ubiquisense.iorx.qx.notif.Notification;
-import ubiquisense.iorx.qx.notif.Remove;
-import ubiquisense.iorx.qx.notif.RemoveMany;
+import ubiquisense.iorx.qx.notifications.Add;
+import ubiquisense.iorx.qx.notifications.AddMany;
+import ubiquisense.iorx.qx.notifications.Notification;
+import ubiquisense.iorx.qx.notifications.Remove;
+import ubiquisense.iorx.qx.notifications.RemoveMany;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public class NotificationBasicTest 

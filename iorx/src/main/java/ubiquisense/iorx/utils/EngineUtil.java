@@ -719,7 +719,7 @@ public class EngineUtil {
 				public void run() {
 					PRIORITY priority = PRIORITY.LOWEST;
 					for (Cmd c : qx.getCommands()) {
-						if (c.getPriority().compareTo(priority) > 0) {
+						if (c != null && c.getPriority() != null &&  c.getPriority().compareTo(priority) > 0) {
 							priority = c.getPriority();
 						}
 					}

@@ -8,7 +8,7 @@ import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.qx.evt.Event;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.qx.notif.NotificationAdapter;
+import ubiquisense.iorx.qx.notifications.NotificationAdapter;
 
 
 public interface CmdPipe {

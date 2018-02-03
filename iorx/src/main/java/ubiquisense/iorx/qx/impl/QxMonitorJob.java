@@ -69,8 +69,6 @@ public class QxMonitorJob implements Runnable {
 
 	@Override
 	public void run() {
-    	do
-    	{
 	    	if (cmdEngine.isActivated()) {
 			    if (!cmdEngine.getTx().getCommands().isEmpty()) {
 			        visitQxCmd(
@@ -93,7 +91,6 @@ public class QxMonitorJob implements Runnable {
 //	//	       		start(processingSpeed);
 //	//	       	}
 //		    }
-    	} while(true);
 		
 	}
     

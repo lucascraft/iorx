@@ -6,8 +6,8 @@
  */
 package ubiquisense.iorx.comm.bt.io.impl;
 
+import ubiquisense.iorx.comm.OutputJobImpl;
 import ubiquisense.iorx.comm.bt.io.L2CAPoutJob;
-import ubiquisense.iorx.comm.impl.OutputJobImpl;
 
 /**
  * <!-- begin-user-doc -->

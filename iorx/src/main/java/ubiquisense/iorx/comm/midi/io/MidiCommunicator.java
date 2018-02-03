@@ -38,8 +38,8 @@ package ubiquisense.iorx.comm.midi.io;
 import javax.sound.midi.MidiDevice;
 
 import ubiquisense.iorx.comm.IChannelCloser;
-import ubiquisense.iorx.comm.midi.ez.DSLMidiMessage;
 import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.CmdPipe;
 

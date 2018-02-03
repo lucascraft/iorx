@@ -40,6 +40,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
+import ubiquisense.iorx.protocols.midi.internal.MidiReceiver;
 import ubiquisense.iorx.qx.CmdPipe;
 
 

@@ -21,7 +21,7 @@ import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
 import ubiquisense.iorx.qx.evt.Event;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.qx.notif.NotificationAdapter;
+import ubiquisense.iorx.qx.notifications.NotificationAdapter;
 import ubiquisense.iorx.utils.EngineUtil;
 
 public class CmdPipeImpl implements CmdPipe

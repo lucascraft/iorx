@@ -5,11 +5,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ubiquisense.iorx.qx.Cmd;
 import ubiquisense.iorx.qx.evt.IQxEventHandler;
-import ubiquisense.iorx.qx.notif.Add;
-import ubiquisense.iorx.qx.notif.Change;
-import ubiquisense.iorx.qx.notif.Notification;
-import ubiquisense.iorx.qx.notif.NotificationAdapter;
-import ubiquisense.iorx.qx.notif.Remove;
+import ubiquisense.iorx.qx.notifications.Add;
+import ubiquisense.iorx.qx.notifications.Change;
+import ubiquisense.iorx.qx.notifications.Notification;
+import ubiquisense.iorx.qx.notifications.NotificationAdapter;
+import ubiquisense.iorx.qx.notifications.Remove;
 import ubiquisense.iorx.utils.Platform;
 
 public class QxEventAdapterImpl implements NotificationAdapter<Cmd> 

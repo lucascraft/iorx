@@ -36,7 +36,7 @@
 package ubiquisense.iorx.comm.midi.io;
 
 import ubiquisense.iorx.comm.IChannelCloser;
-import ubiquisense.iorx.comm.midi.ez.DSLMidiMessage;
+import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 
 public class NullOutputJob implements IChannelCloser, IMidiOut {
 

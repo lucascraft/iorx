@@ -39,7 +39,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 
-import ubiquisense.iorx.comm.midi.ez.DSLMidiMessage;
+import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 
 
 public class MidiOutputJob implements /*ChannelCloser,*/ IMidiOut {

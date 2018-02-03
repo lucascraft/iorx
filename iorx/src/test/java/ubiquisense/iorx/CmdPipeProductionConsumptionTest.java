@@ -35,14 +35,11 @@ public class CmdPipeProductionConsumptionTest extends GuiceInjectionTest {
 		pipe.setClient(engineClient);
 		pipe.setId("Engine_1");
 		
-		Thread t =new Thread(new QxMonitorJob(pipe));
-		t.start();
-		
 		for (int i = 1; i<10000; i++)
 		{
 			pipe.send(CmdUtil.INSTANCE.generateRamdomCmd());
 		}
 		
-		while(t.isAlive());
+//		while(t.isAlive());
 	}
 }
