@@ -58,7 +58,7 @@ import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.AbstractMidiCmd;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
-import ubiquisense.iorx.protocols.raw.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.qx.Qx;
 
 @Named("midi") @Singleton

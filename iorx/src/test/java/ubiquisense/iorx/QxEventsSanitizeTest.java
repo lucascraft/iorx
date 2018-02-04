@@ -33,10 +33,10 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 	public void testOscQxEventsHandling()
 	{
 		
-		CmdPipe pipeIo1 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4444", new int[] {1235}, -1, null, true);
-		CmdPipe pipeIo2 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4445", new int[] {1236}, -1, null, true);
-		CmdPipe pipeIo3 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4446", new int[] {1237}, -1, null, true);
-		CmdPipe pipeIo4 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4447", new int[] {1238}, -1, null, true);
+		CmdPipe pipeIo1 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4444", new int[] {1235}, -1, null, true);
+		CmdPipe pipeIo2 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4445", new int[] {1236}, -1, null, true);
+		CmdPipe pipeIo3 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4446", new int[] {1237}, -1, null, true);
+		CmdPipe pipeIo4 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4447", new int[] {1238}, -1, null, true);
 		
 		
 		pipeIo1.addQxEventHandler(new OSCQxCmdHandler() {

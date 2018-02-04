@@ -1,7 +1,7 @@
 /***********************************************************************************
  * Ubiquisense - A smart ambient utilities framework 
  * 
- * Copyright (c) 2012, Lucas Bigeardel
+ * Copyright (c) 2008 - 2010, Lucas Bigeardel
  * 
  * The library is released under:
  * 
@@ -33,41 +33,26 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.discovery;
+
+import javax.jmdns.ServiceEvent;
+
+import ubiquisense.iorx.dndns.services.DnDnsService;
+import ubiquisense.iorx.topology.ledger.XCPDevice;
+import ubiquisense.iorx.topology.ledger.XCPServiceStatus;
+import ubiquisense.iorx.topology.ledger.impl.XCPDeviceImpl;
 
 
-public class EzTargetConfig {
-	private String addr;
-	private String inputPort;
-	private String comm;
-	private String transport;
-	private String speed;
+public class SupervisorUtils 
+{
+	public final static SupervisorUtils INSTANCE = new SupervisorUtils();
 	
-	public EzTargetConfig(String addr, String inputPort, String comm, String transport,String speed) {
-		this.addr = addr;
-		this.inputPort = inputPort;
-		this.transport = transport;
-		this.comm = comm;
-		this.speed = speed;
+	public XCPDevice initXCPDevice(ServiceEvent event, XCPServiceStatus status) {
+		return new XCPDeviceImpl(event.getInfo(), status);
 	}
 	
-	public String getTargetAddr() {
-		return addr;
+	public XCPDevice initXCPDevice(DnDnsService service, ServiceEvent event, XCPServiceStatus status) {
+		return new XCPDeviceImpl(service, status);
 	}
 	
-	public String getTargetInputPort() {
-		return inputPort;
-	}
-
-	public String getTransportProtocol() {
-		return transport;
-	}
-	
-	public String getCommProtocol() {
-		return comm;
-	}
-	
-	public String getSpeedRate() {
-		return speed;
-	}
 }

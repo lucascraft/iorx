@@ -50,8 +50,9 @@ import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.protocols.raw.internal.RawCmd;
-import ubiquisense.iorx.protocols.raw.internal.RawCmdImpl;
+import ubiquisense.iorx.protocols.raw.internal.impl.RawCmdImpl;
 import ubiquisense.iorx.qx.Qx;
 
 @Named("raw") @Singleton

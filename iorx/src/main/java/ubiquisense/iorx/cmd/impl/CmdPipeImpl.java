@@ -12,6 +12,7 @@ import ubiquisense.iorx.changes.NotificationAdapter;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
+import ubiquisense.iorx.cmd.EngineUtil;
 import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
@@ -23,7 +24,6 @@ import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
-import ubiquisense.iorx.utils.EngineUtil;
 
 public class CmdPipeImpl implements CmdPipe
 {

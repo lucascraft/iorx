@@ -44,11 +44,11 @@ import com.rapplogic.xbee.api.XBee;
 
 import gnu.io.CommPort;
 import ubiquisense.iorx.discovery.visitors.ITopologyVisitor;
-import ubiquisense.iorx.topology.SmbtDeviceAdapterManager;
 import ubiquisense.iorx.topology.core.AbstractTopologyItem;
 import ubiquisense.iorx.topology.core.TopologyGroup;
 import ubiquisense.iorx.topology.core.TopologyNode;
 import ubiquisense.iorx.topology.ledger.XCPDevice;
+import ubiquisense.iorx.topology.ledger.XCPDeviceAdapterManager;
 
 public class TopologyManager implements IDeviceManager {
 	public final static TopologyManager INSTANCE = new TopologyManager();
@@ -212,7 +212,7 @@ public class TopologyManager implements IDeviceManager {
 	//
 	@Override
 	public boolean addDevice(Object device) {
-		Object obj = SmbtDeviceAdapterManager.INSTANCE.getDeviceManager(device);
+		Object obj = XCPDeviceAdapterManager.INSTANCE.getDeviceManager(device);
 		if (obj instanceof IDeviceManager) {
 			return ((IDeviceManager)obj).addDevice(device);
 		}
@@ -221,7 +221,7 @@ public class TopologyManager implements IDeviceManager {
 
 	@Override
 	public boolean removeDevice(Object device) {
-		Object obj = SmbtDeviceAdapterManager.INSTANCE.getDeviceManager(device);
+		Object obj = XCPDeviceAdapterManager.INSTANCE.getDeviceManager(device);
 		if (obj instanceof IDeviceManager) {
 			return ((IDeviceManager)obj).removeDevice(device);
 		}
@@ -230,7 +230,7 @@ public class TopologyManager implements IDeviceManager {
 	
 	@Override
 	public boolean connectDevice(Object device) {
-		Object obj = SmbtDeviceAdapterManager.INSTANCE.getDeviceManager(device);
+		Object obj = XCPDeviceAdapterManager.INSTANCE.getDeviceManager(device);
 		if (obj instanceof IDeviceManager) {
 			return ((IDeviceManager)obj).connectDevice(device);
 		}
@@ -239,7 +239,7 @@ public class TopologyManager implements IDeviceManager {
 	
 	@Override
 	public boolean disconnetDevice(Object device) {
-		Object obj = SmbtDeviceAdapterManager.INSTANCE.getDeviceManager(device);
+		Object obj = XCPDeviceAdapterManager.INSTANCE.getDeviceManager(device);
 		if (obj instanceof IDeviceManager) {
 			return ((IDeviceManager)obj).disconnetDevice(device);
 		}
@@ -248,7 +248,7 @@ public class TopologyManager implements IDeviceManager {
 
 	@Override
 	public boolean reconnectDevice(Object device) {
-		Object obj = SmbtDeviceAdapterManager.INSTANCE.getDeviceManager(device);
+		Object obj = XCPDeviceAdapterManager.INSTANCE.getDeviceManager(device);
 		if (obj instanceof IDeviceManager) {
 			return ((IDeviceManager)obj).reconnectDevice(device);
 		}
@@ -261,7 +261,7 @@ public class TopologyManager implements IDeviceManager {
 	
 	@Override
 	public XCPDevice adapt(Object device) {
-		Object obj = SmbtDeviceAdapterManager.INSTANCE.getDeviceManager(device);
+		Object obj = XCPDeviceAdapterManager.INSTANCE.getDeviceManager(device);
 		if (obj instanceof IDeviceManager) {
 			return ((IDeviceManager)obj).adapt(device);
 		}

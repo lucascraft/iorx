@@ -11,35 +11,6 @@ import ubiquisense.iorx.protocols.tuio.TuioCursor;
 import ubiquisense.iorx.protocols.tuio.internal.tuio11.STATE;
 import ubiquisense.iorx.protocols.tuio.internal.tuio11.Tuio2DCur;
 
-/**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Tuio2
- * DCur</b></em>'. <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getS_id
- * <em>Sid</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getXpos
- * <em>Xpos</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getYpos
- * <em>Ypos</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getXspeed
- * <em>Xspeed</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getYspeed
- * <em>Yspeed</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getMaccel
- * <em>Maccel</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getTuioCursor <em>Tuio
- * Cursor</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getUpdateTime <em>Update
- * Time</em>}</li>
- * <li>{@link net.sf.smbt.osc.eztuio.impl.Tuio2DCurImpl#getState
- * <em>State</em>}</li>
- * </ul>
- * </p>
- *
- * @generated
- */
 public class Tuio2DCurImpl extends OscRcvCmdImpl implements Tuio2DCur {
 	TuioCursor tuioCursor;
 	STATE state;

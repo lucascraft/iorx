@@ -13,19 +13,15 @@ import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 
-public final class ProtocolReactor extends GuiceRegistery 
+public final class ProtocolRegistry extends GuiceRegistery 
 {
-	public final static ProtocolReactor INSTANCE = new ProtocolReactor();
-	
-	    
-	private ProtocolReactor() {
-	}
-	
+	Set<Class<?>> allInterfacesToImplement = Sets.newHashSet(IXFrameInterpreter.class, IXCmdInterpreter.class, IQxEventHandler.class);
 	public Set<CommProtocolConfig> getProtocols()
 	{
 		Set<CommProtocolConfig> configs = Sets.newHashSet();
 		Set<Class<?>> annotatedClasses = new Reflections("").getTypesAnnotatedWith(javax.inject.Named.class, true);
-		annotatedClasses.forEach(c -> configs.add(getCommunicationProtocol(c.getAnnotation(javax.inject.Named.class).value())));
+		annotatedClasses.stream().filter(c -> Sets.newHashSet(c.getInterfaces()).containsAll(allInterfacesToImplement))
+			.forEach(c -> configs.add(getCommunicationProtocol(c.getAnnotation(javax.inject.Named.class).value())));
 		return configs.stream().filter(p -> p != null).collect(Collectors.toSet());
 	}
 	

@@ -7,10 +7,10 @@ import java.util.Set;
 import org.junit.Test;
 
 import ubiquisense.iorx.cmd.CmdPipe;
+import ubiquisense.iorx.cmd.EngineUtil;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
 import ubiquisense.iorx.utils.CmdUtil;
-import ubiquisense.iorx.utils.EngineUtil;
 
 public class CmdPipeBasicTest extends GuiceInjectionTest {
 

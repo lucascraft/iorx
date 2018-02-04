@@ -2,7 +2,7 @@ package ubiquisense.iorx;
 
 import org.junit.Test;
 
-import ubiquisense.iorx.utils.DnsSdUtil;
+import ubiquisense.iorx.registry.DnsSdRegistry;
 
 public class DnsServiceDiscoveryTest extends GuiceInjectionTest {
 	
@@ -10,6 +10,6 @@ public class DnsServiceDiscoveryTest extends GuiceInjectionTest {
 	@Test
 	public void testServiceDiscovery()
 	{
-		DnsSdUtil.INSTANCE.getRegistry().printServices();
+		DnsSdRegistry.INSTANCE.getRegistry().printServices();
 	}
 }

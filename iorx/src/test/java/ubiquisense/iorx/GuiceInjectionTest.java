@@ -12,7 +12,7 @@ public abstract class GuiceInjectionTest {
 
 	@Before
 	public void init() {
-		QuanticMojo no_access____qm = QuanticMojo.INSTANCE;
+		Ubq no_access____qm = Ubq.Reactor;
 		injector = Guice.createInjector(new ConfigurationModule());
 	}
 

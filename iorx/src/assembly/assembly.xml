@@ -1,0 +1,23 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">	<!-- Dependent projects will use this id as the classifier to match this 
+		assembly -->
+	<id>with-dependencies</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+
+	<dependencySets>
+		<dependencySet>
+			<useProjectArtifact>true</useProjectArtifact>
+			<outputDirectory></outputDirectory>
+			<unpack>false</unpack>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+		<directory>src/libs</directory>
+		<outputDirectory></outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

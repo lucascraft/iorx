@@ -8,13 +8,13 @@ package ubiquisense.iorx.topology.ledger;
 
 import javax.jmdns.ServiceInfo;
 
-import ubiquisense.iorx.topology.Services;
+import ubiquisense.iorx.dndns.services.DnDnsService;
 
 
 public interface XCPDevice {
-	Services getServices();
+	DnDnsService getServices();
 
-	void setServices(Services value);
+	void setServices(DnDnsService value);
 	XCPServiceStatus getStatus();
 	void setStatus(XCPServiceStatus value);
 	Object getDevice();

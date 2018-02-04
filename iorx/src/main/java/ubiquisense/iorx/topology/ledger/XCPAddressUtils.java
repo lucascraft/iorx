@@ -33,22 +33,31 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.topology.ledger;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-import ubiquisense.iorx.QuanticMojo;
+import javax.jmdns.ServiceInfo;
+
+import ubiquisense.iorx.Ubq;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
-import ubiquisense.iorx.topology.ledger.XCPAddress;
 import ubiquisense.iorx.topology.ledger.impl.XCPAddressImpl;
 
 public class XCPAddressUtils {
 
 	public final static XCPAddressUtils INSTANCE = new XCPAddressUtils();
+	public XCPAddress createXCPAddress(ServiceInfo serviceInfo) {
+			XCPAddress addr = new XCPAddressImpl();
+			addr.setAddr(serviceInfo.getHostAddress());
+			addr.setPort(serviceInfo.getPort());
+			addr.setProtocolID(serviceInfo.getProtocol());
+			addr.setTransportID(serviceInfo.getType());
+			return addr;
+	}
 	
-	public XCPAddress createEzTarget(CmdPipe pipe) {
+	public XCPAddress createXCPAddress(CmdPipe pipe) {
 		XCPAddress target = new XCPAddressImpl();
 		if (pipe!=null) {
 			target.setAddr(pipe.getAddr());
@@ -73,7 +82,7 @@ public class XCPAddressUtils {
 					i++;
 				}
 			}
-			pipe = QuanticMojo.INSTANCE.getPipe(
+			pipe = Ubq.Reactor.getPipe(
 					target.getTransportID(), 
 					target.getProtocolID(), 
 					target.getAddr(), 
@@ -81,7 +90,7 @@ public class XCPAddressUtils {
 					target.getSpeed()
 				);
 			if (createIfMissing && pipe == null) {
-				pipe = QuanticMojo.INSTANCE.openPipe(
+				pipe = Ubq.Reactor.openPipe(
 					target.getTransportID(), 
 					target.getProtocolID(), 
 					UUID.randomUUID().toString(), 

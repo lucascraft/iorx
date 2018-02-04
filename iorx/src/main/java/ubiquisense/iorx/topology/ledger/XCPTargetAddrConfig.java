@@ -1,7 +1,7 @@
 /***********************************************************************************
  * Ubiquisense - A smart ambient utilities framework 
  * 
- * Copyright (c) 2008 - 2010, Lucas Bigeardel
+ * Copyright (c) 2012, Lucas Bigeardel
  * 
  * The library is released under:
  * 
@@ -33,22 +33,41 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.topology.ledger;
 
 
-public interface ISmartDnsServiceManager {
-	/**
-	 * Getter for DN-DNS {@link ServiceInfo} service information
-	 * 
-	 * @return a DN-DNS {@link ServiceInfo} service information
-	 */
-	//ServiceInfo getServiceInfo();
+public class XCPTargetAddrConfig {
+	private String addr;
+	private String inputPort;
+	private String comm;
+	private String transport;
+	private String speed;
 	
-	void init();
+	public XCPTargetAddrConfig(String addr, String inputPort, String comm, String transport,String speed) {
+		this.addr = addr;
+		this.inputPort = inputPort;
+		this.transport = transport;
+		this.comm = comm;
+		this.speed = speed;
+	}
 	
-	void connect();
+	public String getTargetAddr() {
+		return addr;
+	}
 	
-	void disconnect();
+	public String getTargetInputPort() {
+		return inputPort;
+	}
+
+	public String getTransportProtocol() {
+		return transport;
+	}
 	
-	void close();
+	public String getCommProtocol() {
+		return comm;
+	}
+	
+	public String getSpeedRate() {
+		return speed;
+	}
 }

@@ -21,14 +21,14 @@ public class AppTest extends GuiceInjectionTest
 {
 	CmdPipe pipe;
 	CmdEngine engineClient;
-	QuanticMojo mojo;
+	Ubq mojo;
 
 	@Before
 	public void initEngines()
 	{
 		pipe = injector.getInstance(CmdPipe.class);
 		engineClient = injector.getInstance(CmdEngine.class);
-		mojo = new QuanticMojo();
+		mojo = new Ubq();
 	}
 	
 	@Test

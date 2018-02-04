@@ -33,15 +33,13 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.topology.ledger;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class QuanticComm {
-	public final static QuanticComm INSTANCE = new QuanticComm();
+public class XCPCommAddrConfig {
+	public final static XCPCommAddrConfig INSTANCE = new XCPCommAddrConfig();
 	
 	IPAddressValidator ipAddrValidator = new IPAddressValidator();
 	

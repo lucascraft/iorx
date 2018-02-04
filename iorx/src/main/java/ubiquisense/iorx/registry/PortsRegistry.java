@@ -1,4 +1,4 @@
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.registry;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -40,86 +40,18 @@ import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
+import ubiquisense.iorx.utils.Platform;
 
-public class NetConfigUtil {
-
-	public final static NetConfigUtil INSTANCE = new NetConfigUtil();
-
-
-	private Map<String, IXCmdInterpreter> cmdInterpretersMap;
-	private Map<String, IXFrameInterpreter> frameInterpretersMap;
-	private Map<String, IQxEventHandler> eventHandlersMap;
+public final class PortsRegistry {
 
 	private Map<Integer, TcpInputPortJob> tcpInputJobs;
 	private Map<Integer, UdpInputPortJob> udpInputJobs;
 	private Map<String, L2CAPInputJob> l2capInputJobs;
 
-	public NetConfigUtil() {
-		cmdInterpretersMap = new HashMap<String, IXCmdInterpreter>();
-		frameInterpretersMap = new HashMap<String, IXFrameInterpreter>();
-		eventHandlersMap = new HashMap<String, IQxEventHandler>();
+	public PortsRegistry() {
 		tcpInputJobs = new HashMap<Integer, TcpInputPortJob>();
 		udpInputJobs = new HashMap<Integer, UdpInputPortJob>();
 		l2capInputJobs = new HashMap<String, L2CAPInputJob>();
-	}
-
-	public Map<String, IXCmdInterpreter> getCmdInterpreters() {
-		return cmdInterpretersMap;
-	}
-
-	public Map<String, IQxEventHandler> getEventHandlers() {
-		return eventHandlersMap;
-	}
-
-	public synchronized CmdPipe getCmdEngineByCmdID(
-			final List<CmdPipe> engines, final String engineID) {
-		for (CmdPipe engine : engines) {
-			if (engine.getId().equals(engineID)) {
-				return engine;
-			}
-		}
-		return null; // oops should really have nicer a link phase
-	}
-
-	public synchronized CmdPipe getCmdEngineByCmdIDFromApp(
-			final EngineApplication engineApp, final String engineID) {
-		if (engineApp != null) {
-			for (CmdPipe engine : engineApp.getEngine()) {
-				if (engine.getId().equals(engineID)) {
-					return engine;
-				}
-			}
-		}
-		return null; // oops should really have nicer link phase
-	}
-
-	public IXCmdInterpreter resolveCmdInterpreterInOSGiContext(
-			String cmdInterpreterID) {
-		if (cmdInterpretersMap.keySet().contains(cmdInterpreterID)) {
-			return cmdInterpretersMap.get(cmdInterpreterID);
-		} else {
-			
-		}
-		return null;
-	}
-
-
-	public IXFrameInterpreter resolveFrameInterpreterInOSGiContext(
-			String frameInterpreterID) {
-		if (frameInterpretersMap.keySet().contains(frameInterpreterID)) {
-			return frameInterpretersMap.get(frameInterpreterID);
-		} else {
-
-		}
-		return null;
-	}
-
-	public IQxEventHandler resolveListenerInOSGiContext(String listenerID) {
-		if (eventHandlersMap.keySet().contains(listenerID)) {
-			return eventHandlersMap.get(listenerID);
-		} else {
-		}
-		return null;
 	}
 
 //
@@ -476,28 +408,4 @@ public class NetConfigUtil {
 //		return cfgOrchestrorsMap;
 //	}
 
-
-	public Map<String, IQxEventHandler> getQxEventHandlers() {
-		return eventHandlersMap;
-	}
-
-	public IQxEventHandler getQxEventHandler(String evtHandlerID) {
-		return eventHandlersMap.get(evtHandlerID);
-	}
-
-	public Map<String, IXCmdInterpreter> getCommandInterpreters() {
-		return cmdInterpretersMap;
-	}
-
-	public IXCmdInterpreter getCommandInterpreter(String cmdInterpreterID) {
-		return cmdInterpretersMap.get(cmdInterpreterID);
-	}
-
-	public Map<String, IXFrameInterpreter> getFrameInterpreters() {
-		return frameInterpretersMap;
-	}
-
-	public IXFrameInterpreter getFrameInterpreter(String frameInterpreterID) {
-		return frameInterpretersMap.get(frameInterpreterID);
-	}
 }

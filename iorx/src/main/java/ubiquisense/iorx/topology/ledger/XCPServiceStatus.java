@@ -12,35 +12,22 @@ import java.util.List;
 
 public enum XCPServiceStatus  {
 	
-
 	PROBING(0, "PROBING", "PROBING"),
-
 	DISCOVERED(1, "DISCOVERED", "DISCOVERED"),
-
 	RESOLVED(2, "RESOLVED", "RESOLVED"),
-
 	READY(3, "READY", "READY"),
-
 	UNAVAILABLE(4, "UNAVAILABLE", "UNAVAILABLE"),
-
 	STARTING(5, "STARTING", "STARTING"),
 	STOP(6, "STOP", "STOP"),
-
 	CONNECTED(7, "CONNECTED", "CONNECTED");
 
 	public static final int PROBING_VALUE = 0;
-
 	public static final int DISCOVERED_VALUE = 1;
-
 	public static final int RESOLVED_VALUE = 2;
-
 	public static final int READY_VALUE = 3;
-
 	public static final int UNAVAILABLE_VALUE = 4;
 	public static final int STARTING_VALUE = 5;
-
 	public static final int STOP_VALUE = 6;
-
 	public static final int CONNECTED_VALUE = 7;
 
 	private static final XCPServiceStatus[] VALUES_ARRAY =

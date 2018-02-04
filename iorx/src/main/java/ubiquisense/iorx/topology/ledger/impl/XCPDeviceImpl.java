@@ -2,13 +2,16 @@ package ubiquisense.iorx.topology.ledger.impl;
 
 import javax.jmdns.ServiceInfo;
 
-import ubiquisense.iorx.topology.Services;
+import ubiquisense.iorx.dndns.services.DnDnsService;
+import ubiquisense.iorx.registry.DnsSdRegistry;
+import ubiquisense.iorx.registry.GuiceRegistery;
 import ubiquisense.iorx.topology.ledger.XCPAddress;
+import ubiquisense.iorx.topology.ledger.XCPAddressUtils;
 import ubiquisense.iorx.topology.ledger.XCPDevice;
 import ubiquisense.iorx.topology.ledger.XCPServiceStatus;
 
-public class XCPDeviceImpl implements XCPDevice {
-	Services services;
+public class XCPDeviceImpl extends GuiceRegistery implements XCPDevice {
+	DnDnsService service;
 	XCPServiceStatus status;
 	Object device;
 	ServiceInfo serviceInfo;
@@ -16,14 +19,35 @@ public class XCPDeviceImpl implements XCPDevice {
 	String name;
 	XCPAddress addr;
 	
+	public XCPDeviceImpl()
+	{
+		
+	}
+	
+	public XCPDeviceImpl(DnDnsService service, XCPServiceStatus status) {
+		this.service = service;
+		this.status = status;
+		serviceInfo = service.getServiceInfo();
+		name = serviceInfo.getName();
+		addr = XCPAddressUtils.INSTANCE.createXCPAddress(serviceInfo);
+	}
+	
+	public XCPDeviceImpl(ServiceInfo serviceInfo, XCPServiceStatus status) {
+		this.service = (DnDnsService) DnsSdRegistry.INSTANCE.getDsDnsServicesDescritionl(serviceInfo.getName());
+		this.status = status;
+		this.serviceInfo = serviceInfo;
+		name = serviceInfo.getName();
+		addr = XCPAddressUtils.INSTANCE.createXCPAddress(serviceInfo);
+	}
+	
 	@Override
-	public Services getServices() {
-		return services;
+	public DnDnsService getServices() {
+		return service;
 	}
 
 	@Override
-	public void setServices(Services value) {
-		services = value;
+	public void setServices(DnDnsService value) {
+		service = value;
 	}
 
 	@Override

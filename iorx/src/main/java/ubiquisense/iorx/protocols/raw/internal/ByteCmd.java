@@ -1,4 +1,4 @@
-package ubiquisense.iorx.protocols.raw;
+package ubiquisense.iorx.protocols.raw.internal;
 
 import ubiquisense.iorx.cmd.Cmd;
 

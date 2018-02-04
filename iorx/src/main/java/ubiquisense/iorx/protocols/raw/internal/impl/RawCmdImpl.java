@@ -1,6 +1,7 @@
-package ubiquisense.iorx.protocols.raw.internal;
+package ubiquisense.iorx.protocols.raw.internal.impl;
 
 import ubiquisense.iorx.cmd.impl.CmdImpl;
+import ubiquisense.iorx.protocols.raw.internal.RawCmd;
 import ubiquisense.iorx.utils.CmdUtil;
 
 public class RawCmdImpl extends CmdImpl implements RawCmd {

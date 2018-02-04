@@ -12,8 +12,8 @@ public class App
     public static void main( String[] args )
     {
 
-		CmdPipe udpOscIoPipe = QuanticMojo.INSTANCE.createPipe("udp://", "osc", "osc_pipe_1", "127.0.0.0:1234", new int[] {9056}, -1, new HashMap<Object, Object>(), false);
+		CmdPipe udpOscIoPipe = Ubq.Reactor.createPipe("udp://", "osc", "osc_pipe_1", "127.0.0.0:1234", new int[] {9056}, -1, new HashMap<Object, Object>(), false);
 	
-		while(!QuanticMojo.INSTANCE.getPipes().isEmpty());
+		while(!Ubq.Reactor.getPipes().isEmpty());
     }
 }

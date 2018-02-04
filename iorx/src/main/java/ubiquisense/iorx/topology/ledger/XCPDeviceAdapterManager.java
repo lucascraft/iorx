@@ -33,7 +33,7 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.topology;
+package ubiquisense.iorx.topology.ledger;
 
 import java.net.DatagramSocket;
 import java.net.Socket;
@@ -51,22 +51,20 @@ import ubiquisense.iorx.discovery.IUSbDeviceManager;
 import ubiquisense.iorx.discovery.IUdpDeviceManager;
 import ubiquisense.iorx.discovery.IXBeeDeviceManager;
 import ubiquisense.iorx.discovery.NetBind;
-import ubiquisense.iorx.topology.ledger.XCPAddrType;
-import ubiquisense.iorx.topology.ledger.XCPAddress;
-import ubiquisense.iorx.topology.ledger.XCPDevice;
+import ubiquisense.iorx.protocols.midi.internal.raw.MidiDevice;
 import ubiquisense.iorx.topology.ledger.impl.XCPAddressImpl;
 import ubiquisense.iorx.topology.ledger.impl.XCPDeviceImpl;
 
-public class SmbtDeviceAdapterManager {
-	public final static SmbtDeviceAdapterManager INSTANCE = new SmbtDeviceAdapterManager();
+public class XCPDeviceAdapterManager {
+	public final static XCPDeviceAdapterManager INSTANCE = new XCPDeviceAdapterManager();
 
 	private IDeviceManager btDeviceManager, 
 							serialDeviceManager, 
 							tcpDeviceManager, 
 							udpDeviceManager, 
-							xbeeDeviceManager;
+							xbeeDeviceManager, midiDeviceManager;
 	
-	public SmbtDeviceAdapterManager() {
+	public XCPDeviceAdapterManager() {
 		btDeviceManager =  new IBluetoothDeviceManager() {
 			@Override
 			public boolean removeDevice(Object device) {
@@ -355,6 +353,8 @@ public class SmbtDeviceAdapterManager {
 			return udpDeviceManager;
 		} else if (device instanceof XBee) {
 			return xbeeDeviceManager;
+		}  else if (device instanceof MidiDevice) {
+			return midiDeviceManager;
 		}  
 		return null;
 	}

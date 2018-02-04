@@ -44,7 +44,8 @@ import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.protocols.raw.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 import ubiquisense.iorx.utils.CmdUtil;
 import ubiquisense.iorx.utils.Platform;
 
@@ -63,12 +64,14 @@ public class NullQxCmdEventHandler implements IQxEventHandler, IXCmdInterpreter,
 		 return new byte[0];
 	}
 	public synchronized Cmd byteArray2Cmd(final byte[] frame) {
-		return CmdUtil.INSTANCE.generateRamdomCmd();
+		ByteCmd cmd = new ByteCmdImpl();
+		cmd.setMessage(frame);
+		return cmd;
 	}
 	@Override
 	public String getID() {
 		// TODO Auto-generated method stub
-		return "null";
+		return "void";
 	}
 	
 }

@@ -16,11 +16,11 @@ public class TransportProtocolsBasicTest extends GuiceInjectionTest {
 	@Test
 	public void testProtocolInterpretersInjection()
 	{
-		CmdPipe p1 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:3567", new int[] {}, -1, null, true);
-		CmdPipe p2 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "tuio11", "osc@" + UUID.randomUUID().toString(), "localhost:4587", new int[] {}, -1, null, true);
-		CmdPipe p3 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.TCP.getLiteral(), "midi", "osc@" + UUID.randomUUID().toString(), "localhost:8965", new int[] {}, -1, null, true);
-		CmdPipe p4 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.HTTP.getLiteral(), "raw", "osc@" + UUID.randomUUID().toString(), "localhost:5632", new int[] {}, -1, null, true);
-		CmdPipe p5 = QuanticMojo.INSTANCE.createPipe(TRANSPORT_PROTOCOL.BLUETOOTH.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4856", new int[] {}, -1, null, true);
+		CmdPipe p1 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:3567", new int[] {}, -1, null, true);
+		CmdPipe p2 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "tuio11", "osc@" + UUID.randomUUID().toString(), "localhost:4587", new int[] {}, -1, null, true);
+		CmdPipe p3 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.TCP.getLiteral(), "midi", "osc@" + UUID.randomUUID().toString(), "localhost:8965", new int[] {}, -1, null, true);
+		CmdPipe p4 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.HTTP.getLiteral(), "raw", "osc@" + UUID.randomUUID().toString(), "localhost:5632", new int[] {}, -1, null, true);
+		CmdPipe p5 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.BLUETOOTH.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4856", new int[] {}, -1, null, true);
 		
 		
 		assertTrue(p1.getTransportProtocol().equals(TRANSPORT_PROTOCOL.UDP.getLiteral()));

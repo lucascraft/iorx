@@ -15,10 +15,10 @@ import ubiquisense.iorx.changes.Remove;
 import ubiquisense.iorx.changes.RemoveMany;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CmdPipe;
+import ubiquisense.iorx.cmd.EngineUtil;
 import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
-import ubiquisense.iorx.utils.EngineUtil;
 
 public class AbstractQx implements Qx {
 

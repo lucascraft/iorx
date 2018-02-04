@@ -1,4 +1,4 @@
-package ubiquisense.iorx.utils;
+package ubiquisense.iorx.cmd;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,15 +7,15 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.cmd.CmdPipe;
-import ubiquisense.iorx.cmd.CompoundCmd;
-import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.qx.Qx;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.utils.CmdUtil;
+import ubiquisense.iorx.utils.Platform;
+import ubiquisense.iorx.utils.RunnableWithResult;
+import ubiquisense.iorx.utils.RunnableWithResult.Impl;
 
 public class EngineUtil {
 

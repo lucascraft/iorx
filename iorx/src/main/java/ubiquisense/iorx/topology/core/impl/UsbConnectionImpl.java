@@ -15,11 +15,6 @@ public class UsbConnectionImpl  implements UsbConnection {
 		return serial;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void setSerial(Serial newSerial) {
 		serial = newSerial;
 	}

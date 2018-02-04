@@ -17,6 +17,8 @@ import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
 import ubiquisense.iorx.comm.tcp.io.TcpChannel;
 import ubiquisense.iorx.comm.udp.io.UdpChannel;
 import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.dndns.services.DaapService;
+import ubiquisense.iorx.dndns.services.DnDnsService;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.event.impl.EventImpl;
@@ -25,9 +27,9 @@ import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
-import ubiquisense.iorx.protocols.raw.ByteCmd;
 import ubiquisense.iorx.protocols.raw.RawQxCmdHandler;
-import ubiquisense.iorx.protocols.raw.internal.ByteCmdImpl;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 import ubiquisense.iorx.protocols.tuio.tuio11.Tuio11QxCmdHandler;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
@@ -123,8 +125,11 @@ public class ConfigurationModule extends AbstractModule
 		
 		bind(Channel.class).annotatedWith(Names.named("bt://")).to(BTCommunicator.class);
 		
+		//
+		// Dn Dns Services
+		//
 		
-		
-		
+		bind(DnDnsService.class).annotatedWith(Names.named("daap")).to(DaapService.class);
+
 	}
 }

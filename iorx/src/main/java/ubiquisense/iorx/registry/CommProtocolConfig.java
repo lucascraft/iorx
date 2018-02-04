@@ -1,10 +1,6 @@
 package ubiquisense.iorx.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 

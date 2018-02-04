@@ -13,8 +13,8 @@ import ubiquisense.iorx.cmd.CompoundCmd;
 import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.cmd.impl.CmdImpl;
 import ubiquisense.iorx.cmd.impl.CompoundCmdImpl;
-import ubiquisense.iorx.protocols.raw.ByteCmd;
-import ubiquisense.iorx.protocols.raw.internal.ByteCmdImpl;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 
 public final class CmdUtil implements ICmdUtil {
     private Random randomizer;
@@ -163,10 +163,4 @@ public final class CmdUtil implements ICmdUtil {
 		return "0x" + (hex.length() == 1 ? "0" : "") + hex;
 	}
 
-//    
-//    public CmdPipeIO createCmdPipeIO(CmdPipe... pipes) {
-//    	CmdPipeIO cmdPipeIO = new CmdPipeIO();
-//    	cmdPipeIO.register(pipes);
-//    	return cmdPipeIO;
-//    }
 }
