@@ -41,67 +41,77 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 
+import ubiquisense.iorx.utils.Platform;
+
 public class MidiSystemUtils {
-	
+
 	public final static MidiSystemUtils INSTANCE = new MidiSystemUtils();
-	
+
 	private Map<String, Integer> notesWithShiftMap;
 	private Map<Integer, Map<String, Integer>> notesByOctavesMap;
-	
+
 	private final static int NB_KEYS = 12;
+
+	public Map<String, Integer> getNotesWithShiftMap() {
+		return notesWithShiftMap;
+	}
 	
 	public MidiSystemUtils() {
 		notesWithShiftMap = new HashMap<String, Integer>();
-		notesWithShiftMap.put("C",	0);
+		notesWithShiftMap.put("C", 0);
 		notesWithShiftMap.put("C#", 1);
-		notesWithShiftMap.put("Db", 1);  // avoid
-		notesWithShiftMap.put("D", 	2);
+		notesWithShiftMap.put("Db", 1); // avoid
+		notesWithShiftMap.put("D", 2);
 		notesWithShiftMap.put("D#", 3);
-		notesWithShiftMap.put("Eb", 3);  // avoid
-		notesWithShiftMap.put("E", 	4);
-		notesWithShiftMap.put("F", 	5);
+		notesWithShiftMap.put("Eb", 3); // avoid
+		notesWithShiftMap.put("E", 4);
+		notesWithShiftMap.put("F", 5);
 		notesWithShiftMap.put("F#", 6);
-		notesWithShiftMap.put("Gb", 6);  // avoid
-		notesWithShiftMap.put("G", 	7);
+		notesWithShiftMap.put("Gb", 6); // avoid
+		notesWithShiftMap.put("G", 7);
 		notesWithShiftMap.put("G#", 8);
-		notesWithShiftMap.put("Ab", 8);  // avoid
-		notesWithShiftMap.put("A", 	9);
+		notesWithShiftMap.put("Ab", 8); // avoid
+		notesWithShiftMap.put("A", 9);
 		notesWithShiftMap.put("A#", 10);
 		notesWithShiftMap.put("Bb", 10); // avoid
-		notesWithShiftMap.put("B", 	11);
-		
-		notesByOctavesMap = new HashMap<Integer, Map<String,Integer>>();
-		
+		notesWithShiftMap.put("B", 11);
+
+		notesByOctavesMap = new HashMap<Integer, Map<String, Integer>>();
+
 		// note : [0..132] (11 x 12)
 		int note = 0;
-		for (int octave=0; octave<=10;octave++) {
-			Map<String,Integer> octaveMap = new HashMap<String, Integer>();
-			notesByOctavesMap.put(octave, 	octaveMap);
+		for (int octave = 0; octave <= 10; octave++) {
+			Map<String, Integer> octaveMap = new HashMap<String, Integer>();
+			notesByOctavesMap.put(octave, octaveMap);
 			for (String k : notesWithShiftMap.keySet()) {
 				octaveMap.put(k, new Integer(note) + notesWithShiftMap.get(k));
 			}
-			note+=NB_KEYS;
+			note += NB_KEYS;
 		}
 	}
-	
+
 	public int getNote(int octave, String code) {
 		Integer octaveID = new Integer(octave);
 		if (notesByOctavesMap.containsKey(octaveID)) {
-			Map<String, Integer> notesMap =  notesByOctavesMap.get(octaveID);
+			Map<String, Integer> notesMap = notesByOctavesMap.get(octaveID);
 			if (notesMap.containsKey(code)) {
 				return notesMap.get(code);
 			}
 		}
 		return -1;
 	}
-	
+
 	public String getCode(int octave, int note) {
 		Integer octaveID = new Integer(octave);
 		Integer noteID = new Integer(note);
 		if (notesByOctavesMap.containsKey(octaveID)) {
-			Map<String, Integer> notesMap =  notesByOctavesMap.get(octaveID);
+			Map<String, Integer> notesMap = notesByOctavesMap.get(octaveID);
 			for (String code : notesMap.keySet()) {
 				Integer midiCode = notesMap.get(code);
 				if (midiCode.equals(noteID)) {
@@ -110,6 +120,27 @@ public class MidiSystemUtils {
 			}
 		}
 		return null;
+	}
+
+	public void affectInstrumentToChannel(Synthesizer synth, Instrument instr) {
+		if (synth.isOpen()) {
+			MidiChannel[] channels = synth.getChannels();
+			int program = instr.getPatch().getProgram();
+			if (channels != null && channels.length > 0) {
+				int idx = instr.getPatch().getBank();
+				synth.loadInstrument(instr);
+				channels[0].programChange(idx, program);
+				channels[1].programChange(idx, program);
+				channels[2].programChange(idx, program);
+				channels[3].programChange(idx, program);
+				channels[4].programChange(idx, program);
+				channels[5].programChange(idx, program);
+				channels[6].programChange(idx, program);
+				channels[7].programChange(idx, program);
+				channels[8].programChange(idx, program);
+			}
+		}
+
 	}
 
 	public HashMap<String, List<Instrument>> instrumentsByBanks(Synthesizer synth) {
@@ -127,4 +158,44 @@ public class MidiSystemUtils {
 		}
 		return instrMap;
 	}
+
+	public List<MidiDevice> getMidiDevices() {
+		List<MidiDevice> devices = new ArrayList<MidiDevice>();
+
+		for (MidiDevice.Info info : MidiSystem.getMidiDeviceInfo()) {
+			String txt = "Description : " + info.getDescription() + "\n" + "Vendor : " + info.getVendor() + "\n"
+					+ "Version : " + info.getVersion();
+
+			if (Platform.inDebugMode()) {
+				System.out.println("Device : " + info.getName() + "\n" + txt + "\n");
+			}
+
+			try {
+				MidiDevice device = MidiSystem.getMidiDevice(info);
+				if (!devices.contains(device)) {
+					devices.add(device);
+				}
+			} catch (MidiUnavailableException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return devices;
+	}
+
+	public Object[] getElements(Object inputElement) {
+		List<MidiDevice> devices = new ArrayList<MidiDevice>();
+		for (MidiDevice device : getMidiDevices()) {
+			boolean outDevice = device.getMaxReceivers() >= 0 && device.getMaxTransmitters() == -1;
+			if (outDevice) {
+				devices.add(device);
+			}
+			boolean inDevice = device.getMaxTransmitters() >= 0 && device.getMaxReceivers() == -1;
+			if (inDevice) {
+				devices.add(device);
+			}
+		}
+		return devices.toArray();
+	}
+
 }

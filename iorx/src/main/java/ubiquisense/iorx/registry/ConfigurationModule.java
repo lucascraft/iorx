@@ -25,12 +25,14 @@ import ubiquisense.iorx.event.impl.EventImpl;
 import ubiquisense.iorx.io.Channel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.protocols.firmata.FirmataCmdQxEventHandler;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.protocols.raw.RawQxCmdHandler;
 import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 import ubiquisense.iorx.protocols.tuio.tuio11.Tuio11QxCmdHandler;
+import ubiquisense.iorx.protocols.ubiquino.UbiquinoQxCmdEventHandler;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
 import ubiquisense.iorx.qx.impl.RxImpl;
@@ -73,7 +75,6 @@ public class ConfigurationModule extends AbstractModule
 		// -- midi --
 		
 		
-		
 		bind(IXFrameInterpreter.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
 		bind(IXCmdInterpreter.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
 		bind(IQxEventHandler.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
@@ -90,11 +91,25 @@ public class ConfigurationModule extends AbstractModule
 		bind(IXCmdInterpreter.class).annotatedWith(Names.named("tuio11")).to(Tuio11QxCmdHandler.class);
 		bind(IQxEventHandler.class).annotatedWith(Names.named("tuio11")).to(Tuio11QxCmdHandler.class);
 		
+		// -- firmata --
+		
+		bind(IXFrameInterpreter.class).annotatedWith(Names.named("firmata")).to(FirmataCmdQxEventHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Names.named("firmata")).to(FirmataCmdQxEventHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Names.named("firmata")).to(FirmataCmdQxEventHandler.class);
+		
+		// -- ubiquino --
+		
+		bind(IXFrameInterpreter.class).annotatedWith(Names.named("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Names.named("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Names.named("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
+		
 		// -- raw --
 		
 		bind(IXFrameInterpreter.class).annotatedWith(Names.named("raw")).to(RawQxCmdHandler.class);
 		bind(IXCmdInterpreter.class).annotatedWith(Names.named("raw")).to(RawQxCmdHandler.class);
 		bind(IQxEventHandler.class).annotatedWith(Names.named("raw")).to(RawQxCmdHandler.class);
+		
+	
 		
 		//
 		// Comunications

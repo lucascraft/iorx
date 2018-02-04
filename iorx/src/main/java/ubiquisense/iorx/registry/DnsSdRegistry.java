@@ -26,8 +26,8 @@ import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
 import ubiquisense.iorx.discovery.IXCPDeviceLifecycleListener;
 import ubiquisense.iorx.discovery.SupervisorUtils;
+import ubiquisense.iorx.dndns.ISmartDnsServiceManager;
 import ubiquisense.iorx.dndns.services.DnDnsService;
-import ubiquisense.iorx.dndns.services.ISmartDnsServiceManager;
 import ubiquisense.iorx.topology.ledger.XCPServiceStatus;
 
 /**

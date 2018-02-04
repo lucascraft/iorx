@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link
+ media="all" href="ArduinoBoardBluetooth_fichiers/widget43.css" 
+type="text/css" rel="stylesheet">
+
+
+  <title>Arduino - ArduinoBoardBluetooth </title>
+  <link rel="shortcut icon" type="image/x-icon" 
+href="http://arduino.cc/favicon.png">
+  <link rel="stylesheet" 
+href="ArduinoBoardBluetooth_fichiers/arduino.css" type="text/css">
+  <meta name="verify-v1" 
+content="TtxFIEJAB6zdJ509wLxjnapQzKAMNm9u0Wj4ho6wxIY=">
+</head><body><div id="_atssh" style="visibility: hidden; height: 1px; 
+width: 1px; position: absolute; z-index: 100000;"><iframe 
+src="ArduinoBoardBluetooth_fichiers/sh23.html" style="height: 1px; 
+width: 1px; position: absolute; z-index: 100000; border: 0pt none; left:
+ 0pt; top: 0pt;" id="_atssh230"></iframe></div>
+<div id="page">
+<!--PageHeaderFmt-->
+<div id="pageheader">
+  <div class="title"><a href="http://arduino.cc/en">Arduino</a></div>
+  <div class="search">
+    <!-- SiteSearch Google -->
+    <form method="GET" action="http://www.google.com/search">
+    <input name="ie" value="UTF-8" type="hidden">
+    <input name="oe" value="UTF-8" type="hidden">
+    <input name="q" size="25" maxlength="255" type="text">
+    <input name="btnG" value="search" type="submit">
+    <input name="domains" value="http://www.arduino.cc/" type="hidden">
+    <input name="sitesearch" value="http://www.arduino.cc/" 
+type="hidden">
+    </form>
+    <!-- SiteSearch Google -->
+  </div>
+</div>
+<!--/PageHeaderFmt-->
+<!--PageLeftFmt-->
+<div id="pagenav" style="text-align: right;">
+  <div style="float: left;">
+  <p><a class="wikilink" href="http://arduino.cc/en/Main/Buy">Buy</a>
+|
+<a class="wikilink" href="http://arduino.cc/en/Main/Software">Download</a>
+|
+<a class="wikilink" href="http://arduino.cc/en/Guide/HomePage">Getting 
+Started</a>
+|
+<a class="wikilink" href="http://arduino.cc/en/Tutorial/HomePage">Learning</a>
+|
+<a class="wikilink" href="http://arduino.cc/en/Reference/HomePage">Reference</a>
+|
+<a class="wikilink" href="http://arduino.cc/en/Main/Hardware">Hardware</a>
+|
+<a class="wikilink" href="http://arduino.cc/en/Main/FAQ">FAQ</a>
+</p>
+<p class="vspace"></p>
+
+  </div>
+  <a class="urllink" href="http://www.arduino.cc/blog/" rel="nofollow">Blog
+ »</a> |
+  <a class="urllink" href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl" 
+rel="nofollow">Forum »</a> |
+  <a class="urllink" href="http://www.arduino.cc/playground/" 
+rel="nofollow">Playground »</a>
+</div>
+<!--/PageLeftFmt-->
+<div id="pagetext">
+<!--PageText-->
+<div id="wikitext">
+<h2>Arduino BT (Bluetooth)</h2>
+<div><img src="ArduinoBoardBluetooth_fichiers/ArduinoBT400.jpg" alt="" 
+title=""></div>
+<p class="vspace"></p><h3>Overview</h3>
+<p>The Arduino BT is a microcontroller board based on the <span 
+class="wikiword">ATmega168</span> (<a class="urllink" 
+href="http://www.atmel.com/dyn/resources/prod_documents/doc2545.pdf" 
+rel="nofollow">datasheet</a>) and the Bluegiga <span class="wikiword">WT11</span>
+ bluetooth module (<a class="urllink" 
+href="http://www.bluegiga.com/wt11-1" rel="nofollow">details</a> and <a 
+class="urllink" 
+href="http://www.bluegiga.com/files/bluegiga/Pub%20files/WT11_datasheet.pdf"
+ rel="nofollow">datasheet</a> [pdf]).  It supports wireless serial 
+communication over bluetooth (but is not compatible with Bluetooth 
+headsets or other audio devices).  It has 14 digital input/output pins 
+(of which 6 can be used as PWM outputs and one can be used to reset the <span
+ class="wikiword">WT11</span> module), 6 analog inputs, a 16 <span 
+class="wikiword">MHz</span> crystal oscillator, screw terminals for 
+power, an ICSP header, and a reset button.  It contains everything 
+needed to support the microcontroller and can be programmed wirelessly 
+over the Bluetooth connection.  Instructions are available for <a 
+class="wikilink" href="http://arduino.cc/en/Guide/ArduinoBT">getting 
+started with the Arduino BT</a>.
+</p>
+<p class="vspace"></p><h3>Summary</h3>
+<table border="0"><tbody><tr><td align="left">Microcontroller</td><td 
+align="left"><span class="wikiword">ATmega168</span></td></tr>
+<tr><td align="left">Operating Voltage</td><td align="left">5V</td></tr>
+<tr><td align="left">Input Voltage</td><td align="left">1.2-5.5 V</td></tr>
+<tr><td align="left">Digital I/O Pins</td><td align="left">14 (of which 6
+ provide PWM output)</td></tr>
+<tr><td align="left">Analog Input Pins</td><td align="left">6</td></tr>
+<tr><td align="left">DC Current per I/O Pin</td><td align="left">40 mA</td></tr>
+<tr><td align="left">DC Current for 3.3V Pin</td><td align="left">50 mA</td></tr>
+<tr><td align="left">Flash Memory</td><td align="left">16 KB (of which 2
+ KB used by bootloader)</td></tr>
+<tr><td align="left">SRAM</td><td align="left">1 KB</td></tr>
+<tr><td align="left">EEPROM</td><td align="left">512 bytes</td></tr>
+<tr><td align="left">Clock Speed</td><td align="left">16 <span 
+class="wikiword">MHz</span></td></tr>
+</tbody></table>
+<p class="vspace"></p><h3>Schematic &amp; Reference Design</h3>
+<p>Reference Design: <a class="urllink" 
+href="http://arduino.cc/en/uploads/Main/arduino-bt-reference-design.zip"
+ rel="nofollow">arduino-bt-reference-design.zip</a> <br>Schematic: <a 
+class="urllink" 
+href="http://arduino.cc/en/uploads/Main/arduino_bt06.pdf" rel="nofollow">arduino_bt06.pdf</a>
+</p>
+<p class="vspace"></p><h3>Power</h3>
+<p>The Arduino BT can be powered via the V+ and GND screw terminals.  
+The board contains a DC-DC convector that allows it to be powered with 
+as little as 1.2V, but a maximum of 5.5V.  <strong>Higher voltages or 
+reversed polarity in the power supply can damage or destroy the board.</strong>
+</p>
+<p class="vspace"></p><p>The power pins are as follows:
+</p>
+<p class="vspace"></p><ul><li><strong>9V.</strong>  The input voltage to
+ the Arduino board (i.e. the same as the V+ screw terminal).  You can 
+supply voltage through this pin, or, if supplying voltage via the screw 
+terminals, access it through this pin.  <strong>Warning: despite the 
+label, do not attach 9V to this pin.  It will damage the board.</strong>
+<p class="vspace"></p></li><li><strong>5V.</strong> The regulated power 
+supply used to power the microcontroller and other components on the 
+board.  This can come either from V+ via the on-board DC-DC convertor, 
+or be supplied by a regulated 5V supply.
+<p class="vspace"></p></li><li><strong>GND.</strong> Ground pins.  
+</li></ul><p class="vspace"></p><h3>Memory</h3>
+<p>The <span class="wikiword">ATmega168</span> has 16 KB of flash memory
+ for storing code (of which 2 KB is used for the bootloader).  It has 1 
+KB of SRAM and 512 bytes of EEPROM (which can be read and written with 
+the <a class="urllink" href="http://www.arduino.cc/en/Reference/EEPROM" 
+rel="nofollow">EEPROM library</a>).
+</p>
+<p class="vspace"></p><h3>Input and Output</h3>
+<p>Each of the 14 digital pins on the BT can be used as an input or 
+output, using <a class="wikilink" 
+href="http://arduino.cc/en/Reference/PinMode">pinMode()</a>, <a 
+class="wikilink" href="http://arduino.cc/en/Reference/DigitalWrite">digitalWrite()</a>,
+ and <a class="wikilink" 
+href="http://arduino.cc/en/Reference/DigitalRead">digitalRead()</a> 
+functions.  They operate at 5 volts.  Each pin can provide or receive a 
+maximum of 40 mA and has an internal pull-up resistor (disconnected by 
+default) of 20-50 kOhms.  In addition, some pins have specialized 
+functions:
+</p>
+<p class="vspace"></p><ul><li><strong>Serial: 0 (RX) and 1 (TX).</strong>
+  Used to receive (RX) and transmit (TX) TTL serial data.  These pins 
+are connected to the corresponding pins of the Bluegiga <span 
+class="wikiword">WT11</span> module.  
+<p class="vspace"></p></li><li><strong>External Interrupts: 2 and 3.</strong>
+ These pins can be configured to trigger an interrupt on a low value, a 
+rising or falling edge, or a change in value.  See the <a 
+class="wikilink" href="http://arduino.cc/en/Reference/AttachInterrupt">attachInterrupt()</a>
+ function for details.
+<p class="vspace"></p></li><li><strong>PWM: 3, 5, 6, 9, 10, and 11.</strong>
+  Provide 8-bit PWM output with the <a class="wikilink" 
+href="http://arduino.cc/en/Reference/AnalogWrite">analogWrite()</a> 
+function.  
+<p class="vspace"></p></li><li><strong>SPI: 10 (SS), 11 (MOSI), 12 
+(MISO), 13 (SCK).</strong>  These pins support SPI communication, which,
+ although provided by the underlying hardware, is not currently included
+ in the Arduino language.
+<p class="vspace"></p></li><li><strong>BT Reset: 7.</strong> Connected 
+to the reset line of the Bluegiga <span class="wikiword">WT11</span> 
+module, which is active high.  
+<p class="vspace"></p></li><li><strong>LED: 13.</strong> There is a 
+built-in LED connected to digital pin 13.  When the pin is HIGH value, 
+the LED is on, when the pin is LOW, it's off.
+</li></ul><p class="vspace"></p><p>The BT has 6 analog inputs, each of 
+which provide 10 bits of resolution (i.e. 1024 different values).  By 
+default they measure from ground to 5 volts, though is it possible to 
+change the upper end of their range using the AREF pin and some 
+low-level code.  Additionally, some pins have specialized functionality:
+</p>
+<p class="vspace"></p><ul><li><strong>I<sup>2</sup>C: 4 (SDA) and 5 
+(SCL).</strong>  Support I<sup>2</sup>C (TWI) communication using the <a
+ class="urllink" 
+href="http://wiring.org.co/reference/libraries/Wire/index.html" 
+rel="nofollow">Wire library</a> (documentation on the Wiring website).
+</li></ul><p class="vspace"></p><p>There are a couple of other pins on 
+the board:
+</p>
+<p class="vspace"></p><ul><li><strong>AREF.</strong> Reference voltage 
+for the analog inputs.  Used with <a class="wikilink" 
+href="http://arduino.cc/en/Reference/AnalogReference">analogReference</a>().
+</li></ul><p class="vspace"></p><p>See also the <a class="wikilink" 
+href="http://arduino.cc/en/Hacking/PinMapping168">mapping between 
+Arduino pins and ATmega168 ports</a>.
+</p>
+<p class="vspace"></p><h3>Bluetooth Communication</h3>
+<p>The Bluegiga <span class="wikiword">WT11</span> module on the Arduino
+ BT provides Bluetooth communication with computers, phones, and other 
+Bluetooth devices.  The <span class="wikiword">WT11</span> communicates 
+with the <span class="wikiword">ATmega168</span> via serial (shared with
+ the RX and TX pins on the board).  It comes configured for 115200 baud 
+communication.  The module should be configurable and detectable by your
+ operating system's bluetooth drivers, which should then provide a 
+virtual com port for use by other applications.  The Arduino software 
+includes a serial monitor which allows simple textual data to be sent to
+ and from the Arduino board over this bluetooth connection.  The board 
+can also be reprogrammed using this same wireless connection.
+</p>
+<p class="vspace"></p><p>The <span class="wikiword">WT11</span> is 
+specially configured for use in the Arduino BT.  Its name is set to  
+ARDUINOBT and passcode to 12345.  For details, see the complete <a 
+class="wikilink" 
+href="http://arduino.cc/en/Main/ArduinoBTInitializationSketch">initialization
+ sketch</a>.
+</p>
+<p class="vspace"></p><h3>Communication</h3>
+<p>The Arduino BT has a number of other facilities for communicating.  
+The <span class="wikiword">ATmega168</span>'s UART TTL (5V) serial 
+communication is available on digital pins 0 (RX) and 1 (TX) as well as 
+being connected to the <span class="wikiword">WT11</span> module.
+</p>
+<p class="vspace"></p><p>A <a class="urllink" 
+href="http://www.arduino.cc/en/Reference/SoftwareSerial" rel="nofollow">SoftwareSerial
+ library</a> allows for serial communication on any of the BT's digital 
+pins.
+</p>
+<p class="vspace"></p><p>The <span class="wikiword">ATmega168</span> 
+also supports <span class="wikiword">I2C</span> (TWI) and SPI 
+communication.  The Arduino software includes a Wire library to simplify
+ use of the <span class="wikiword">I2C</span> bus; see the <a 
+class="urllink" 
+href="http://wiring.org.co/reference/libraries/Wire/index.html" 
+rel="nofollow">documentation on the Wiring website</a> for details.  To 
+use the SPI communication, please see the <span class="wikiword">ATmega168</span>
+ datasheet.
+</p>
+<p class="vspace"></p><h3>Programming</h3>
+<p>The Arduino BT can be programmed with the Arduino software (<a 
+class="wikilink" href="http://arduino.cc/en/Main/Software">download</a>).
+  For details, see the <a class="wikilink" 
+href="http://arduino.cc/en/Reference/HomePage">reference</a> and <a 
+class="wikilink" href="http://arduino.cc/en/Tutorial/HomePage">tutorials</a>.
+</p>
+<p class="vspace"></p><p>The <span class="wikiword">ATmega168</span> on 
+the Arduino BT comes preburned with a <a class="wikilink" 
+href="http://arduino.cc/en/Tutorial/Bootloader">bootloader</a> that 
+allows you to upload new code to it without the use of an external 
+hardware programmer.  It communicates using the original <span 
+class="wikiword">STK500</span> protocol (<a class="urllink" 
+href="http://www.atmel.com/dyn/resources/prod_documents/doc2525.pdf" 
+rel="nofollow">reference</a>, <a class="urllink" 
+href="http://www.atmel.com/dyn/resources/prod_documents/avr061.zip" 
+rel="nofollow">C header files</a>).
+</p>
+<p class="vspace"></p><p>You can also bypass the bootloader and program 
+the <span class="wikiword">ATmega168</span> through the ICSP (In-Circuit
+ Serial Programming) header; see <a class="wikilink" 
+href="http://arduino.cc/en/Hacking/Programmer">these instructions</a> 
+for details.
+</p>
+<p class="vspace"></p><h3>Physical Characteristics</h3>
+<p>The maximum length and width of the BT are approximately 3.2 and 2.1 
+inches respectively.  Three screw holes allow the board to be attached 
+to a surface or case.  Note that the distance between digital pins 7 and
+ 8 is 160 mil (0.16"), not an even multiple of the 100 mil spacing of 
+the other pins.
+</p>
+</div>
+
+
+<!-- AddThis Button BEGIN -->
+<script type="text/javascript">var addthis_language = "en";
+</script>
+<div class="addthis_container addthis_toolbox addthis_default_style" 
+addthis:url="http://arduino.cc/en/Main/ArduinoBoardBluetooth" 
+addthis:title="Arduino Wiki English">
+<a 
+href="http://www.addthis.com/bookmark.php?v=250&amp;username=arduinoteam"
+ class="addthis_button_compact at300m"><span class="at300bs 
+at15t_compact"></span>Share</a><span class="addthis_separator">|</span><a
+ title="Email" class="addthis_button_email at300b"><span class="at300bs 
+at15t_email"></span></a><a title="Save to Favorites" 
+class="addthis_button_favorites at300b"><span class="at300bs 
+at15t_favorites"></span></a><a title="Print" class="addthis_button_print
+ at300b"><span class="at300bs at15t_print"></span></a><a title="Send to 
+Facebook" target="_blank" 
+href="http://www.addthis.com/bookmark.php?v=250&amp;winname=addthis&amp;pub=arduinoteam&amp;source=tbx-250&amp;lng=en&amp;s=facebook&amp;url=http%3A%2F%2Farduino.cc%2Fen%2FMain%2FArduinoBoardBluetooth&amp;title=Arduino%20Wiki%20English&amp;ate=AT-arduinoteam/-/pz-2/4c9ce8ead4923fed/1&amp;CXNID=2000001.5215456080540439074NXC&amp;pre=http%3A%2F%2Farduino.cc%2Fen%2FMain%2FHardware&amp;tt=0"
+ class="addthis_button_facebook at300b"><span class="at300bs 
+at15t_facebook"></span></a><a title="Tweet This" target="_blank" 
+class="addthis_button_twitter at300b"><span class="at300bs 
+at15t_twitter"></span></a><script type="text/javascript" src="ArduinoBoardBluetooth_fichiers/addthis_widget.js"></script><div
+ class="atclear"></div></div>
+<!-- AddThis Button END -->
+
+</div>
+<!--PageFooterFmt-->
+<div id="pagefooter">
+  <a href="http://arduino.cc/en/Main/ArduinoBoardBluetooth?action=edit">Edit
+ Page</a> | <a 
+href="http://arduino.cc/en/Main/ArduinoBoardBluetooth?action=diff">Page 
+History</a> | <a 
+href="http://arduino.cc/en/Main/ArduinoBoardBluetooth?action=print" 
+target="_blank">Printable View</a> | <a 
+href="http://arduino.cc/en/Site/AllRecentChanges">All Recent Site 
+Changes</a>
+</div>
+<!--/PageFooterFmt-->
+</div>
+</body></html>

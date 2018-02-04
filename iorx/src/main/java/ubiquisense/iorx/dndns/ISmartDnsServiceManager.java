@@ -33,7 +33,7 @@
  *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
  ***********************************************************************************/
 
-package ubiquisense.iorx.dndns.services;
+package ubiquisense.iorx.dndns;
 
 import javax.jmdns.ServiceInfo;
 
