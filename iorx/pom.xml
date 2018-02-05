@@ -27,7 +27,7 @@
 				<version>2.12.4</version>
 				<configuration>
 					<forkMode>once</forkMode>
-					<argLine>-Djava.library.path=${project.basedir}/src/libs/natives/win32/x86_64</argLine>
+					<argLine>-Djava.library.path=${project.basedir}/src/libs/natives/win32/x86_64;${project.basedir}/src/jars</argLine>
 					<skipTests>false</skipTests>
 				</configuration>
 			</plugin>
@@ -69,7 +69,7 @@
 							<!-- The commit message -->
 							<message>Building Iorx site</message>
 							<!-- The location where the site is uploaded -->
-							<oauth2Token>9bab051124f55f9630c8a3cfd48e73a97c8e0670</oauth2Token>
+							<oauth2Token>eeeeeeeeeeeeeee</oauth2Token>
 							<path>ubiquisense/iorx</path>
 							<!-- Use merge or override the content -->
 							<merge>true</merge>
@@ -128,29 +128,6 @@
 			<version>3.5.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.bluecove</groupId>
-			<artifactId>bluecove</artifactId>
-			<version>2.1.0</version>
-		</dependency>		<!-- <dependency> <groupId>org.ow2.chameleon.commons.bluecove</groupId> <artifactId>bluecove</artifactId> 
-			<version>2.1.1-63</version> </dependency> -->
-		<dependency>
-			<groupId>org.bidib.jbidib</groupId>
-			<artifactId>jbidibc-rxtx-2.2</artifactId>
-			<version>1.6.0</version>
-		</dependency>
-		<!-- 
-		<dependency>
-		    <groupId>org.bidib.jbidib</groupId>
-		    <artifactId>bidib-rxtx-binaries</artifactId>
-		    <version>2.2</version>
-		</dependency>		 
-		<dependency>
-			<groupId>org.rxtx</groupId>
-			<artifactId>rxtx</artifactId>
-			<version>2.1.7</version>
-		</dependency>
-		-->
-		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
 			<version>0.9.11</version>
@@ -160,6 +137,34 @@
 			<artifactId>xbee-api</artifactId>
 			<version>0.9.3</version>
 		</dependency>
+		<dependency>
+		    <groupId>fmodex</groupId>
+		    <artifactId>fmodex-libs</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/NativeFmodEx.jar</systemPath>
+		</dependency>	
+		<dependency>
+		    <groupId>fmodex</groupId>
+		    <artifactId>fmodexdesigner-libs</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/NativeFmodDesigner.jar</systemPath>
+		</dependency>	
+		<dependency>
+		    <groupId>rxtx</groupId>
+		    <artifactId>rxtx-win32-x86_64</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/RXTXcomm.jar</systemPath>
+		</dependency>	
+		<dependency>
+		    <groupId>bluecove</groupId>
+		    <artifactId>bluecove-win32-x86_64</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/bluecove-2.1.1.jar</systemPath>
+		</dependency>	
 	</dependencies>
 	<organization>
 		<name>ubiquisense</name>
