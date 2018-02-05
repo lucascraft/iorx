@@ -37,7 +37,6 @@ public final class ProtocolRegistry extends GuiceRegistery
 			IXFrameInterpreter frameInterpreter = injector.getInstance(Key.get(IXFrameInterpreter.class, commProtocolToMatch)); 
 			IXCmdInterpreter cmdInterpreter= injector.getInstance(Key.get(IXCmdInterpreter.class, commProtocolToMatch)); 
 			IQxEventHandler eventHandler= injector.getInstance(Key.get(IQxEventHandler.class, commProtocolToMatch)); 
-	
 			return new CommProtocolConfig(id, id, cmdInterpreter, frameInterpreter, eventHandler);
 		}
 		catch (Exception e)
@@ -47,27 +46,24 @@ public final class ProtocolRegistry extends GuiceRegistery
 		return null;
 	}
 	
-	public Set<TransportChannel> getTransportProtocols()
+
+	public TransportChannel getTransportCommunicator(TransportProtocol protocol)
 	{
-		Set<TransportChannel> configs = Sets.newHashSet();
-		Set<Class<?>> annotatedClasses = new Reflections("").getTypesAnnotatedWith(CommunicationProtocol.class, true);
-		annotatedClasses.stream().filter(c -> Sets.newHashSet(c.getInterfaces()).contains(TransportChannel.class))
-			.forEach(c -> configs.add(getTransportProtocol(c.getAnnotation(CommunicationProtocol.class).type())));
-		return configs.stream().filter(p -> p != null).collect(Collectors.toSet());
+		return getTransportCommunicator(protocol.type());
 	}
 	
-	public TransportChannel getTransportProtocol(String id)
+	public TransportChannel getTransportCommunicator(String id)
 	{	
 		id = !id.endsWith("://")?(id+"://"):id;
 		try 
 		{
 			TransportProtocol commProtocolToMatch = Binder.transport(id);
-			TransportChannel frameInterpreter = injector.getInstance(Key.get(TransportChannel.class, commProtocolToMatch)); 
-			return frameInterpreter;
+			TransportChannel transportChannel = injector.getInstance(Key.get(TransportChannel.class, commProtocolToMatch)); 
+			return transportChannel;
 		}
 		catch (Exception e)
 		{
-			System.out.println("@named " + id + " is not a Qx interpreter");
+			System.out.println("@named " + id + " is not a Qx transport channel");
 		}
 		return null;
 	}

@@ -35,8 +35,9 @@
 
 package ubiquisense.iorx.discovery;
 
+import ubiquisense.iorx.annotations.TransportProtocol;
 
-public class ZeroconfDeviceDiscovery implements DeviceDiscovery{
+public abstract class ZeroconfDeviceDiscovery implements DeviceDiscovery{
 	//
 	// UDP/TCP service discovery
 	//
@@ -169,4 +170,6 @@ public class ZeroconfDeviceDiscovery implements DeviceDiscovery{
 		//tcpServicesDiscoveryThread.startRefreshingServices();
 	}
 	 */		
+	
+	public abstract void  scan() ;
 }

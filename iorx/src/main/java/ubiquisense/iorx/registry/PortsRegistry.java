@@ -54,39 +54,6 @@ public final class PortsRegistry {
 		l2capInputJobs = new HashMap<String, L2CAPInputJob>();
 	}
 
-//
-//	/**
-//	 * Open ports according to a given configuration.
-//	 * 
-//	 * - USB - TCP - UDP - HTTP - XBee - Bluetooth - Ubiquitous (later ...)
-//	 * 
-//	 * with respective address:port scheme
-//	 * 
-//	 * @param bind
-//	 *            binding definition according to NetConf DSL
-//	 * @param engine
-//	 *            {@link CmdPipe} reference
-//	 * 
-//	 * @return the newly resolved/bind address w/ given protocol
-//	 */
-//	public Port resolvePort(final NetBind bind, final CmdPipe engine,
-//			Map<Object, Object> options, boolean locked) {
-//		if (bind == null || engine == null) {
-//			return null;
-//		}
-//		List<Integer> acceptedPortsList = bind.getPort().getPorts();
-//		int[] acceptedPorts = acceptedPortsList == null ? null
-//				: new int[acceptedPortsList.size()];
-//		int idx = 0;
-//		for (Integer port : acceptedPortsList) {
-//			acceptedPorts[idx] = port;
-//			idx++;
-//		}
-//		return resolvePort(bind.getPort().getKind().getLiteral(), bind
-//				.getPort().getPortID(), acceptedPorts, bind.getPort()
-//				.getSpeed(), engine, options, locked);
-//	}
-
 	/**
 	 * Open ports according to a given configuration.
 	 * 
@@ -267,18 +234,6 @@ public final class PortsRegistry {
 			}
 		}
 	}
-	
-	public CmdEngine getCmdEngineByIDFromApp(EngineApplication app, String clientID)
-	{
-		for (CmdEngine e : app.getClients())
-		{
-			if (e.getId().equals(clientID))
-			{
-				return e;
-			}
-		}
-		return null;
-	}
 
 	public synchronized void closePipe(CmdPipe... pipes) {
 		for (CmdPipe pipe : pipes) {
@@ -331,81 +286,5 @@ public final class PortsRegistry {
 			}
 		}
 	}
-
-//	/*
-//	 * build a map from netconf resource and its associated orchestrors
-//	 */
-//	private Map<NetCfg, List<Orchestror>> buildNetCfg(NetCfg cfg, boolean locked) {
-//		Map<NetCfg, List<Orchestror>> cfgOrchestrorsMap = new HashMap<NetCfg, List<Orchestror>>();
-//		List<Orchestror> orchestrors = new ArrayList<Orchestror>();
-//		for (NetOrchestrorScope scope : cfg.getOrchestrorScopes()) {
-//			Orchestror orchestror = OrchestrorUtil.INSTANCE
-//					.buildOrchestror(scope.getDslOrchestror());
-//			for (NetBind b : scope.getBinds()) {
-//				CmdPipe engine = getCmdEngineByCmdID(orchestror
-//						.getApplication().getEngine(), b.getEngine().getName());
-//				if (engine != null) {
-//					if (Platform.isRunning()) {
-//						IXCmdInterpreter interpreter = resolveCmdInterpreterInOSGiContext(b
-//								.getInterpreter());
-//						engine.setOutputInterpreter(interpreter);
-//					} else {
-//						engine.setOutputInterpreter(new NullXCmdInterpreter());
-//					}
-//					if (Platform.isRunning()) {
-//						IXFrameInterpreter decoder = resolveFrameInterpreterInOSGiContext(b
-//								.getDecoder());
-//						engine.setInputInterpreter(decoder);
-//					} else {
-//						engine.setInputInterpreter(new NullXFrameInterpreter());
-//					}
-//					Port port = resolvePort(b, engine,
-//							new HashMap<Object, Object>(), locked);
-//					if (port != null) {
-//						engine.setPort(port);
-//						port.setEngine(engine);
-//					}
-//					for (NetListener l : b.getListeners()) {
-//						IQxEventHandler eventHandler = null;
-//
-//						if (Platform.isRunning()) {
-//							eventHandler = resolveListenerInOSGiContext(l);
-//						} else {
-//							eventHandler = resolveListenerInRuntimeContext(l);
-//						}
-//						if (engine instanceof CmdPipe) {
-//							for (Adapter adapter : ((CmdPipe) engine)
-//									.eAdapters()) {
-//								if (adapter instanceof QxEventAdapterImpl) {
-//									if (!((QxEventAdapterImpl) adapter)
-//											.getEvtHandlers().contains(
-//													eventHandler)) {
-//										((QxEventAdapterImpl) adapter)
-//												.getEvtHandlers().add(
-//														eventHandler);
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//				orchestrors.add(orchestror);
-//			}
-//		}
-//		cfgOrchestrorsMap.put(cfg, orchestrors);
-//		netCfgRegistry.put(cfg, orchestrors);
-//
-//		//
-//		//
-//		//
-//		for (Orchestror orchestror : orchestrors) {
-//			if (!OrchestrorUtil.INSTANCE.getOrchestrorRegistry().contains(
-//					orchestror)) {
-//				OrchestrorUtil.INSTANCE.getOrchestrorRegistry().add(orchestror);
-//			}
-//		}
-//
-//		return cfgOrchestrorsMap;
-//	}
 
 }

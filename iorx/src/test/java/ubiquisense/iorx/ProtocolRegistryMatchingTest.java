@@ -71,40 +71,35 @@ public class ProtocolRegistryMatchingTest {
 	@Test
 	public void testTansportProtocolReactorRegistryMatching() {
 	
-		TransportChannel udp = Ubq.Protocol.getTransportProtocol("udp");
+		TransportChannel udp = Ubq.Protocol.getTransportCommunicator("udp");
 
 		assertNotNull(udp);
 
 		assertTrue(udp instanceof UdpTransportCommunicator);
 
-		TransportChannel tcp = Ubq.Protocol.getTransportProtocol("tcp");
+		TransportChannel tcp = Ubq.Protocol.getTransportCommunicator("tcp");
 
 		assertNotNull(tcp);
 
 		assertTrue(tcp instanceof TcpTransportCommunicator);
 
-		TransportChannel midi = Ubq.Protocol.getTransportProtocol("midi");
+		TransportChannel midi = Ubq.Protocol.getTransportCommunicator("midi");
 
 		assertNotNull(midi);
 
 		assertTrue(midi instanceof MidiTransportCommunicator);
 		
-		TransportChannel bt = Ubq.Protocol.getTransportProtocol("bt");
+		TransportChannel bt = Ubq.Protocol.getTransportCommunicator("bt");
 
 		assertNotNull(bt);
 
 		assertTrue(bt instanceof BTTransportCommunicator);
 		
-		TransportChannel usb = Ubq.Protocol.getTransportProtocol("usb");
+		TransportChannel usb = Ubq.Protocol.getTransportCommunicator("usb");
 
 		assertNotNull(usb);
 
 		assertTrue(usb instanceof UsbSerialTransportCommunicator);
-
-		
-		Set<TransportChannel> allConfigs = Ubq.Protocol.getTransportProtocols();
-
-		assertTrue(allConfigs.containsAll(Sets.newHashSet()));
 
 	}
 }

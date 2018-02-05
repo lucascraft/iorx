@@ -40,14 +40,16 @@ import java.io.IOException;
 public class ContinuousDiscoveryAgent extends Thread implements IContinuousDiscoveryAgent {
 	private BluetoothDeviceDiscovery btDeviceDiscovery;
 	private USbDeviceDiscovery usbDeviceDiscovery;
-	private ZeroconfDeviceDiscovery zeroconfDeviceDiscovery;
+	private TcpServiceDiscovery tcpDeviceDiscovery;
+	private UdpServiceDiscovery udpDeviceDiscovery;
 	private XBeeDeviceDiscovery xbeeDeviceDiscovery;
 
 	public ContinuousDiscoveryAgent() {
 		super("Tansversal Discovery Topology Agent");
 		btDeviceDiscovery		= new BluetoothDeviceDiscovery();
 		usbDeviceDiscovery		= new USbDeviceDiscovery();
-		zeroconfDeviceDiscovery = new ZeroconfDeviceDiscovery();
+		tcpDeviceDiscovery 		= new TcpServiceDiscovery();
+		udpDeviceDiscovery 		= new UdpServiceDiscovery();
 		xbeeDeviceDiscovery		= new XBeeDeviceDiscovery();
 	}
 	
@@ -60,7 +62,7 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 	public void run() {
 		do
 		{
-			handleBTStuff();
+			//handleBTStuff();
 			//handleHttpStuff(); /..... hmm, think to that later ...
 			//handleUdpStuff();
 			//handleTcpStuff();
@@ -94,6 +96,7 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 	 */
 	public void handleTcpStuff() {
 		//zeroconfDeviceDiscovery.discoverTcpZeroconfDevices();
+		tcpDeviceDiscovery.scan();
 		reconcileSessionTcpConnections();
 	}
 
@@ -102,6 +105,7 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 	 */
 	public void handleUdpStuff() {
 		//zeroconfDeviceDiscovery.discoverUdpZeroconfDevices();
+		udpDeviceDiscovery.scan();
 		reconcileSessionUdpConnections();
 	}
 

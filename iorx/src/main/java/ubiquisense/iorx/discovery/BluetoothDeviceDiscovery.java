@@ -44,12 +44,15 @@ import javax.bluetooth.LocalDevice;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.ServiceRecord;
 
+import ubiquisense.iorx.annotations.TransportProtocol;
+
  
  
 /**
  * Class that discovers all bluetooth devices in the neighborhood
  * and displays their name and bluetooth address.
  */
+@TransportProtocol(type = "bt://")
 public class BluetoothDeviceDiscovery implements DeviceDiscovery{
 	
     //object used for waiting
