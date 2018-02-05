@@ -1,5 +1,3 @@
-/**
- */
 package ubiquisense.iorx.hardware.arduino;
 
 import java.util.List;

@@ -17,11 +17,6 @@ public class AnalogPortImpl extends PortImpl implements AnalogPort {
 		return value;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void setValue(float newValue) {
 		value = newValue;
 	}

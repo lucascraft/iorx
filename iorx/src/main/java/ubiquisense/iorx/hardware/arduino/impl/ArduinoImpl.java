@@ -82,32 +82,14 @@ public class ArduinoImpl  implements Arduino {
 		return portListeners;
 	}
 	
-	
-
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ARDUINO_VER_BRAND_NAME getVer() {
 		return brandName;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void setVer(ARDUINO_VER_BRAND_NAME newVer) {
 		brandName = newVer;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Port> getCommPorts() {
 		// TODO: implement this method
@@ -115,11 +97,6 @@ public class ArduinoImpl  implements Arduino {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public DigitalPort getDigitalPortFromChannel(int channel) {
 		for (DigitalPort p : getDigitalPorts()) {
 			if (p.getChannel() == channel) {
@@ -129,11 +106,6 @@ public class ArduinoImpl  implements Arduino {
 		return null;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public AnalogPort getAnalogicPortFromChannel(int channel) {
 		for (AnalogPort p : getAnalogPorts()) {
 			if (p.getChannel() == channel) {
@@ -143,38 +115,19 @@ public class ArduinoImpl  implements Arduino {
 		return null;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ARDUINO_BOARD_KIND getBoard() {
 		return board;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setBoard(ARDUINO_BOARD_KIND newBoard) {
+		public void setBoard(ARDUINO_BOARD_KIND newBoard) {
 		board = newBoard;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	
 	public ARDUINO_ATMEGA_168_SERIES getSeries() {
 		return series;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void setSeries(ARDUINO_ATMEGA_168_SERIES newSeries) {
 		series = newSeries;
 	}
