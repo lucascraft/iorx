@@ -39,10 +39,10 @@ import java.util.Map;
 
 import javax.inject.Named;
 
-import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 
 @Named("http://")
-public abstract class HttpCommunicator extends ChannelImpl {
+public abstract class HttpCommunicator extends TransportChannelImpl {
 	public HttpCommunicator() {
 	}
     protected String portID;

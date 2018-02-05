@@ -8,8 +8,8 @@ import ubiquisense.iorx.comm.OutputJob;
 
 public interface Port 
 {
-	Channel getChannel();
-	void setChannel(Channel channel);
+	TransportChannel getChannel();
+	void setChannel(TransportChannel channel);
 	Set<InputJob> getInputJobs();
 	Set<OutputJob> getOutputJobs();
 	void finalize();

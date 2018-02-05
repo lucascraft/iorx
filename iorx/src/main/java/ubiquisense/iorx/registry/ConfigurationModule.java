@@ -4,6 +4,7 @@ package ubiquisense.iorx.registry;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
+import ubiquisense.iorx.annotations.Binder;
 import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.app.EngineApplicationImpl;
 import ubiquisense.iorx.cmd.Cmd;
@@ -12,17 +13,17 @@ import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.cmd.impl.CmdEngineImpl;
 import ubiquisense.iorx.cmd.impl.CmdImpl;
 import ubiquisense.iorx.cmd.impl.CmdPipeImpl;
-import ubiquisense.iorx.comm.bt.io.BTCommunicator;
-import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
-import ubiquisense.iorx.comm.tcp.io.TcpChannel;
-import ubiquisense.iorx.comm.udp.io.UdpChannel;
-import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.comm.bt.io.BTTransportCommunicator;
+import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
+import ubiquisense.iorx.comm.tcp.io.TcpTransportCommunicator;
+import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.dndns.services.DaapService;
 import ubiquisense.iorx.dndns.services.DnDnsService;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.event.impl.EventImpl;
-import ubiquisense.iorx.io.Channel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.firmata.FirmataCmdQxEventHandler;
@@ -58,7 +59,6 @@ public class ConfigurationModule extends AbstractModule
 		
 		bind(Rx.class).to(RxImpl.class);
 		bind(Tx.class).to(TxImpl.class);
-
 		
 		//
 		// Engines
@@ -75,39 +75,39 @@ public class ConfigurationModule extends AbstractModule
 		// -- midi --
 		
 		
-		bind(IXFrameInterpreter.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
-		bind(IXCmdInterpreter.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
-		bind(IQxEventHandler.class).annotatedWith(Names.named("midi")).to(MidiQxCmdHandler.class);
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("midi")).to(MidiQxCmdHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("midi")).to(MidiQxCmdHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("midi")).to(MidiQxCmdHandler.class);
 		
 		// -- osc --
 		
-		bind(IXFrameInterpreter.class).annotatedWith(Names.named("osc")).to(OSCQxCmdHandler.class);
-		bind(IXCmdInterpreter.class).annotatedWith(Names.named("osc")).to(OSCQxCmdHandler.class);
-		bind(IQxEventHandler.class).annotatedWith(Names.named("osc")).to(OSCQxCmdHandler.class);
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("osc")).to(OSCQxCmdHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("osc")).to(OSCQxCmdHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("osc")).to(OSCQxCmdHandler.class);
 		
 		// -- tuio11 --
 		
-		bind(IXFrameInterpreter.class).annotatedWith(Names.named("tuio11")).to(Tuio11QxCmdHandler.class);
-		bind(IXCmdInterpreter.class).annotatedWith(Names.named("tuio11")).to(Tuio11QxCmdHandler.class);
-		bind(IQxEventHandler.class).annotatedWith(Names.named("tuio11")).to(Tuio11QxCmdHandler.class);
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("tuio11")).to(Tuio11QxCmdHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("tuio11")).to(Tuio11QxCmdHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("tuio11")).to(Tuio11QxCmdHandler.class);
 		
 		// -- firmata --
 		
-		bind(IXFrameInterpreter.class).annotatedWith(Names.named("firmata")).to(FirmataCmdQxEventHandler.class);
-		bind(IXCmdInterpreter.class).annotatedWith(Names.named("firmata")).to(FirmataCmdQxEventHandler.class);
-		bind(IQxEventHandler.class).annotatedWith(Names.named("firmata")).to(FirmataCmdQxEventHandler.class);
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("firmata")).to(FirmataCmdQxEventHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("firmata")).to(FirmataCmdQxEventHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("firmata")).to(FirmataCmdQxEventHandler.class);
 		
 		// -- ubiquino --
 		
-		bind(IXFrameInterpreter.class).annotatedWith(Names.named("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
-		bind(IXCmdInterpreter.class).annotatedWith(Names.named("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
-		bind(IQxEventHandler.class).annotatedWith(Names.named("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("ubiquino")).to(UbiquinoQxCmdEventHandler.class);
 		
 		// -- raw --
 		
-		bind(IXFrameInterpreter.class).annotatedWith(Names.named("raw")).to(RawQxCmdHandler.class);
-		bind(IXCmdInterpreter.class).annotatedWith(Names.named("raw")).to(RawQxCmdHandler.class);
-		bind(IQxEventHandler.class).annotatedWith(Names.named("raw")).to(RawQxCmdHandler.class);
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("raw")).to(RawQxCmdHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("raw")).to(RawQxCmdHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("raw")).to(RawQxCmdHandler.class);
 		
 	
 		
@@ -115,30 +115,11 @@ public class ConfigurationModule extends AbstractModule
 		// Comunications
 		//
 		
-		
-		// --- udp:// ---
-		
-		bind(Channel.class).annotatedWith(Names.named("udp://")).to(UdpChannel.class);
-		
-		// --- tcp:// ---
-		
-		bind(Channel.class).annotatedWith(Names.named("tcp://")).to(TcpChannel.class);
-		
-		// --- usb:// ---
-		
-		bind(Channel.class).annotatedWith(Names.named("usb://")).to(Serial.class);
-		
-		// --- midi:// ---
-		
-		bind(Channel.class).annotatedWith(Names.named("midi://")).to(MidiCommunicator.class);
-		
-		// --- bt:// ---
-		
-		bind(Channel.class).annotatedWith(Names.named("bt://")).to(BTCommunicator.class);
-		
-		// --- http:// ---
-		
-		bind(Channel.class).annotatedWith(Names.named("bt://")).to(BTCommunicator.class);
+		bind(TransportChannel.class).annotatedWith(Binder.transport("udp://")).to(UdpTransportCommunicator.class);
+		bind(TransportChannel.class).annotatedWith(Binder.transport("tcp://")).to(TcpTransportCommunicator.class);
+		bind(TransportChannel.class).annotatedWith(Binder.transport("usb://")).to(UsbSerialTransportCommunicator.class);
+		bind(TransportChannel.class).annotatedWith(Binder.transport("midi://")).to(MidiTransportCommunicator.class);
+		bind(TransportChannel.class).annotatedWith(Binder.transport("bt://")).to(BTTransportCommunicator.class);
 		
 		//
 		// Dn Dns Services

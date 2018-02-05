@@ -6,10 +6,10 @@
  */
 package ubiquisense.iorx.topology.core;
 
-import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 
 public interface UsbConnection   {
-	Serial getSerial();
-	void setSerial(Serial value);
+	UsbSerialTransportCommunicator getSerial();
+	void setSerial(UsbSerialTransportCommunicator value);
 
 } // UsbConnection

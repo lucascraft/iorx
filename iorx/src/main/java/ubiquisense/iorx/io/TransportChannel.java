@@ -6,7 +6,7 @@ import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 
-public interface Channel {
+public interface TransportChannel {
 	List<IXCmdInterpreter> getCmdInterpretrers();
 	List<IXFrameInterpreter> getFrameInterpreters();
 	List<IQxEventHandler> getEventListeners();

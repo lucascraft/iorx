@@ -37,12 +37,13 @@ package ubiquisense.iorx.protocols.firmata;
 
 import javax.inject.Named;
 
+import ubiquisense.iorx.annotations.CommunicationProtocol;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CompoundCmd;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.Channel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.firmata.internal.FirmataCmdUtils;
@@ -57,7 +58,7 @@ import ubiquisense.iorx.utils.Platform;
 /**
  * The handler listen to queue event and send a byte[] form of the compatible firmata command
  */
-
+@CommunicationProtocol(type = "firmata")
 @Named("firmata")
 public class FirmataCmdQxEventHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {
 	
@@ -123,10 +124,10 @@ public class FirmataCmdQxEventHandler implements IQxEventHandler, IXCmdInterpret
 			synchronized (evt.getQx().getEngine().getOutputInterpreter()) {
 				IXCmdInterpreter outputInterpreter = evt.getQx().getEngine().getOutputInterpreter();
 				if (outputInterpreter != null) {
-					if (channel instanceof Channel) { // Serial
+					if (channel instanceof TransportChannel) { // Serial
 						byte[] frame = outputInterpreter.cmd2ByteArray(evt.getCmd());
 						if (frame != null && frame.length > 0) {
-							((Channel) channel).send(frame);
+							((TransportChannel) channel).send(frame);
 						}
 					}
 				}

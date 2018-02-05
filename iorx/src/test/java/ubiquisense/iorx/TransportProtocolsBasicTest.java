@@ -16,6 +16,8 @@ public class TransportProtocolsBasicTest extends GuiceInjectionTest {
 	@Test
 	public void testProtocolInterpretersInjection()
 	{
+		
+		
 		CmdPipe p1 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:3567", new int[] {}, -1, null, true);
 		CmdPipe p2 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "tuio11", "osc@" + UUID.randomUUID().toString(), "localhost:4587", new int[] {}, -1, null, true);
 		CmdPipe p3 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.TCP.getLiteral(), "midi", "osc@" + UUID.randomUUID().toString(), "localhost:8965", new int[] {}, -1, null, true);

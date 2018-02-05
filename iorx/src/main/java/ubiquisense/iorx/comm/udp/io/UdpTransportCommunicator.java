@@ -43,16 +43,18 @@ import java.net.UnknownHostException;
 
 import javax.inject.Named;
 
-import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.annotations.TransportProtocol;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 import ubiquisense.iorx.utils.Platform;
 
+@TransportProtocol(type = "udp://")
 @Named("udp://")
-public class UdpChannel extends ChannelImpl {
-	public UdpChannel() {
+public class UdpTransportCommunicator extends TransportChannelImpl {
+	public UdpTransportCommunicator() {
 	}
 	
 	private volatile DatagramSocket socket;
-	public UdpChannel(String addr, int port) {
+	public UdpTransportCommunicator(String addr, int port) {
 		try {
 		    socket = new DatagramSocket();
 		    socket.connect(InetAddress.getByName(addr), port);

@@ -42,16 +42,18 @@ import java.net.UnknownHostException;
 
 import javax.inject.Named;
 
-import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.annotations.TransportProtocol;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 import ubiquisense.iorx.utils.Platform;
 
+@TransportProtocol(type = "tcp://")
 @Named("tcp://")
-public class TcpChannel extends ChannelImpl {
-	public TcpChannel() {
+public class TcpTransportCommunicator extends TransportChannelImpl {
+	public TcpTransportCommunicator() {
 	}
 	
 	private Socket socket;
-	public TcpChannel(InetAddress addr, int port) {
+	public TcpTransportCommunicator(InetAddress addr, int port) {
 		try {
 			socket = new Socket(addr, port);
 		} catch (NumberFormatException nfe) {

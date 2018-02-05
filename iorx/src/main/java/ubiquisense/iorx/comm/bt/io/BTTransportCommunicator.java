@@ -40,11 +40,13 @@ import java.io.IOException;
 import javax.bluetooth.L2CAPConnection;
 import javax.inject.Named;
 
-import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.annotations.TransportProtocol;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 
+@TransportProtocol(type = "bt://")
 @Named("bt://")
-public class BTCommunicator extends ChannelImpl{
-	public BTCommunicator() {
+public class BTTransportCommunicator extends TransportChannelImpl{
+	public BTTransportCommunicator() {
 	}
 	private L2CAPConnection connIN, connOUT;
 	

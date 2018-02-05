@@ -6,16 +6,18 @@ import com.google.inject.name.Named;
 import com.illposed.osc.OSCPacket;
 import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
+import ubiquisense.iorx.annotations.CommunicationProtocol;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.Channel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.osc.internal.OscCmd;
 import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
 
+@CommunicationProtocol(type = "osc")
 @javax.inject.Named("osc")  @Singleton
 public class OSCQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter{
 	private OSCByteArrayToJavaConverter converter;
@@ -47,11 +49,11 @@ public class OSCQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 	@Override
 	public void handleQxEvent(Event event) {
 		if (event.getKind()==EVENT_KIND.TX_DONE || event.getKind()==EVENT_KIND.TX_READY) {
-			Channel obj = event.getQx().getEngine().getPort().getChannel();
-			if (obj instanceof Channel) {
+			TransportChannel obj = event.getQx().getEngine().getPort().getChannel();
+			if (obj instanceof TransportChannel) {
 				synchronized (event.getQx().getEngine().getOutputInterpreter()) {
 					byte[] frame = event.getQx().getEngine().getOutputInterpreter().cmd2ByteArray(event.getCmd());
-					((Channel)obj).send(frame);
+					((TransportChannel)obj).send(frame);
 				}
 			}
 		}

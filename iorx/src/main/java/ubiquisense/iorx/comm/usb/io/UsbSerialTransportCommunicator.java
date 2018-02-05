@@ -53,10 +53,12 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.annotations.TransportProtocol;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 
+@TransportProtocol(type = "usb://")
 @Named("usb://")
-public class Serial extends ChannelImpl implements ISerialCommunicator, SerialPortEventListener {
+public class UsbSerialTransportCommunicator extends TransportChannelImpl implements ISerialCommunicator, SerialPortEventListener {
 
 	//
 	// properties can be passed in for default values
@@ -129,23 +131,23 @@ public class Serial extends ChannelImpl implements ISerialCommunicator, SerialPo
 	static int ddatabits 	= 8;
 	static float dstopbits 	= 1;
 
-	public Serial() {
+	public UsbSerialTransportCommunicator() {
 		this(dname, drate, dparity, ddatabits, dstopbits);
 	}
 
-	public Serial(int irate) {
+	public UsbSerialTransportCommunicator(int irate) {
 		this(dname, irate, dparity, ddatabits, dstopbits);
 	}
 
-	public Serial(String iname, int irate) {
+	public UsbSerialTransportCommunicator(String iname, int irate) {
 		this(iname, irate, dparity, ddatabits, dstopbits);
 	}
 
-	public Serial(String iname) {
+	public UsbSerialTransportCommunicator(String iname) {
 		this(iname, drate, dparity, ddatabits, dstopbits);
 	}
 
-	public Serial(String iname, int irate, char iparity, int idatabits,
+	public UsbSerialTransportCommunicator(String iname, int irate, char iparity, int idatabits,
 			float istopbits) {
 		// if (port != null) port.close();
 		// parent.attach(this);

@@ -48,7 +48,7 @@ import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
-import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
@@ -61,13 +61,13 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	public static RXTXSerialUtil INSTANCE = new RXTXSerialUtil();
 	
 	/** Mapping for ports */ 
-	private Map<String, Serial>	portMap;
+	private Map<String, UsbSerialTransportCommunicator>	portMap;
 	private Map<String, Port>	engineMap;
 	private SerialInputJob 		inputJob;
 
 	/** Ctor */
 	public RXTXSerialUtil() {
-		portMap 	= new HashMap<String, Serial>();
+		portMap 	= new HashMap<String, UsbSerialTransportCommunicator>();
 		engineMap 	= new HashMap<String, Port>(); 
 		inputJob 	= new SerialInputJob();
 //		if (!Platform.getOS().equals(Platform.OS_WIN32)) {
@@ -98,7 +98,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 			engineMap.put(portID, port);
 		}
 		if (!portMap.keySet().contains(portID)) {
-			Serial serial = new Serial(portID, speed);
+			UsbSerialTransportCommunicator serial = new UsbSerialTransportCommunicator(portID, speed);
 			if (serial != null && serial.getSerialPort() != null) {
 				try {
 					serial.getSerialPort().setSerialPortParams(
@@ -118,7 +118,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 		} else {
 			return portMap.get(portID);
 		}
-		final Serial serial = portMap.get(portID);
+		final UsbSerialTransportCommunicator serial = portMap.get(portID);
 		if (serial != null && serial.getSerialPort() != null) {
 			try {
 				serial.getSerialPort().addEventListener(
@@ -198,7 +198,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	
 	final class SerialInputJob extends Thread {
 		public long execptionNb;
-		private Serial serial;
+		private UsbSerialTransportCommunicator serial;
 		private String portID;
 		private SerialPortEvent event;
 		
@@ -206,7 +206,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 			super("Serial Input Job");
 			execptionNb = 0l;
 		}
-		public void setParameters(Serial serial, SerialPortEvent event, String portID) {
+		public void setParameters(UsbSerialTransportCommunicator serial, SerialPortEvent event, String portID) {
 			this.serial = serial;
 			this.event = event;
 			this.portID = portID;
@@ -290,7 +290,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	 *  
 	 * @return serial port map
 	 */
-	public Map<String, Serial> getPortMap() {
+	public Map<String, UsbSerialTransportCommunicator> getPortMap() {
 		return portMap;
 	}
 

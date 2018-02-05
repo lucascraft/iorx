@@ -5,8 +5,19 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import javax.sound.midi.MidiChannel;
+
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
+
+import ubiquisense.iorx.comm.bt.io.BTTransportCommunicator;
+import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
+import ubiquisense.iorx.comm.tcp.io.TcpTransportCommunicator;
+import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
+import ubiquisense.iorx.io.TransportChannel;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.protocols.raw.RawQxCmdHandler;
@@ -17,7 +28,7 @@ import ubiquisense.iorx.registry.ProtocolRegistry;
 public class ProtocolRegistryMatchingTest {
 
 	@Test
-	public void testProtocolReactorRegistryMatching() {
+	public void testCommunicationProtocolReactorRegistryMatching() {
 		CommProtocolConfig oscConfigs = Ubq.Protocol.getCommunicationProtocol("osc");
 
 		assertNotNull(oscConfigs);
@@ -50,9 +61,50 @@ public class ProtocolRegistryMatchingTest {
 				&& rawConfigs.getFrameInterpreter() instanceof RawQxCmdHandler
 				&& rawConfigs.getEventHandler() instanceof RawQxCmdHandler);
 
-		Set<CommProtocolConfig> allConfigs = Ubq.Protocol.getProtocols();
+		Set<CommProtocolConfig> allConfigs = Ubq.Protocol.getCommunictionProtocols();
 
 		assertTrue(allConfigs.size() >= 2);
+
+	}
+	
+	
+	@Test
+	public void testTansportProtocolReactorRegistryMatching() {
+	
+		TransportChannel udp = Ubq.Protocol.getTransportProtocol("udp");
+
+		assertNotNull(udp);
+
+		assertTrue(udp instanceof UdpTransportCommunicator);
+
+		TransportChannel tcp = Ubq.Protocol.getTransportProtocol("tcp");
+
+		assertNotNull(tcp);
+
+		assertTrue(tcp instanceof TcpTransportCommunicator);
+
+		TransportChannel midi = Ubq.Protocol.getTransportProtocol("midi");
+
+		assertNotNull(midi);
+
+		assertTrue(midi instanceof MidiTransportCommunicator);
+		
+		TransportChannel bt = Ubq.Protocol.getTransportProtocol("bt");
+
+		assertNotNull(bt);
+
+		assertTrue(bt instanceof BTTransportCommunicator);
+		
+		TransportChannel usb = Ubq.Protocol.getTransportProtocol("usb");
+
+		assertNotNull(usb);
+
+		assertTrue(usb instanceof UsbSerialTransportCommunicator);
+
+		
+		Set<TransportChannel> allConfigs = Ubq.Protocol.getTransportProtocols();
+
+		assertTrue(allConfigs.containsAll(Sets.newHashSet()));
 
 	}
 }

@@ -35,17 +35,17 @@
 
 package ubiquisense.iorx.discovery;
 
-import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
 
-public class USbDeviceDiscovery {
+public class USbDeviceDiscovery implements DeviceDiscovery{
 	public void usbPortsScan() {
-		for (String portId : Serial.list()) {
+		for (String portId : UsbSerialTransportCommunicator.list()) {
 			if (portId != null && !portId.equals("")) {	
 				boolean absent = true;
 				for (String k : RXTXSerialUtil.INSTANCE.getSerialList()) {
-					Serial serial = RXTXSerialUtil.INSTANCE.getPortMap().get(k);
-					if (serial instanceof Serial) {
+					UsbSerialTransportCommunicator serial = RXTXSerialUtil.INSTANCE.getPortMap().get(k);
+					if (serial instanceof UsbSerialTransportCommunicator) {
 						if (serial.getSerialPort().getName().equals(portId)) {
 							absent = false;
 						}

@@ -50,7 +50,7 @@ import javax.bluetooth.ServiceRecord;
  * Class that discovers all bluetooth devices in the neighborhood
  * and displays their name and bluetooth address.
  */
-public class BluetoothDeviceDiscovery {
+public class BluetoothDeviceDiscovery implements DeviceDiscovery{
 	
     //object used for waiting
     private static Object lock = new Object();

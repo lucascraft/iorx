@@ -8,12 +8,12 @@ import com.google.inject.Inject;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.OutputJob;
-import ubiquisense.iorx.io.Channel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.Port;
 
 public class PortImpl implements Port {
 	@Inject
-	Channel channel;
+	TransportChannel channel;
 	
 	CmdPipe engine;
 	
@@ -26,13 +26,13 @@ public class PortImpl implements Port {
 		outputJobs = new HashSet<>();
 	}
 	
-	public Channel getChannel()
+	public TransportChannel getChannel()
 	{
 		return channel;
 	}
 	
 	@Override
-	public void setChannel(Channel channel) {
+	public void setChannel(TransportChannel channel) {
 		this.channel = channel;
 	}
 	

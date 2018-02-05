@@ -45,14 +45,15 @@ import javax.sound.midi.ShortMessage;
 
 import com.google.inject.Singleton;
 
+import ubiquisense.iorx.annotations.CommunicationProtocol;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CompoundCmd;
-import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
-import ubiquisense.iorx.comm.usb.io.Serial;
+import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.Channel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
@@ -61,7 +62,9 @@ import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.qx.Qx;
 
-@Named("midi") @Singleton
+@CommunicationProtocol(type = "midi")
+@Named("midi")
+@Singleton
 public class MidiQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {
 	
 	private ShortMessage message;
@@ -112,15 +115,15 @@ public class MidiQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFr
 			DSLMidiMessage cmd = (DSLMidiMessage) _cmd;
 			Object obj = _qx.getEngine().getPort().getChannel();
 			synchronized (_qx.getEngine().getOutputInterpreter()) {
-				if (obj instanceof MidiCommunicator) {
-					((MidiCommunicator) obj).send(cmd);
-				} else if (obj instanceof Channel) {
+				if (obj instanceof MidiTransportCommunicator) {
+					((MidiTransportCommunicator) obj).send(cmd);
+				} else if (obj instanceof TransportChannel) {
 					byte[] bytes = _qx.getEngine().getOutputInterpreter().cmd2ByteArray(cmd);
-					((Channel)obj).send(bytes);
-				} else if (obj instanceof Serial) {
+					((TransportChannel)obj).send(bytes);
+				} else if (obj instanceof UsbSerialTransportCommunicator) {
 					byte[] frame = _qx.getEngine().getOutputInterpreter().cmd2ByteArray(cmd);
 					if (frame!=null && frame.length>0) {
-						((Serial) obj).write(frame);
+						((UsbSerialTransportCommunicator) obj).write(frame);
 					}
 				} else if (obj instanceof DatagramSocket) {
 					DatagramSocket socket = (DatagramSocket) obj;

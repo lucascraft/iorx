@@ -60,14 +60,7 @@ public class TopologyManager implements IDeviceManager {
 		this(true);
 	}
 	
-	/*
-	public JmDNS getJmDNS() {
-		return discoAgent.getJmDNS();
-	}
-	*/
 	public TopologyManager(boolean startDiscovery) {
-//		cache = EzxtopologyFactory.eINSTANCE.createTopologyCache();
-//		cache.setSession(EzxtopologyFactory.eINSTANCE.createSessionManager());
 		discoAgent = new ContinuousDiscoveryAgent();
 	}
 	
@@ -201,11 +194,6 @@ public class TopologyManager implements IDeviceManager {
 	//
 	// General cache mechanism
 	//
-	/*
-	public TopologyCache getCache() {
-		return cache;
-	}
-	*/
 	
 	//
 	// Delegate connection lifecycle to an adapter compliant w/ IDeviceManager
@@ -268,42 +256,18 @@ public class TopologyManager implements IDeviceManager {
 		return null;
 	}
 
-	/*
-	public SessionManager getSessionManager() {
-		return cache.getSession();
-	}
-	*/
-
 	@Override
 	public boolean addService(Object service) {
-//		if (service instanceof ServiceInfo) {
-//			ServiceInfo sInfo = (ServiceInfo) service;
-//			
-//			//String domain = sInfo.getDomain();
-//			String protocol = sInfo.getProtocol();
-//			
-//			if (protocol.contains("_udp")) {
-//				
-//			} else if (protocol.contains("_tcp")) {
-//				
-//			}
-//		}
 		return false;
 	}
 
 	@Override
 	public boolean removeService(Object service) {
-//		if (service instanceof ServiceInfo) {
-//			
-//		}
 		return false;
 	}
 
 	@Override
 	public boolean resolveService(Object service) {
-//		if (service instanceof ServiceInfo) {
-//			
-//		}
 		return false;
 	}
 }

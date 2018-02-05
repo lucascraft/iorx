@@ -36,7 +36,7 @@
 package ubiquisense.iorx.discovery;
 
 
-public class ZeroconfDeviceDiscovery {
+public class ZeroconfDeviceDiscovery implements DeviceDiscovery{
 	//
 	// UDP/TCP service discovery
 	//

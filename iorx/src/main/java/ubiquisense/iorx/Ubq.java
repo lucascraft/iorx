@@ -18,7 +18,7 @@ import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
-import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
+import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
 import ubiquisense.iorx.discovery.ICmdPipeLifecycleListener;
 import ubiquisense.iorx.discovery.Supervisor;
 import ubiquisense.iorx.discovery.TopologyManager;
@@ -86,14 +86,7 @@ public final class Ubq
 		
 		TopologyManager.INSTANCE.startContinuousDiscovery();
 		
-		initPresets();
 		initTopologyAgentAndSupervisor();
-	}
-	
-	void initPresets() {
-		//
-		// auto connect without waiting discovery proposals for core and user defined settings
-		//
 	}
 	
 	void initTopologyAgentAndSupervisor() {
@@ -336,8 +329,8 @@ public final class Ubq
 			}
 		}
 		
-		if ( (pipe.getPort().getChannel() instanceof MidiCommunicator)) {
-			MidiCommunicator midi = (MidiCommunicator) pipe.getPort().getChannel();
+		if ( (pipe.getPort().getChannel() instanceof MidiTransportCommunicator)) {
+			MidiTransportCommunicator midi = (MidiTransportCommunicator) pipe.getPort().getChannel();
 			if(midi.isInputDevice() && midi.isOutputDevice()){
 				direction = "[<->]";
 			} else if (midi.isInputDevice()) {
@@ -350,9 +343,6 @@ public final class Ubq
 		}
 		
 		pipe.setName(name);
-		
-//		OrchestrorUtil.INSTANCE.createOrchestrorAndInitWithApp(app);
-		
 		pipe.getRx().setStrategy(QxProcessingStrategy.PICK_NFLUSH);
 		pipe.getRx().setMax(32);
 		pipe.getRx().setTtl(24);
@@ -360,6 +350,7 @@ public final class Ubq
 		pipe.getTx().setMax(32);
 		pipe.getTx().setTtl(24);
 		pipe.setAddr(address);
+		
 		if (acceptedPorts != null && acceptedPorts.length > 0) {
 			for (int p : acceptedPorts) {
 				pipe.getPorts().add(p);
@@ -632,7 +623,7 @@ public final class Ubq
 	
 	public List<CmdPipe> getEnginesByCommunication(String commID) {
 		String ID = "";
-		for (CommProtocolConfig protocolCfg : Protocol.getProtocols()) {
+		for (CommProtocolConfig protocolCfg : Protocol.getCommunictionProtocols()) {
 			if (protocolCfg.getAlias().equals(commID)) {
 				ID = protocolCfg.getID();
 				break;
@@ -865,8 +856,8 @@ public final class Ubq
 		);
 		if (pipe != null) {
 			if (pipe.getPort() != null) {
-				if (pipe.getPort().getChannel() instanceof MidiCommunicator) {
-					MidiCommunicator c = (MidiCommunicator) pipe.getPort().getChannel();
+				if (pipe.getPort().getChannel() instanceof MidiTransportCommunicator) {
+					MidiTransportCommunicator c = (MidiTransportCommunicator) pipe.getPort().getChannel();
 					c.setDevice(device);
 					/*
 					String name = ""+pipe.getName();

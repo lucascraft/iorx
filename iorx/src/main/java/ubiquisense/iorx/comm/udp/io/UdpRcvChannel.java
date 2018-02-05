@@ -39,9 +39,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import ubiquisense.iorx.io.impl.ChannelImpl;
+import ubiquisense.iorx.io.impl.TransportChannelImpl;
 
-public class UdpRcvChannel extends ChannelImpl {
+public class UdpRcvChannel extends TransportChannelImpl {
 	private volatile DatagramSocket socket;
 	private byte[] data;
 	public byte[] getData() {

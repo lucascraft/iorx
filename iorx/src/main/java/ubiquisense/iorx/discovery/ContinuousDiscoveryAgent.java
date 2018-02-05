@@ -47,7 +47,7 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 		super("Tansversal Discovery Topology Agent");
 		btDeviceDiscovery		= new BluetoothDeviceDiscovery();
 		usbDeviceDiscovery		= new USbDeviceDiscovery();
-		//zeroconfDeviceDiscovery = new ZeroconfDeviceDiscovery();
+		zeroconfDeviceDiscovery = new ZeroconfDeviceDiscovery();
 		xbeeDeviceDiscovery		= new XBeeDeviceDiscovery();
 	}
 	

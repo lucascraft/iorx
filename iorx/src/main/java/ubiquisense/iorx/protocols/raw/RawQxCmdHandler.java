@@ -43,6 +43,7 @@ import javax.inject.Named;
 
 import com.google.inject.Singleton;
 
+import ubiquisense.iorx.annotations.CommunicationProtocol;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CompoundCmd;
 import ubiquisense.iorx.event.EVENT_KIND;
@@ -55,6 +56,7 @@ import ubiquisense.iorx.protocols.raw.internal.RawCmd;
 import ubiquisense.iorx.protocols.raw.internal.impl.RawCmdImpl;
 import ubiquisense.iorx.qx.Qx;
 
+@CommunicationProtocol(type = "raw")
 @Named("raw") @Singleton
 public class RawQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {
 	

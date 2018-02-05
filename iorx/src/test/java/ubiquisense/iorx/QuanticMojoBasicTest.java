@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ubiquisense.iorx.cmd.CmdPipe;
-import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
+import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
 
 public class QuanticMojoBasicTest extends GuiceInjectionTest
 {
@@ -39,7 +39,7 @@ public class QuanticMojoBasicTest extends GuiceInjectionTest
 		assertNotNull(midiIoPipe.getPorts());
 		assertNotNull(midiIoPipe.getPort());
 		assertNotNull(midiIoPipe.getPort().getChannel());
-		assertTrue(midiIoPipe.getPort().getChannel() instanceof MidiCommunicator);
+		assertTrue(midiIoPipe.getPort().getChannel() instanceof MidiTransportCommunicator);
 
 	}
 

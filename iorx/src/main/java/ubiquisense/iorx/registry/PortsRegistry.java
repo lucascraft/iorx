@@ -17,7 +17,7 @@ import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.InputJobImpl;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.bt.BluetoothPortImpl;
-import ubiquisense.iorx.comm.bt.io.BTCommunicator;
+import ubiquisense.iorx.comm.bt.io.BTTransportCommunicator;
 import ubiquisense.iorx.comm.bt.io.L2CAPInJob;
 import ubiquisense.iorx.comm.bt.io.L2CAPInputJob;
 import ubiquisense.iorx.comm.bt.io.impl.L2CAPInJobImpl;
@@ -25,18 +25,18 @@ import ubiquisense.iorx.comm.http.HttpCommPortImpl;
 import ubiquisense.iorx.comm.http.io.BasicHttpCommunicator;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
 import ubiquisense.iorx.comm.midi.UbiPortImpl;
-import ubiquisense.iorx.comm.midi.io.MidiCommunicator;
+import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
 import ubiquisense.iorx.comm.tcp.TcpPortImpl;
-import ubiquisense.iorx.comm.tcp.io.TcpChannel;
+import ubiquisense.iorx.comm.tcp.io.TcpTransportCommunicator;
 import ubiquisense.iorx.comm.tcp.io.impl.TcpInputPortJob;
 import ubiquisense.iorx.comm.udp.UdpPortImpl;
-import ubiquisense.iorx.comm.udp.io.UdpChannel;
+import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
 import ubiquisense.iorx.comm.udp.io.UdpInputPortJob;
 import ubiquisense.iorx.comm.usb.USBPortImpl;
 import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
 import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
 import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.Channel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
@@ -145,7 +145,7 @@ public final class PortsRegistry {
 				}
 				in.setId("BT_L2CAP_input_" + portID);
 				btPort.getInputJobs().add(in);
-				BTCommunicator btComm = new BTCommunicator();
+				BTTransportCommunicator btComm = new BTTransportCommunicator();
 				btComm.setIncoming(incoming);
 				btComm.setOutgoing(outgoing);
 				btPort.setChannel(btComm);
@@ -158,7 +158,7 @@ public final class PortsRegistry {
 			return btPort;
 		case MIDI:
 			UbiPortImpl ubiPort = new UbiPortImpl();
-			MidiCommunicator midiComm = new MidiCommunicator();
+			MidiTransportCommunicator midiComm = new MidiTransportCommunicator();
 			midiComm.setEngine(engine); 
 			ubiPort.setChannel(midiComm);
 			ubiPort.setEngine(engine);
@@ -219,7 +219,7 @@ public final class PortsRegistry {
 					e.printStackTrace();
 				}
 				int port = Integer.valueOf(parts[1]);
-				Channel channel = new TcpChannel(address, port);
+				TransportChannel channel = new TcpTransportCommunicator(address, port);
 				ipPort.setChannel(channel);
 				channel.debug();
 			}
@@ -249,11 +249,11 @@ public final class PortsRegistry {
 				}
 			}
 			if (!portID.contains(":") && acceptedPorts.length > 0) {
-				udpPort.setChannel(new UdpChannel(parts2[0], Integer
+				udpPort.setChannel(new UdpTransportCommunicator(parts2[0], Integer
 						.valueOf(acceptedPorts[0])));
 			} else if (parts2 != null && parts2.length > 1
 					&& !parts2[0].equals("")) {
-				udpPort.setChannel(new UdpChannel(parts2[0], Integer
+				udpPort.setChannel(new UdpTransportCommunicator(parts2[0], Integer
 						.valueOf(parts2[1])));
 			}
 			if (udpPort.getChannel() != null) {

@@ -51,8 +51,9 @@ import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
+import ubiquisense.iorx.annotations.CommunicationProtocol;
 import ubiquisense.iorx.cmd.Cmd;
-import ubiquisense.iorx.comm.udp.io.UdpChannel;
+import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
@@ -66,6 +67,7 @@ import ubiquisense.iorx.protocols.tuio.internal.tuio11.Tuio2DObj;
 import ubiquisense.iorx.protocols.tuio.internal.tuio11.TuioBundle;
 import ubiquisense.iorx.protocols.tuio.internal.tuio11.impl.TuioBundleImpl;
 
+@CommunicationProtocol(type = "tuio11")
 @Named("tuio11")
 public class Tuio11QxCmdHandler implements IXFrameInterpreter, IXCmdInterpreter, IQxEventHandler {
 	private OSCByteArrayToJavaConverter converter;
@@ -517,8 +519,8 @@ public class Tuio11QxCmdHandler implements IXFrameInterpreter, IXCmdInterpreter,
 	public void handleQxEvent(Event event) {
 		if (event.getKind().equals(EVENT_KIND.RX_DONE)) {
 			Object obj = event.getQx().getEngine().getPort().getChannel();
-			if (obj instanceof UdpChannel) {
-				DatagramSocket socket = ((UdpChannel)obj).getSocket();
+			if (obj instanceof UdpTransportCommunicator) {
+				DatagramSocket socket = ((UdpTransportCommunicator)obj).getSocket();
 				DatagramPacket packet = new DatagramPacket(new byte[15360], 15360);
 				if (event.getCmd() instanceof Tuio2DCur) {
 					packet.setData(

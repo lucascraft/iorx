@@ -36,7 +36,7 @@
 package ubiquisense.iorx.discovery;
 
 
-public class XBeeDeviceDiscovery  {
+public class XBeeDeviceDiscovery implements DeviceDiscovery {
 	
 	public XBeeDeviceDiscovery() {
 		// See it later !!!
