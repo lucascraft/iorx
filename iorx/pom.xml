@@ -154,14 +154,14 @@
 		<dependency>
 		    <groupId>rxtx</groupId>
 		    <artifactId>rxtx-win32-x86_64</artifactId>
-		    <version>1.0</version>
+		    <version>rxtx-2.1-7-bins-r2</version>
 		    <scope>system</scope>
-		    <systemPath>${project.basedir}/src/jars/RXTXcomm.jar</systemPath>
+		    <systemPath>${project.basedir}/src/libs/natives/win32/x86_64/RXTXcomm.jar</systemPath>
 		</dependency>	
 		<dependency>
 		    <groupId>bluecove</groupId>
 		    <artifactId>bluecove-win32-x86_64</artifactId>
-		    <version>1.0</version>
+		    <version>2.1.1</version>
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/bluecove-2.1.1.jar</systemPath>
 		</dependency>	

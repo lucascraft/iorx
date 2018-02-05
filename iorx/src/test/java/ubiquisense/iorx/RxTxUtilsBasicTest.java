@@ -12,10 +12,10 @@ public class RxTxUtilsBasicTest {
 	public void testInitRxTxUtils()
 	{
 
-//		String rxtxVersio = RXTXCommDriver.nativeGetVersion();
-//		
-//		System.out.println(rxtxVersio);
-//
+		String rxtxVersio = RXTXCommDriver.nativeGetVersion();
+		
+		System.out.println(rxtxVersio);
+
 		RXTXSerialUtil.INSTANCE.listPorts();
 		
 		RXTXSerialUtil.INSTANCE.getPortMap().forEach((k, v) -> System.out.println(k + "->" + v));

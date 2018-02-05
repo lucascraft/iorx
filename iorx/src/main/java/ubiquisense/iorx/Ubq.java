@@ -353,7 +353,7 @@ public final class Ubq
 		
 		if (acceptedPorts != null && acceptedPorts.length > 0) {
 			for (int p : acceptedPorts) {
-				pipe.getPorts().add(p);
+				pipe.getPorts().add(Integer.valueOf(p));
 			}
 		}
 		return notifyPipe(true, pipe);
@@ -582,45 +582,6 @@ public final class Ubq
 		}
 	}
 	
-//	//
-//	// Pub/Sub OSC addr
-//	//
-//	
-//	public void subscribe(String protocol, String topic, AbstractQxEventHandlerImpl handler) {
-//		pubsubEventHandler.subscribe(protocol, topic, handler);
-//	}
-//	
-//	public void unsubscribe(String protocol, String topic, AbstractQxEventHandlerImpl handler) {
-//		pubsubEventHandler.unsubscribe(protocol, topic, handler);
-//	}
-//	
-//	public void unsubscribe(String protocol, AbstractQxEventHandlerImpl handler) {
-//		pubsubEventHandler.unsubscribe(protocol, handler);
-//	}
-//	
-//	public void unsubscribe(String protocol, String topic) {
-//		pubsubEventHandler.unsubscribe(protocol, topic);
-//	}
-//	
-//	public void unsubscribe(AbstractQxEventHandlerImpl handler) {
-//		pubsubEventHandler.unsubscribe(handler);
-//	}
-	
-//	public List<OscCmd> getOscCommands() {
-//		
-//	}
-	
-	//
-	//
-	// Here is the global registry stuff for Dxxp resources acces;
-	//
-	//
-	
-//	@Override
-//	public EZDaapManager getDxxpResourcesManager() {
-//		return dxxpResourcesManager;
-//	}
-	
 	public List<CmdPipe> getEnginesByCommunication(String commID) {
 		String ID = "";
 		for (CommProtocolConfig protocolCfg : Protocol.getCommunictionProtocols()) {
@@ -735,31 +696,6 @@ public final class Ubq
 	//
 	// Helpers
 	//
-//	
-//	public List<String> getLiveIpIngoingPorts() {
-//		List<String> inPorts = new ArrayList<String>();
-//		for (CmdPipe p : getPipes()) {
-//			if (!p.getTransportProtocol().equals("udp://") || !p.getTransportProtocol().equals("udp://")) {
-//				continue;
-//			}
-//			for (Integer i : p.getPorts()) {
-//				String t = "" + i;
-//				if (!inPorts.contains(t)) {
-//					inPorts.add(t);
-//				}
-//			}
-//			for (EzTargetConfig cfg : QuanticComm.INSTANCE.getCommunicationConfigs()) {
-//				if ("udp".equals(cfg.getCommProtocol()) || "tcp".equals(cfg.getCommProtocol())) {
-//					if (cfg.getTargetInputPort() != null && !cfg.getTargetInputPort().equals("")) {
-//						if (!inPorts.contains(cfg.getTargetInputPort())) {
-//							inPorts.add(cfg.getTargetInputPort());
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return inPorts;
-//	}
 
 	public List<String> getLiveOutgoingPorts() {
 		List<String> outPorts = new ArrayList<String>();
@@ -775,74 +711,6 @@ public final class Ubq
 		}
 		return outPorts;
 	}
-//
-//	public List<String> getLiveUSBAddresses() {
-//		List<String> usbs = new ArrayList<String>();
-//		for (CmdPipe p : getPipes()) {
-//			if (!p.getTransportProtocol().equals("usb://")) {
-//				continue;
-//			}
-//			String addr = p.getAddr();
-//			if (!usbs.contains(addr)) {
-//				usbs.add(addr);
-//			}
-//		}
-//		for (EzTargetConfig cfg : QuanticComm.INSTANCE.getCommunicationConfigs()) {
-//			if ("usb".equals(cfg.getCommProtocol())) {
-//				if (cfg.getTargetAddr() != null && !cfg.getTargetAddr().equals("")) {
-//					if (!usbs.contains(cfg.getTargetAddr())) {
-//						usbs.add(cfg.getTargetAddr());
-//					}
-//				}
-//			}
-//		}
-//		try {
-//			String localIp = InetAddress.getLocalHost().getHostAddress();
-//			if (!usbs.contains(localIp)) {
-//				usbs.add(localIp);
-//			}
-//		} catch (UnknownHostException e) {
-//			e.printStackTrace();
-//		}
-//		return usbs;
-//	}
-
-//	public List<String> getLiveIpAddresses() {
-//		List<String> ips = new ArrayList<String>();
-//		for (CmdPipe p : getPipes()) {
-//			if (!p.getTransportProtocol().equals("udp://") || !p.getTransportProtocol().equals("tcp://")) {
-//				continue;
-//			}
-//			String addr = p.getAddr();
-//			if (addr != null && addr.contains(":")) {
-//				String a = addr.substring(0, addr.indexOf(":"));
-//				if (!ips.contains(a) && !"".equals(a)) {
-//					ips.add(a);
-//				}
-//			}
-//			if (!ips.contains(addr)) {
-//				ips.add(addr);
-//			}
-//		}
-//		for (EzTargetConfig cfg : QuanticComm.INSTANCE.getCommunicationConfigs()) {
-//			if ("udp".equals(cfg.getCommProtocol()) || "tcp".equals(cfg.getCommProtocol())) {
-//				if (cfg.getTargetAddr() != null && !cfg.getTargetAddr().equals("")) {
-//					if (!ips.contains(cfg.getTargetAddr())) {
-//						ips.add(cfg.getTargetAddr());
-//					}
-//				}
-//			}
-//		}
-//		try {
-//			String localIp = InetAddress.getLocalHost().getHostAddress();
-//			if (!ips.contains(localIp)) {
-//				ips.add(localIp);
-//			}
-//		} catch (UnknownHostException e) {
-//			e.printStackTrace();
-//		}
-//		return ips;
-//	}
 	
 	public CmdPipe openMidiPipe(MidiDevice device) {
 		CmdPipe pipe = openPipe(
@@ -920,7 +788,6 @@ public final class Ubq
         {
         	throw new RuntimeException("protocol " + protocolID + " unknown");
         }
-        
         
         return app;
 	}

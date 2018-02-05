@@ -24,7 +24,7 @@ import ubiquisense.iorx.comm.bt.io.impl.L2CAPInJobImpl;
 import ubiquisense.iorx.comm.http.HttpCommPortImpl;
 import ubiquisense.iorx.comm.http.io.BasicHttpCommunicator;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
-import ubiquisense.iorx.comm.midi.UbiPortImpl;
+import ubiquisense.iorx.comm.midi.MidiPortImpl;
 import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
 import ubiquisense.iorx.comm.tcp.TcpPortImpl;
 import ubiquisense.iorx.comm.tcp.io.TcpTransportCommunicator;
@@ -124,7 +124,7 @@ public final class PortsRegistry {
 			btPort.setEngine(engine);
 			return btPort;
 		case MIDI:
-			UbiPortImpl ubiPort = new UbiPortImpl();
+			MidiPortImpl ubiPort = new MidiPortImpl();
 			MidiTransportCommunicator midiComm = new MidiTransportCommunicator();
 			midiComm.setEngine(engine); 
 			ubiPort.setChannel(midiComm);

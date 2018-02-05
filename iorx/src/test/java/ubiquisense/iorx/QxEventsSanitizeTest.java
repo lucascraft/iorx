@@ -29,6 +29,7 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 		pipeIo3Count = 0;
 		pipeIo4Count = 0;
 	}
+	
 	@Test
 	public void testOscQxEventsHandling()
 	{
