@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
@@ -63,7 +64,7 @@ public class MidiSystemUtils {
 	}
 	
 	public MidiSystemUtils() {
-		notesWithShiftMap = new HashMap<String, Integer>();
+		notesWithShiftMap = new TreeMap<String, Integer>();
 		notesWithShiftMap.put("C", 0);
 		notesWithShiftMap.put("C#", 1);
 		notesWithShiftMap.put("Db", 1); // avoid
@@ -82,12 +83,12 @@ public class MidiSystemUtils {
 		notesWithShiftMap.put("Bb", 10); // avoid
 		notesWithShiftMap.put("B", 11);
 
-		notesByOctavesMap = new HashMap<Integer, Map<String, Integer>>();
+		notesByOctavesMap = new TreeMap<Integer, Map<String, Integer>>();
 
 		// note : [0..132] (11 x 12)
 		int note = 0;
 		for (int octave = 0; octave <= 10; octave++) {
-			Map<String, Integer> octaveMap = new HashMap<String, Integer>();
+			Map<String, Integer> octaveMap = new TreeMap<String, Integer>();
 			notesByOctavesMap.put(octave, octaveMap);
 			for (String k : notesWithShiftMap.keySet()) {
 				octaveMap.put(k, new Integer(note) + notesWithShiftMap.get(k));
