@@ -416,10 +416,6 @@ public final class Ubq
 		return openPipe(TRANSPORT_PROTOCOL.USB.getLiteral(), protocolID, pipeID, portConfig, null, speed, new HashMap<Object, Object>());
 	}
 
-	public CmdPipe openXBeePipe(String protocolID, String pipeID, String portConfig, int speed) {
-		return openPipe(TRANSPORT_PROTOCOL.XBEE.getLiteral(), protocolID, pipeID, portConfig, null, speed, new HashMap<Object, Object>());
-	}
-
 	public CmdPipe openUdpPipe(String protocolID, String pipeID, String portConfig, int acceptedPort) {
 		return openPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), protocolID, pipeID, portConfig,  new int[] { acceptedPort }, 0, new HashMap<Object, Object>());
 	}
@@ -438,10 +434,6 @@ public final class Ubq
 
 	public CmdPipe openBluetoothPipe(String protocolID, String pipeID, String portConfig, int speed) {
 		return openPipe(TRANSPORT_PROTOCOL.BLUETOOTH.getLiteral(), protocolID, pipeID, portConfig, null, speed, new HashMap<Object, Object>());
-	}
-
-	public CmdPipe openXBeePipe(String protocolID, String pipeID, String portConfig) {
-		return openPipe(TRANSPORT_PROTOCOL.XBEE.getLiteral(), protocolID, pipeID, portConfig, null, 0, new HashMap<Object, Object>());
 	}
 
 	public CmdPipe openUdpPipe(String protocolID, String pipeID, String portConfig) {
@@ -501,10 +493,6 @@ public final class Ubq
 		return openUsbPipe(protocolID, "UsbPipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, speed);
 	}
 
-	public CmdPipe openXBeePipe(String protocolID, String portConfig, int speed) {
-		return openXBeePipe(protocolID, "XBeePipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, speed);
-}
-
 	public CmdPipe openUdpPipe(String protocolID, String portConfig, int acceptedPort) {
 		return openUdpPipe(protocolID, "UdpPipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, acceptedPort);
 	}
@@ -530,15 +518,11 @@ public final class Ubq
 	}
 
 	public CmdPipe openBluetoothPipe(String protocolID, String portConfig, int speed) {
-		return openBluetoothPipe(protocolID, "XbeePipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, speed);
+		return openBluetoothPipe(protocolID, "BluetoothPipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, speed);
 	}
 
 	public CmdPipe openBluetoothPipe(String protocolID, String portConfig) {
-		return openBluetoothPipe(protocolID, "XbeePipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, -1);
-	}
-
-	public CmdPipe openXBeePipe(String protocolID, String portConfig) {
-		return openXBeePipe(protocolID, "XBeePipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig);
+		return openBluetoothPipe(protocolID, "BluetoothPipe_"+portConfig+"_"+UUID.randomUUID().toString(), portConfig, -1);
 	}
 
 	public CmdPipe openUdpPipe(String protocolID, String portConfig) {

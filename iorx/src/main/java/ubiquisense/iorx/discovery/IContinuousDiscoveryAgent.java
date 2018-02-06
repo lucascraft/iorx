@@ -38,7 +38,7 @@ package ubiquisense.iorx.discovery;
 
 /**
  * Describe contract API for continuous discovery agent such as feed topology session manager for active connections
- * USB, UDP, Bluetooth, XBee
+ * USB, UDP, Bluetooth
  * 
  * Reconcilliation to be added in near future to be able to properly handle the 
  * fluctuant nature of mobile devices connections to UBQT framework
@@ -103,8 +103,4 @@ public interface IContinuousDiscoveryAgent {
 	//
 	void reconcileSessionUSBConnections();
 	
-	//
-	// XBee global reconciliation, eg: not a the node level but at a pool level
-	//
-	void reconcileSessionXBeeConnections();
 }

@@ -42,7 +42,6 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 	private USbDeviceDiscovery usbDeviceDiscovery;
 	private TcpServiceDiscovery tcpDeviceDiscovery;
 	private UdpServiceDiscovery udpDeviceDiscovery;
-	private XBeeDeviceDiscovery xbeeDeviceDiscovery;
 
 	public ContinuousDiscoveryAgent() {
 		super("Tansversal Discovery Topology Agent");
@@ -50,7 +49,6 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 		usbDeviceDiscovery		= new USbDeviceDiscovery();
 		tcpDeviceDiscovery 		= new TcpServiceDiscovery();
 		udpDeviceDiscovery 		= new UdpServiceDiscovery();
-		xbeeDeviceDiscovery		= new XBeeDeviceDiscovery();
 	}
 	
 	
@@ -67,7 +65,6 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 			//handleUdpStuff();
 			//handleTcpStuff();
 			//handleUsbStuff();
-			//handleXBeeStuff();
 			
 			//topologyCacheCoherenceChecker();
 	
@@ -116,18 +113,6 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 		usbDeviceDiscovery.usbPortsScan();
 		reconcileSessionUSBConnections();
 	}
-	
-	public void handleXBeeStuff() {
-		xbeeDeviceDiscovery.scanZigBeeNet();
-		reconcileSessionXBeeConnections();
-		
-		 System.out.println("XBee topology scanning not implemented yet ...");
-		
-		//
-		// XBee stuff coming soon after Hayes AT commands 
-		//
-		// throw new UnsupportedOperationException("Not implemented yet !!!");
-	}
 
 
 	/**
@@ -164,13 +149,6 @@ public class ContinuousDiscoveryAgent extends Thread implements IContinuousDisco
 		// Insert here the DsDns scan for registered bonjour ext point registration in Tcp form
 	}
 
-	/**
-	 * 
-	 */
-	@Override
-	public void reconcileSessionXBeeConnections() {
-		// Insert here the XBee devices scan for registered bonjour ext point registration in XBee form
-	}
 
 	/**
 	 * 

@@ -57,7 +57,7 @@ public final class PortsRegistry {
 	/**
 	 * Open ports according to a given configuration.
 	 * 
-	 * - USB - TCP - UDP - HTTP - XBee - Bluetooth - Ubiquitous (later ...)
+	 * - USB - TCP - UDP - HTTP - Bluetooth - Ubiquitous (later ...)
 	 * 
 	 * with respective address:port scheme
 	 * 
@@ -130,13 +130,6 @@ public final class PortsRegistry {
 			ubiPort.setChannel(midiComm);
 			ubiPort.setEngine(engine);
 			return ubiPort;
-//		case XBEE:
-//			XBeeCommunicator comm = new XBeeCommunicator(engine, portID, speed);
-//			XbeePort xbeePort = (XbeePort) EcoreUtil
-//					.create(XbeecommPackage.Literals.XBEE_PORT);
-//			xbeePort.setChannel(comm);
-//			xbeePort.setEngine(engine);
-//			return xbeePort;
 		case USB:
 			if (RXTXSerialUtil.INSTANCE.isAlreadyOpen(portID)) {
 				return null;
@@ -230,7 +223,7 @@ public final class PortsRegistry {
 			return udpPort;
 		default: {
 			throw new UnsupportedOperationException(
-				"Transport Protocol should be one of : [UDP, TCP, HTTP, XBEE, USB, BLUETOOTH, MIDI] !");
+				"Transport Protocol should be one of : [UDP, TCP, HTTP, USB, BLUETOOTH, MIDI] !");
 			}
 		}
 	}
@@ -267,11 +260,6 @@ public final class PortsRegistry {
 							}
 						} else if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.HTTP.getLiteral())) { // HTTP
-							// NONE
-						} else if (pipe.getTransportProtocol().equals(
-								TRANSPORT_PROTOCOL.XBEE.getLiteral())) { // USB
-																			// over
-																			// Serial
 							// NONE
 						} else if (pipe.getTransportProtocol().equals(
 								TRANSPORT_PROTOCOL.USB.getLiteral())) {

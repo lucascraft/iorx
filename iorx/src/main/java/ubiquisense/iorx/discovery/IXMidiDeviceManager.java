@@ -40,8 +40,8 @@ import java.util.List;
 import javax.sound.midi.MidiDevice;
 
 public interface IXMidiDeviceManager extends IDeviceManager {
-	List<MidiDevice> getXBeeDevices();
-	boolean connectXBeeDevice(MidiDevice xbee);
-	boolean reconnectXBeeDevice(MidiDevice xbee);
-	boolean disconnectXBeeDevice(MidiDevice xbee);
+	List<MidiDevice> getMidiDevices();
+	boolean connectMidiDevice(MidiDevice device);
+	boolean reconnectMidiDevice(MidiDevice device);
+	boolean disconnectMidiDevice(MidiDevice device);
 }
