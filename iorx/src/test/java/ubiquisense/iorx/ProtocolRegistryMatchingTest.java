@@ -5,11 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
-import javax.sound.midi.MidiChannel;
-
 import org.junit.Test;
-
-import com.google.common.collect.Sets;
 
 import ubiquisense.iorx.comm.bt.io.BTTransportCommunicator;
 import ubiquisense.iorx.comm.midi.io.MidiTransportCommunicator;
@@ -17,13 +13,11 @@ import ubiquisense.iorx.comm.tcp.io.TcpTransportCommunicator;
 import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
 import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.io.TransportChannel;
-import ubiquisense.iorx.io.impl.TransportChannelImpl;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.protocols.raw.RawQxCmdHandler;
 import ubiquisense.iorx.protocols.tuio.tuio11.Tuio11QxCmdHandler;
 import ubiquisense.iorx.registry.CommProtocolConfig;
-import ubiquisense.iorx.registry.ProtocolRegistry;
 
 public class ProtocolRegistryMatchingTest {
 
