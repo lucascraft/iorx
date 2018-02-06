@@ -30,14 +30,6 @@ import ubiquisense.iorx.dndns.ISmartDnsServiceManager;
 import ubiquisense.iorx.dndns.services.DnDnsService;
 import ubiquisense.iorx.topology.ledger.XCPServiceStatus;
 
-/**
- * Resonsible on receiving/emmiting OSC commands in an agent fashion
- * 
- * It also init JmDNS/Bonjour service for Zeroconf discovery
- * 
- * @author lucas bigeardel
- *
- */
 public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, ServiceTypeListener {
 
 	private JmDNSImpl dnsSdRegistry;
@@ -49,14 +41,12 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	private MulticastSocket multicastSocket;
 
 	private List<IXCPDeviceLifecycleListener> deviceListeners;
-//	private Map<String, DnsSServ> dnsServicesMap;
 	@SuppressWarnings("unused")
 	private OSCByteArrayToJavaConverter converter;
 
 	public final static DnsSdRegistry INSTANCE = new DnsSdRegistry();
 
 	public DnsSdRegistry() {
-//		dnsServicesMap = dnsServiceRegistrations();
 		deviceListeners = new ArrayList<IXCPDeviceLifecycleListener>();
 		converter = new OSCByteArrayToJavaConverter();
 		try {

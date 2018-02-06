@@ -69,7 +69,7 @@
 							<!-- The commit message -->
 							<message>Building Iorx site</message>
 							<!-- The location where the site is uploaded -->
-							<oauth2Token>eeeeeeeeeeeeeee</oauth2Token>
+							<oauth2Token></oauth2Token>
 							<path>ubiquisense/iorx</path>
 							<!-- Use merge or override the content -->
 							<merge>true</merge>
@@ -132,11 +132,13 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.11</version>
 		</dependency>
+		<!--  
 		<dependency>
 			<groupId>com.rapplogic</groupId>
 			<artifactId>xbee-api</artifactId>
 			<version>0.9.3</version>
 		</dependency>
+		-->		
 		<dependency>
 		    <groupId>fmodex</groupId>
 		    <artifactId>fmodex-libs</artifactId>
@@ -154,7 +156,7 @@
 		<dependency>
 		    <groupId>rxtx</groupId>
 		    <artifactId>rxtx-win32-x86_64</artifactId>
-		    <version>rxtx-2.1-7-bins-r2</version>
+		    <version>rxtx-2.1.7</version>
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/libs/natives/win32/x86_64/RXTXcomm.jar</systemPath>
 		</dependency>	

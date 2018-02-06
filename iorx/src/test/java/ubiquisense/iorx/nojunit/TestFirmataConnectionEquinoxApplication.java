@@ -25,7 +25,6 @@ public class TestFirmataConnectionEquinoxApplication  {
 				ubiquino, 
 				arduinoPipe, 
 				new IFirmataInitDoneListener() {
-				@Override
 					public void handleInitFirmataDone(Ubiquino ubiquino, final CmdPipe pipe) {
 						System.out.println("Arduino Firmata connection established !");
 						new Thread("later") {

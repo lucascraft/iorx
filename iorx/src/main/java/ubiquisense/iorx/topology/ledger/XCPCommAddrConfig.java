@@ -65,44 +65,6 @@ public class XCPCommAddrConfig {
 	    }
 	}
 
-//	public Collection<EzTargetConfig> getCommunicationConfigs() {
-//		List<EzTargetConfig> configs = new ArrayList<EzTargetConfig>();
-//		IExtensionRegistry registry = Platform.getExtensionRegistry();
-//		IExtensionPoint point = registry.getExtensionPoint("net.sf.smbt.quantic.targetConfig");
-//		if (point == null) return null;
-//		IExtension[] extensions = point.getExtensions();
-//		for (int i = 0; i < extensions.length; i++) {
-//			for (IConfigurationElement elem : extensions[i].getConfigurationElements()) {
-//				String addr = elem.getAttribute("addr");
-//				addr = addr == null ? "" : addr.trim();
-//				
-//				String inputPort = elem.getAttribute("inputPort");
-//				inputPort = inputPort == null ? "" : inputPort.trim();
-//				
-//				String transport = elem.getAttribute("transport");
-//				transport = transport == null ? "" : transport.trim();
-//				
-//				String protocol = elem.getAttribute("protocol");
-//				protocol = protocol == null ? "" : protocol.trim();
-//				
-//				String speed = elem.getAttribute("speed");
-//				speed = speed == null ? "" : speed.trim();
-//				
-//				EzTargetConfig cfg = new EzTargetConfig(
-//					addr, 
-//					inputPort, 
-//					protocol, 
-//					transport, 
-//					speed
-//				);
-//				
-//				if (!configs.contains(cfg)) {
-//					configs.add(cfg);
-//				}
-//			}
-//		}
-//		return configs;
-//	}
 //	
 //	public List<String> getIPAddresses() {
 //		List<String> ips = new ArrayList<String>();

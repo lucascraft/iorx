@@ -1,30 +1,26 @@
 package ubiquisense.iorx;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import gnu.io.RXTXCommDriver;
-import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
-import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
+import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 
 public class RxTxUtilsBasicTest {
 
-//	@Test
+	//@Test
 	public void testInitRxTxUtils()
 	{
+		
+		
+		UsbSerialTransportCommunicator usbCommunicator = new UsbSerialTransportCommunicator("COM3", 57600);
+		
+		assertNotNull("USP port shouldn't have been null", usbCommunicator);
 
-		String rxtxVersio = RXTXCommDriver.nativeGetVersion();
 		
-		System.out.println(rxtxVersio);
-
-		RXTXSerialUtil.INSTANCE.listPorts();
-		
-		RXTXSerialUtil.INSTANCE.getPortMap().forEach((k, v) -> System.out.println(k + "->" + v));
-		
-		ISerialCommunicator serial = RXTXSerialUtil.INSTANCE.openPort(null, "COM1", 19200);
-
-		int baudRate = serial.getBaudRate();
-		
-		System.out.println(baudRate);
+		assertEquals(usbCommunicator.getBaudRate(), 57600);
+		assertEquals(usbCommunicator.getDataBits(), 8);
+		assertEquals(usbCommunicator.getStopBits(), 1);
+		assertEquals(usbCommunicator.getParity(), 0);
 	
 
 	}

@@ -13,7 +13,6 @@ public interface SessionManager  {
 	List<BluetoothConnection> getBluetoothConnections();
 	List<UDPConnection> getUdpConnections();
 	List<TcpConnection> getTcpConnections();
-	List<XBeeConnection> getXbeeConnections();
 	List<HTTPConnection> getHttpConnections();
 
 } // SessionManager

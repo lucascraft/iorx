@@ -7,7 +7,7 @@ import ubiquisense.iorx.registry.DnsSdRegistry;
 public class DnsServiceDiscoveryTest extends GuiceInjectionTest {
 	
 	
-	@Test
+	//@Test
 	public void testServiceDiscovery()
 	{
 		DnsSdRegistry.INSTANCE.getRegistry().printServices();

@@ -45,7 +45,6 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 			public void handleQxEvent(Event event) {
 				if (EVENT_KIND.TX_READY.equals(event.getKind()))
 				{
-					System.out.println("pipeIo1 Event " + event.getKind().getLiteral() + " " + event.getTime());
 					super.handleQxEvent(event);
 					pipeIo1Count++;
 				}
@@ -56,7 +55,6 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 			public void handleQxEvent(Event event) {
 				if (EVENT_KIND.TX_READY.equals(event.getKind()))
 				{
-					System.out.println("pipeIo2 Event " + event.getKind().getLiteral() + " " + event.getTime());
 					super.handleQxEvent(event);
 					pipeIo2Count++;
 				}
@@ -67,7 +65,6 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 			public void handleQxEvent(Event event) {
 				if (EVENT_KIND.TX_READY.equals(event.getKind()))
 				{
-					System.out.println("pipeIo3 Event " + event.getKind().getLiteral() + " " + event.getTime());
 					super.handleQxEvent(event);
 					pipeIo3Count++;
 				}
@@ -78,7 +75,6 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 			public void handleQxEvent(Event event) {
 				if (EVENT_KIND.TX_READY.equals(event.getKind()))
 				{
-					System.out.println("pipeIo4 Event " + event.getKind().getLiteral() + " " + event.getTime());
 					super.handleQxEvent(event);
 					pipeIo4Count++;
 				}

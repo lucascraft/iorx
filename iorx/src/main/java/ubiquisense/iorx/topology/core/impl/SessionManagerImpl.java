@@ -15,7 +15,6 @@ import ubiquisense.iorx.topology.core.SessionManager;
 import ubiquisense.iorx.topology.core.TcpConnection;
 import ubiquisense.iorx.topology.core.UDPConnection;
 import ubiquisense.iorx.topology.core.UsbConnection;
-import ubiquisense.iorx.topology.core.XBeeConnection;
 
 public class SessionManagerImpl implements SessionManager {
 	List<UsbConnection> usbConnections;
@@ -23,7 +22,6 @@ public class SessionManagerImpl implements SessionManager {
 	List<UDPConnection> udpConnections;
 	List<TcpConnection> tcpConnections;
 	List<HTTPConnection> httpConnections;
-	List<XBeeConnection> xbeeConnections;
 
 	public SessionManagerImpl() {
 		usbConnections = new ArrayList<UsbConnection>();
@@ -31,7 +29,6 @@ public class SessionManagerImpl implements SessionManager {
 		udpConnections = new ArrayList<UDPConnection>();
 		tcpConnections = new ArrayList<TcpConnection>();
 		httpConnections = new ArrayList<HTTPConnection>();
-		xbeeConnections = new ArrayList<XBeeConnection>();
 
 	}
 
@@ -49,10 +46,6 @@ public class SessionManagerImpl implements SessionManager {
 
 	public List<TcpConnection> getTcpConnections() {
 		return tcpConnections;
-	}
-
-	public List<XBeeConnection> getXbeeConnections() {
-		return xbeeConnections;
 	}
 
 	public List<HTTPConnection> getHttpConnections() {

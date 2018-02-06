@@ -24,6 +24,7 @@ package ubiquisense.iorx.nojunit;
  */
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -38,13 +39,53 @@ import javax.bluetooth.ServiceRecord;
 
 import com.intel.bluetooth.DebugLog;
 
+import gnu.io.CommPortIdentifier;
+import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
+
 /**
  * This class provides a stand-alone test for Blue Cove
  * 
  */
 public class SimpleDiscovery {
+	 
+    static String getPortTypeName ( int portType )
+    {
+        switch ( portType )
+        {
+            case CommPortIdentifier.PORT_I2C:
+                return "I2C";
+            case CommPortIdentifier.PORT_PARALLEL:
+                return "Parallel";
+            case CommPortIdentifier.PORT_RAW:
+                return "Raw";
+            case CommPortIdentifier.PORT_RS485:
+                return "RS485";
+            case CommPortIdentifier.PORT_SERIAL:
+                return "Serial";
+            default:
+                return "unknown type";
+        }
+    }
 
 	public static void main (String[] args) {
+		
+	       Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier.getPortIdentifiers();
+	        while ( portEnum.hasMoreElements() ) 
+	        {
+	            CommPortIdentifier portIdentifier = portEnum.nextElement();
+	            System.out.println(portIdentifier.getName()  +  " - " +  getPortTypeName(portIdentifier.getPortType()) );
+	        }        
+
+		RXTXSerialUtil.INSTANCE.listPorts();
+//
+//		RXTXSerialUtil.INSTANCE.getPortMap().forEach((k, v) -> System.out.println(k + "->" + v));
+//
+//		ISerialCommunicator serial = RXTXSerialUtil.INSTANCE.openPort(null, "COM1", 19200);
+//
+//		int baudRate = serial.getBaudRate();
+//
+//		System.out.println(baudRate);
+
 
 		EnvSettings.setSystemProperties();
 

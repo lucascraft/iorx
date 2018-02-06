@@ -9,7 +9,7 @@
 
 	<dependencySets>
 		<dependencySet>
-			<useProjectArtifact>true</useProjectArtifact>
+			<useProjectArtifact>false</useProjectArtifact>
 			<outputDirectory></outputDirectory>
 			<unpack>false</unpack>
 		</dependencySet>

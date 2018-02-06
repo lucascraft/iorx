@@ -1,9 +1,3 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id$
- */
 package ubiquisense.iorx.topology.core;
 
 import java.util.Arrays;

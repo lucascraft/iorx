@@ -37,11 +37,11 @@ package ubiquisense.iorx.discovery;
 
 import java.util.List;
 
-import com.rapplogic.xbee.api.XBee;
+import javax.sound.midi.MidiDevice;
 
 public interface IXMidiDeviceManager extends IDeviceManager {
-	List<XBee> getXBeeDevices();
-	boolean connectXBeeDevice(XBee xbee);
-	boolean reconnectXBeeDevice(XBee xbee);
-	boolean disconnectXBeeDevice(XBee xbee);
+	List<MidiDevice> getXBeeDevices();
+	boolean connectXBeeDevice(MidiDevice xbee);
+	boolean reconnectXBeeDevice(MidiDevice xbee);
+	boolean disconnectXBeeDevice(MidiDevice xbee);
 }

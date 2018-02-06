@@ -2,7 +2,6 @@ package ubiquisense.iorx.comm.usb;
 
 import javax.inject.Named;
 
-import ubiquisense.iorx.annotations.TransportProtocol;
 import ubiquisense.iorx.io.impl.PortImpl;
 
 @Named("usb")

@@ -1,41 +1,7 @@
-/***********************************************************************************
- * Ubiquisense - A smart ambient utilities framework 
- * 
- * Copyright (c) 2008 - 2010, Lucas Bigeardel
- * 
- * The library is released under:
- * 
- * A) LGPL
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- * 
- * B) EPL
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     Lucas Bigeardel <lucas.bigeardel@gmail.com> - Initial API and implementation
- ***********************************************************************************/
-
 package ubiquisense.iorx.comm.usb.rxtx;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -135,12 +101,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 		}
 		return serial;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.smbt.comm.utils.IRXTXSerialUtils#openPort(java.lang.String)
-	 */
+
 	public ISerialCommunicator openPort(final ubiquisense.iorx.io.Port port, final String portID, int speed) {
 		return openPort(port, portID, speed, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE, false, true, SerialPort.FLOWCONTROL_NONE);
 	}
@@ -223,11 +184,6 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
-//						execptionNb++;
-//						if (execptionNb>=25) {
-//							engineMap.get(portID).stopInput();
-//							cancel();
-//						}
 					}
 					if (bytesAvailable>0) {
 						final byte[] frame = new byte[bytesAvailable];
@@ -235,11 +191,6 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 							serial.getInpustream().read(frame);
 						} catch (IOException e) {
 							e.printStackTrace();
-	//						execptionNb++;
-	//						if (execptionNb>=25) {
-	//							engineMap.get(portID).stopInput();
-	//							cancel();
-	//						}
 						}
 		
 						if (engineMap.get(portID) != null) {
@@ -254,11 +205,6 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 										h.handleQxEvent(e);
 									} catch( Throwable t) {
 										t.printStackTrace();
-	//									execptionNb++;
-	//									if (execptionNb>=25) {
-	//										p.stopInput();
-	//										cancel();
-	//									}
 									}
 								}
 							}
@@ -269,12 +215,6 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 									pipe.receive(frame);
 								} catch( Throwable t) {
 									t.printStackTrace();
-	//								pipe.deactivateAll();
-	//								execptionNb++;
-	//								if (execptionNb>=25) {
-	//									p.stopInput();
-	//									cancel();
-	//								}
 								}
 							}
 						}
@@ -314,7 +254,11 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	}
 	
 	
-	
+	public void display()
+	{
+		
+		System.out.println("cvbn,");
+	}
 	
 	
 	
@@ -323,7 +267,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
 	
 	public  void listPorts()
     {
-        java.util.Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier.getPortIdentifiers();
+        Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier.getPortIdentifiers();
         while ( portEnum.hasMoreElements() ) 
         {
             CommPortIdentifier portIdentifier = portEnum.nextElement();
@@ -331,7 +275,7 @@ public class RXTXSerialUtil implements IRXTXSerialUtils {
         }        
     }
     
-     String getPortTypeName ( int portType )
+    String getPortTypeName ( int portType )
     {
         switch ( portType )
         {

@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.rapplogic.xbee.api.XBee;
 
 import gnu.io.CommPort;
 import ubiquisense.iorx.discovery.visitors.ITopologyVisitor;
@@ -79,24 +78,24 @@ public class TopologyManager implements IDeviceManager {
 	}
 	 */
 
-	//
-	// XBee ZigBee 802.15.4
-	//
-	public List<XBee> getXBeeDevicesFromCache() {
-		List<XBee> devices = new ArrayList<XBee>();
-		/*
-		XBeeTopologyVisitor<AbstractTopologyItem> visitor = new XBeeTopologyVisitor<AbstractTopologyItem>(null, true);
-		walk(cache.getNodes(), visitor);
-		for (AbstractTopologyItem node : visitor.getNodes()) {
-			if (node instanceof TopologyNode) {
-				if (((TopologyNode) node).getDevice().getDevice() instanceof RemoteDevice) {
-					devices.add((XBee)((TopologyNode) node).getDevice().getDevice());
-				}
-			}
-		}
-		*/
-		return devices; 
-	}
+//	//
+//	// XBee ZigBee 802.15.4
+//	//
+//	public List<XBee> getXBeeDevicesFromCache() {
+//		List<XBee> devices = new ArrayList<XBee>();
+//		/*
+//		XBeeTopologyVisitor<AbstractTopologyItem> visitor = new XBeeTopologyVisitor<AbstractTopologyItem>(null, true);
+//		walk(cache.getNodes(), visitor);
+//		for (AbstractTopologyItem node : visitor.getNodes()) {
+//			if (node instanceof TopologyNode) {
+//				if (((TopologyNode) node).getDevice().getDevice() instanceof RemoteDevice) {
+//					devices.add((XBee)((TopologyNode) node).getDevice().getDevice());
+//				}
+//			}
+//		}
+//		*/
+//		return devices; 
+//	}
 
 	//
 	// Serial  (RS232 for now)

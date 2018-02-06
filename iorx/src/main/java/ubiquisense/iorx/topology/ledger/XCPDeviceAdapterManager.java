@@ -41,15 +41,12 @@ import java.util.List;
 
 import javax.bluetooth.RemoteDevice;
 
-import com.rapplogic.xbee.api.XBee;
-
 import gnu.io.SerialPort;
 import ubiquisense.iorx.discovery.IBluetoothDeviceManager;
 import ubiquisense.iorx.discovery.IDeviceManager;
 import ubiquisense.iorx.discovery.ITcpDeviceManager;
 import ubiquisense.iorx.discovery.IUSbDeviceManager;
 import ubiquisense.iorx.discovery.IUdpDeviceManager;
-import ubiquisense.iorx.discovery.IXBeeDeviceManager;
 import ubiquisense.iorx.discovery.NetBind;
 import ubiquisense.iorx.protocols.midi.internal.raw.MidiDevice;
 import ubiquisense.iorx.topology.ledger.impl.XCPAddressImpl;
@@ -62,7 +59,7 @@ public class XCPDeviceAdapterManager {
 							serialDeviceManager, 
 							tcpDeviceManager, 
 							udpDeviceManager, 
-							xbeeDeviceManager, midiDeviceManager;
+							midiDeviceManager;
 	
 	public XCPDeviceAdapterManager() {
 		btDeviceManager =  new IBluetoothDeviceManager() {
@@ -282,64 +279,6 @@ public class XCPDeviceAdapterManager {
 				return false;
 			}
 		};
-		xbeeDeviceManager = new IXBeeDeviceManager() {
-			@Override
-			public boolean removeDevice(Object device) {
-				return false;
-			}
-			@Override
-			public boolean reconnectDevice(Object device) {
-				return false;
-			}
-			@Override
-			public boolean disconnetDevice(Object device) {
-				return false;
-			}
-			@Override
-			public boolean connectDevice(Object device) {
-				return false;
-			}
-			@Override
-			public boolean addDevice(Object device) {
-				return false;
-			}
-			@Override
-			public XCPDevice adapt(Object device) {
-				return null;
-			}
-			
-			@Override
-			public boolean reconnectXBeeDevice(XBee xbee) {
-				return false;
-			}
-			
-			@Override
-			public List<XBee> getXBeeDevices() {
-				return null;
-			}
-			
-			@Override
-			public boolean disconnectXBeeDevice(XBee xbee) {
-				return false;
-			}
-			
-			@Override
-			public boolean connectXBeeDevice(XBee xbee) {
-				return false;
-			}
-			@Override
-			public boolean addService(Object service) {
-				return false;
-			}
-			@Override
-			public boolean removeService(Object service) {
-				return false;
-			}
-			@Override
-			public boolean resolveService(Object service) {
-				return false;
-			}
-		};
 	}
 		
 	public IDeviceManager getDeviceManager(Object device) {
@@ -351,9 +290,7 @@ public class XCPDeviceAdapterManager {
 			return tcpDeviceManager;
 		} else if (device instanceof DatagramSocket) {
 			return udpDeviceManager;
-		} else if (device instanceof XBee) {
-			return xbeeDeviceManager;
-		}  else if (device instanceof MidiDevice) {
+		} else if (device instanceof MidiDevice) {
 			return midiDeviceManager;
 		}  
 		return null;

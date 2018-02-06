@@ -13,15 +13,10 @@ public class EventImpl implements Event
 {
 	
 	EVENT_KIND evtKind;
-	
 	Cmd cmd;
-	
 	Qx qx;
-	
 	long time;
-	
 	CmdPipe cmdPipe;
-	
 	String topic;
 	
 	public EventImpl() {
@@ -97,9 +92,6 @@ public class EventImpl implements Event
 		cmdPipe = pipe;
 	}
 	
-	
-	
-
 	public EventImpl(Change<Cmd> cmdChange) {
 		cmd = cmdChange.getValue();
 		time = System.currentTimeMillis();
