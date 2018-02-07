@@ -12,6 +12,7 @@
 			<useProjectArtifact>false</useProjectArtifact>
 			<outputDirectory></outputDirectory>
 			<unpack>false</unpack>
+			<excludes><exclude>**/rxtx-2.1.7.jar</exclude></excludes>
 		</dependencySet>
 	</dependencySets>
 	<fileSets>

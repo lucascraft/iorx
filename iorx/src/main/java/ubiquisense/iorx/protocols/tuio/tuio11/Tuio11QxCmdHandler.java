@@ -44,8 +44,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
-import javax.inject.Named;
-
 import com.illposed.osc.OSCBundle;
 import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
@@ -68,7 +66,6 @@ import ubiquisense.iorx.protocols.tuio.internal.tuio11.TuioBundle;
 import ubiquisense.iorx.protocols.tuio.internal.tuio11.impl.TuioBundleImpl;
 
 @CommunicationProtocol(type = "tuio11")
-@Named("tuio11")
 public class Tuio11QxCmdHandler implements IXFrameInterpreter, IXCmdInterpreter, IQxEventHandler {
 	private OSCByteArrayToJavaConverter converter;
 	

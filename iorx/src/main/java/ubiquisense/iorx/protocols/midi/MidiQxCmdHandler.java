@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import javax.inject.Named;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.ShortMessage;
 
@@ -53,9 +52,9 @@ import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.event.EVENT_KIND;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.AbstractMidiCmd;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
@@ -63,7 +62,6 @@ import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.qx.Qx;
 
 @CommunicationProtocol(type = "midi")
-@Named("midi")
 @Singleton
 public class MidiQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {
 	

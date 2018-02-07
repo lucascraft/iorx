@@ -35,15 +35,12 @@
 
 package ubiquisense.iorx.protocols.ubiquino;
 
-import javax.inject.Named;
-
 import ubiquisense.iorx.annotations.CommunicationProtocol;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.hardware.arduino.Arduino;
 import ubiquisense.iorx.protocols.firmata.FirmataCmdQxEventHandler;
 
 @CommunicationProtocol(type = "ubiquino")
-@Named("ubiquino")
 public class UbiquinoQxCmdEventHandler extends FirmataCmdQxEventHandler {
 	private Arduino arduino;
 	

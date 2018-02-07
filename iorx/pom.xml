@@ -27,7 +27,7 @@
 				<version>2.12.4</version>
 				<configuration>
 					<forkMode>once</forkMode>
-					<argLine>-Djava.library.path=${project.basedir}/src/libs/natives/win32/x86_64;${project.basedir}/src/jars</argLine>
+					<argLine>-Djava.library.path="${project.basedir}/src/libs/natives/win32/x86_64;${project.basedir}/src/jars"</argLine>
 					<skipTests>false</skipTests>
 				</configuration>
 			</plugin>
@@ -152,6 +152,20 @@
 		    <version>1.0</version>
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/NativeFmodDesigner.jar</systemPath>
+		</dependency>	
+			<dependency>
+		    <groupId>fmodex</groupId>
+		    <artifactId>fmodex-libs-natives</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/NativeFmodEx-win64.jar</systemPath>
+		</dependency>	
+		<dependency>
+		    <groupId>fmodex</groupId>
+		    <artifactId>fmodexdesigner-libs-natives</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/NativeFmodDesigner-win64.jar</systemPath>
 		</dependency>	
 		<dependency>
 		    <groupId>rxtx</groupId>

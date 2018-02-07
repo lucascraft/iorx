@@ -3,11 +3,13 @@ package ubiquisense.iorx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Test;
+
 import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 
 public class RxTxUtilsBasicTest {
 
-	//@Test
+	@Test
 	public void testInitRxTxUtils()
 	{
 		

@@ -66,7 +66,7 @@ public final class Ubq
 	public Ubq() {
 		lifecycleListeners = new ConcurrentLinkedQueue<ICmdPipeLifecycleListener>();
 		localPipes = new HashSet<CmdPipe>();
-//		genesis();
+		genesis();
 	}
 	
 	public ConcurrentLinkedQueue<ICmdPipeLifecycleListener> getLifecycleListeners() {

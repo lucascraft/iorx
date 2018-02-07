@@ -63,7 +63,7 @@ public class MidiBoxUtils {
 
 	boolean useSynthetizer = true;
 
-	public void createPartControl() {
+	public MidiBoxUtils() {
 
 		initSequencer();
 

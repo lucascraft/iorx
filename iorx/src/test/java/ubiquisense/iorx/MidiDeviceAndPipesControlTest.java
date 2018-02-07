@@ -3,9 +3,11 @@ package ubiquisense.iorx;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
+import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
@@ -21,8 +23,6 @@ import javax.sound.midi.Transmitter;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-
 import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
 import ubiquisense.iorx.protocols.midi.internal.MidiSystemUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
@@ -33,6 +33,7 @@ public class MidiDeviceAndPipesControlTest {
 	static Transmitter seqTrans;
 	static Synthesizer synth;
 	static Receiver synthRcvr;
+	String[] keys1 = new String[] { "C", "C#", "D", "D#" };
 
 	@Before
 	public void initSequencer() {
@@ -81,43 +82,57 @@ public class MidiDeviceAndPipesControlTest {
 			}
 
 			System.out.println(kind + desc + " " + vendor + ver);
+	
+			Map<String, List<Instrument>> instrumentsMap = MidiSystemUtils.INSTANCE.instrumentsByBanks(synth);
 			
-			List<String> k = Lists.newArrayList(MidiSystemUtils.INSTANCE.getNotesWithShiftMap().keySet());
-			
-			for (String keyCode : new String[] {k.get(0), k.get(4)}) {
-				DSLMidiMessage msgON = MidiCmdUtils.INSTANCE.createMidiMessage(ShortMessage.NOTE_ON,
-						(byte) MidiSystemUtils.INSTANCE.getNote(2, keyCode), (byte) 89);
-
-				if (msgON != null) {
-					byte[] stream = MidiCmdUtils.INSTANCE.dumpLegacyMidiMessageStream(msgON);
-					if (true) {
-						MidiChannel[] channels = synth.getChannels();
-						if (channels != null && channels[msgON.getChannel()] != null) {
-							channels[msgON.getChannel()].allNotesOff();
-							// if (ShortMessage.NOTE_ON == command){
-							channels[msgON.getChannel()].noteOn((int) msgON.getByte1(), (int) msgON.getByte1());
-							// } else if (ShortMessage.NOTE_OFF == command){
-							// channels[msg.getChannel()].noteOff((int)msg.getByte1(), (int)msg.getByte1());
-							// }
-							try {
-								Thread.sleep(500);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+			List<Instrument> instruments = new ArrayList<Instrument>();
+			for (String k : instrumentsMap.keySet()) {
+				for (Instrument in : instrumentsMap.get(k)) {
+					int bankID = in.getPatch().getBank();
+					if (bankID == 0) {
+						instruments.add(in);
+					}
+				}
+			}
+		
+			for (int inst=10; inst<=13; inst++)
+			{
+				MidiSystemUtils.INSTANCE.affectInstrumentToChannel(synth, instruments.get(inst));
+	
+				for (int octave : new int[] {3, 4, 3})
+				{
+					for (Integer keyCode : MidiSystemUtils.INSTANCE.getNotes(octave, keys1)) {
+						DSLMidiMessage msgON = MidiCmdUtils.INSTANCE.createMidiMessage(
+							ShortMessage.NOTE_ON,
+							(byte) keyCode.intValue(), 
+							(byte) 89
+						);
+		
+						if (msgON != null) {
+							byte[] stream = MidiCmdUtils.INSTANCE.dumpLegacyMidiMessageStream(msgON);
+							if (true) {
+								MidiChannel[] channels = synth.getChannels();
+								if (channels != null && channels[msgON.getChannel()] != null) {
+									channels[msgON.getChannel()].allNotesOff();
+									channels[msgON.getChannel()].noteOn((int) msgON.getByte1(), (int) msgON.getByte1());
+									try {
+										Thread.sleep(75);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
 							}
+							synthRcvr.send(new MidiMessage(stream) {
+								@Override
+								public Object clone() {
+									// who cares ...
+									return null;
+								}
+							}, System.currentTimeMillis());
 						}
 					}
-					synthRcvr.send(new MidiMessage(stream) {
-						@Override
-						public Object clone() {
-							// who cares ...
-							return null;
-						}
-					}, System.currentTimeMillis());
 				}
-
 			}
 		}
-
 	}
-
 }

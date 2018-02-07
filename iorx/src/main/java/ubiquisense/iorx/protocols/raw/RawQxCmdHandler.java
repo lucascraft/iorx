@@ -39,8 +39,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import javax.inject.Named;
-
 import com.google.inject.Singleton;
 
 import ubiquisense.iorx.annotations.CommunicationProtocol;
@@ -57,7 +55,7 @@ import ubiquisense.iorx.protocols.raw.internal.impl.RawCmdImpl;
 import ubiquisense.iorx.qx.Qx;
 
 @CommunicationProtocol(type = "raw")
-@Named("raw") @Singleton
+@Singleton
 public class RawQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {
 	
 	@Override

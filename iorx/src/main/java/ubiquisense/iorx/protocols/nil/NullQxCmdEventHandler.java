@@ -35,8 +35,6 @@
 
 package ubiquisense.iorx.protocols.nil;
 
-import javax.inject.Named;
-
 import com.google.inject.Singleton;
 
 import ubiquisense.iorx.annotations.CommunicationProtocol;
@@ -47,11 +45,10 @@ import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
-import ubiquisense.iorx.utils.CmdUtil;
 import ubiquisense.iorx.utils.Platform;
 
 @CommunicationProtocol(type = "void")
-@Named("void") @Singleton
+@Singleton
 public class NullQxCmdEventHandler implements IQxEventHandler, IXCmdInterpreter, IXFrameInterpreter {
 	@Override
 	public void handleQxEvent(Event event) {

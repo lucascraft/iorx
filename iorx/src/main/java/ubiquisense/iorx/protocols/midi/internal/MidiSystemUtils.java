@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.sound.midi.Instrument;
@@ -47,6 +48,8 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
+
+import com.google.common.collect.Sets;
 
 import ubiquisense.iorx.utils.Platform;
 
@@ -67,20 +70,15 @@ public class MidiSystemUtils {
 		notesWithShiftMap = new TreeMap<String, Integer>();
 		notesWithShiftMap.put("C", 0);
 		notesWithShiftMap.put("C#", 1);
-		notesWithShiftMap.put("Db", 1); // avoid
 		notesWithShiftMap.put("D", 2);
 		notesWithShiftMap.put("D#", 3);
-		notesWithShiftMap.put("Eb", 3); // avoid
 		notesWithShiftMap.put("E", 4);
 		notesWithShiftMap.put("F", 5);
 		notesWithShiftMap.put("F#", 6);
-		notesWithShiftMap.put("Gb", 6); // avoid
 		notesWithShiftMap.put("G", 7);
 		notesWithShiftMap.put("G#", 8);
-		notesWithShiftMap.put("Ab", 8); // avoid
 		notesWithShiftMap.put("A", 9);
 		notesWithShiftMap.put("A#", 10);
-		notesWithShiftMap.put("Bb", 10); // avoid
 		notesWithShiftMap.put("B", 11);
 
 		notesByOctavesMap = new TreeMap<Integer, Map<String, Integer>>();
@@ -95,6 +93,19 @@ public class MidiSystemUtils {
 			}
 			note += NB_KEYS;
 		}
+	}
+
+	public Set<Integer> getNotes(int octave, String... codes) {
+		Set<Integer> notes = Sets.newHashSet();
+		for (String code : codes)
+		{
+			Integer octaveID = new Integer(octave);
+			if (notesByOctavesMap.containsKey(octaveID)) {
+				Map<String, Integer> notesMap = notesByOctavesMap.get(octaveID);
+				notes.add(notesMap.get(code));
+			}
+		}
+		return notes;
 	}
 
 	public int getNote(int octave, String code) {
