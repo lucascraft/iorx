@@ -47,10 +47,10 @@ public class BluetoothCommunicatorSanityCheckTest {
 		return true;
 	}
 
-	// @Test
+	//@Test
 	public void testBluetootPipe() {
 		CmdPipe udpOscIoPipe = Ubq.Reactor.createPipe("bt://", "osc", "osc_pipe_bt_1", "127.0.0.0:1234",
-				new int[] { 9056 }, -1, new HashMap<Object, Object>(), false);
+				new int[] { }, -1, new HashMap<Object, Object>(), false);
 
 		assertNotNull(udpOscIoPipe);
 		assertNotNull(udpOscIoPipe.getAddr());
@@ -58,7 +58,7 @@ public class BluetoothCommunicatorSanityCheckTest {
 		assertNotNull(udpOscIoPipe.getPorts());
 	}
 
-	//@Test
+	@Test
 	public void testBluetootLibraryLoad() {
 		// create timer task to increment counter
 		discoveryBluetooth();
@@ -111,6 +111,15 @@ public class BluetoothCommunicatorSanityCheckTest {
 			RemoteDevice btDevice = (RemoteDevice) i.next();
 			try {
 				System.out.println("Found " + btDevice.getBluetoothAddress() + " : " + btDevice.getFriendlyName(true));
+				
+//				CmdPipe udpOscIoPipe = Ubq.Reactor.createPipe("bt://", "osc", "osc_pipe_bt_1", btDevice.getBluetoothAddress(),
+//						new int[] { }, -1, new HashMap<Object, Object>(), false);
+//
+//				assertNotNull(udpOscIoPipe);
+//				assertNotNull(udpOscIoPipe.getAddr());
+//				assertNotNull(udpOscIoPipe.getPort());
+//				assertNotNull(udpOscIoPipe.getPorts());
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
