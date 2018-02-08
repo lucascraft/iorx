@@ -1,6 +1,3 @@
-/*
- * Created on 20 janv. 08
- */
 package ubiquisense.iorx.nojunit;
 
 import java.io.BufferedInputStream;
@@ -16,11 +13,11 @@ public final class Medias
 	private static String lastError = "";
 	private Medias(){}
 	
-	public static ByteBuffer loadMediaIntoMemory(String media)
+	public static ByteBuffer loadMediaIntoMemory(File f)
 	{
 		try
 		{
-			InputStream is = new FileInputStream(new File(media));
+			InputStream is = new FileInputStream(f);
 			BufferedInputStream bis = new BufferedInputStream(is);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -44,6 +41,11 @@ public final class Medias
 			lastError = e.getMessage();
 			return null;
 		}
+	}
+	
+	public static ByteBuffer loadMediaIntoMemory(String media)
+	{
+		return loadMediaIntoMemory(new File(media));
 	}
 	
 	public static String getLastError()

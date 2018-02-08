@@ -14,6 +14,7 @@ import static org.jouvieje.fmodex.utils.BufferUtils.newByteBuffer;
 import static org.jouvieje.fmodex.utils.SizeOfPrimitive.SIZEOF_INT;
 
 import java.nio.ByteBuffer;
+import java.nio.file.Paths;
 
 import org.jouvieje.fmoddesigner.InitFmodDesigner;
 import org.jouvieje.fmodex.Channel;
@@ -85,25 +86,29 @@ public class AudioFmodexTest {
 		
 		systemChannel = new Channel();
 		
-		Sound sound = new Sound();
-
-		java.lang.System.out.println("About to init C:\\Users\\machi\\git\\iorx\\iorx\\src\\media\\9_klingeln.wav Sound Buffer");
-		try {
-			soundBuffer = Medias.loadMediaIntoMemory("C:\\Users\\machi\\git\\iorx\\iorx\\src\\media\\9_klingeln.wav");
-			if (soundBuffer != null) {
-					java.lang.System.out.println("Sound Buffer init succeeded");
-				exinfo = FMOD_CREATESOUNDEXINFO.allocate();
-				if (exinfo != null) {
-					exinfo.setLength(soundBuffer.capacity());
-					errorCheck(system.createSound(soundBuffer, FMOD_DEFAULT | FMOD_SOFTWARE | FMOD_OPENMEMORY, exinfo, sound));
+		for (String soundFile : new String[] {"riviere3.wav", "buzz.wav", "tone7.au", "", "sound37.mp3"}) 
+		{
+			Sound sound = new Sound();
+	
+	        java.nio.file.Path path = Paths.get("src\\media\\" + soundFile);
+			java.lang.System.out.println("About to init media\\9_klingeln.wav Sound Buffer");
+			try {
+				soundBuffer = Medias.loadMediaIntoMemory(path.toAbsolutePath().toString());
+				if (soundBuffer != null) {
+						java.lang.System.out.println("Sound Buffer init succeeded");
+					exinfo = FMOD_CREATESOUNDEXINFO.allocate();
+					if (exinfo != null) {
+						exinfo.setLength(soundBuffer.capacity());
+						errorCheck(system.createSound(soundBuffer, FMOD_DEFAULT | FMOD_SOFTWARE | FMOD_OPENMEMORY, exinfo, sound));
+					}
 				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				exinfo.release();
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			exinfo.release();
+			system.playSound(FMOD_CHANNEL_FREE, sound, false, systemChannel);
 		}
-		system.playSound(FMOD_CHANNEL_FREE, sound, false, systemChannel);
 		
 	}
 	 static void initSystem() {
