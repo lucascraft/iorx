@@ -134,25 +134,23 @@ public class MidiSystemUtils {
 		return null;
 	}
 
-	public void affectInstrumentToChannel(Synthesizer synth, Instrument instr) {
-		if (synth.isOpen()) {
+	public void affectInstrumentToChannel(Synthesizer synth, Instrument instr) 
+	{
+		if (!synth.isOpen()) {
+			try {
+				synth.open();
+			} catch (MidiUnavailableException e) {
+				e.printStackTrace();
+			}
+		} else {
 			MidiChannel[] channels = synth.getChannels();
 			int program = instr.getPatch().getProgram();
-			if (channels != null && channels.length > 0) {
+			synth.loadInstrument(instr);
+			for(MidiChannel channel : channels) {
 				int idx = instr.getPatch().getBank();
-				synth.loadInstrument(instr);
-				channels[0].programChange(idx, program);
-				channels[1].programChange(idx, program);
-				channels[2].programChange(idx, program);
-				channels[3].programChange(idx, program);
-				channels[4].programChange(idx, program);
-				channels[5].programChange(idx, program);
-				channels[6].programChange(idx, program);
-				channels[7].programChange(idx, program);
-				channels[8].programChange(idx, program);
+				channel.programChange(idx, program);
 			}
 		}
-
 	}
 
 	public HashMap<String, List<Instrument>> instrumentsByBanks(Synthesizer synth) {

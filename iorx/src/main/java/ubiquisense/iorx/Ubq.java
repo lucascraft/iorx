@@ -1,5 +1,8 @@
 package ubiquisense.iorx;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,7 +12,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -44,6 +50,7 @@ import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
+import ubiquisense.iorx.protocols.midi.internal.MidiSystemUtils;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.registry.CommProtocolConfig;
 import ubiquisense.iorx.registry.ConfigurationModule;
@@ -696,12 +703,12 @@ public final class Ubq
 		return outPorts;
 	}
 	
-	public CmdPipe openMidiPipe(MidiDevice device) {
+	public CmdPipe openMidiPipe() {
 		CmdPipe pipe = openPipe(
 			TRANSPORT_PROTOCOL.MIDI.getLiteral(), 
 			"midi", 
 			UUID.randomUUID().toString(), 
-			device.getDeviceInfo().getName(), 
+			"midi_pipe", 
 			new int[]{}, 
 			-1, 
 			new HashMap<Object, Object>()
@@ -710,20 +717,9 @@ public final class Ubq
 			if (pipe.getPort() != null) {
 				if (pipe.getPort().getChannel() instanceof MidiTransportCommunicator) {
 					MidiTransportCommunicator c = (MidiTransportCommunicator) pipe.getPort().getChannel();
+					List<MidiDevice> devices = MidiSystemUtils.INSTANCE.getMidiDevices();
+					MidiDevice device = devices.get(0);
 					c.setDevice(device);
-					/*
-					String name = ""+pipe.getName();
-					if (c.isInputOutputDevice()) {
-						name += " (IN/OUT)";
-					} else if (c.isInputDevice()) {
-						name += " (IN/..)";
-					} else if (c.isInputDevice()) {
-						name += " (../OUT)";
-					} else {
-						name += " (../..)";
-					}
-					pipe.setName(name);
-					*/
 				}
 			}
 		}

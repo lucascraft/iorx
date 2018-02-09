@@ -28,5 +28,9 @@
 			<directory>src/media</directory>
 			<outputDirectory>media</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<directory>src/ubiquisense</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
 	</fileSets>
 </assembly>

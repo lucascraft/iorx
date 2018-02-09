@@ -96,7 +96,7 @@ public class MidiQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFr
 	@Override
 	public void handleQxEvent(Event event) {
 		if (event.getCmd() instanceof AbstractMidiCmd) {
-			if (event.getKind() == EVENT_KIND.TX_DONE) {
+			if (event.getKind() == EVENT_KIND.TX_READY) {
 				if (event.getCmd() instanceof CompoundCmd) {
 					for (Cmd c : ((CompoundCmd)event.getCmd()).getChildren()) {
 						handleCmd(event.getQx(), c);
