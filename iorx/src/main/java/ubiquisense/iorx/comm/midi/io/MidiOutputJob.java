@@ -35,19 +35,29 @@
 
 package ubiquisense.iorx.comm.midi.io;
 
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
+import java.util.List;
+import java.util.Map;
 
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Synthesizer;
+
+import com.google.common.collect.Lists;
+
+import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
+import ubiquisense.iorx.protocols.midi.internal.MidiSystemUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 
+public class MidiOutputJob implements /* ChannelCloser, */ IMidiOut {
 
-public class MidiOutputJob implements /*ChannelCloser,*/ IMidiOut {
-	
-	
 	private MidiDevice device;
+
 	public MidiOutputJob(MidiDevice device) {
-		this.device	= device;
+		this.device = device;
 		if (!device.isOpen()) {
 			try {
 				device.open();
@@ -56,35 +66,31 @@ public class MidiOutputJob implements /*ChannelCloser,*/ IMidiOut {
 			}
 		}
 	}
-	
+
 	public void close() {
 		if (device != null && device.isOpen()) {
 			device.close();
 		}
 	}
 
-	public void send(DSLMidiMessage cmd) 
-	{
-		if (device != null && !device.isOpen()) {
+	public void send(DSLMidiMessage cmd) {
+		if (!device.isOpen()) {
 			try {
 				device.open();
 			} catch (MidiUnavailableException e) {
 				e.printStackTrace();
 			}
 		}
-		if (device.isOpen()) {
-			Receiver r = null;
-			try {
-				r = device.getReceiver();
-			} catch (MidiUnavailableException e) {
-				e.printStackTrace();
+		try {
+			Synthesizer synth = MidiSystem.getSynthesizer();
+			MidiSystemUtils.INSTANCE.affectInstrumentToChannel(synth, synth.getAvailableInstruments()[0]);
+			MidiChannel[] channels = synth.getChannels();
+			if (channels != null && channels[cmd.getChannel()] != null) {
+				channels[cmd.getChannel()].allNotesOff();
+				channels[cmd.getChannel()].noteOn((int) cmd.getByte1(), (int) cmd.getByte2());
 			}
-			if (r != null) {
-				r.send(
-					null , //MidiCmdUtils.INSTANCE.translateMidiMessage(cmd), 
-					System.currentTimeMillis()
-				);
-			}
+		} catch (MidiUnavailableException e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.Canvas?>
+
+<GridPane id="mtGridPane" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubiquisense.iorx.ui.fx.MTController">
+   <children>
+      <MenuBar maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="mtMenuFileExit" mnemonicParsing="false" onAction="#closeMTApp" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem fx:id="mtMenuEdit" mnemonicParsing="false" text="edit fiducial" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Pane id="mtCenterPane" onTouchMoved="#onTouchMovedAction" onTouchPressed="#onTouchPressedAction" onTouchReleased="#onTouchReleasedAction" onTouchStationary="#onTouchStationaryAction" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+      <ToolBar maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+        <items>
+            <Button fx:id="addFiducial" mnemonicParsing="false" onAction="#addFiducialAction" text="Add" />
+            <Button fx:id="deleteFiducial" mnemonicParsing="false" onAction="#deleteFiducialAction" text="Delete" />
+            <Button fx:id="editFiducial" mnemonicParsing="false" onAction="#editFiducialAction" text="Edit" />
+            <Button fx:id="resetFiducials" mnemonicParsing="false" onAction="#resetFiducialsAction" text="Reset" />
+        </items>
+      </ToolBar>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
