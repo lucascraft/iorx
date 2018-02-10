@@ -52,7 +52,7 @@ public class MTController implements Initializable {
 	private void addFiducialAction(ActionEvent e) {
 		System.out.println("addFiducialAction");
 
-		MTRectangle r = new MTRectangle(100d, 100d);
+		MTCircle r = new MTCircle(100d);
 		Random ran = new Random();
 		
 		r.setTranslateX(ran.nextDouble()*mtPane.getWidth());
