@@ -2,12 +2,15 @@ package ubiquisense.iorx.ui.fx.fiducial;
 
 import java.util.Random;
 
+import com.illposed.osc.OSCMessage;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.input.TouchPoint;
 import javafx.scene.paint.Color;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
+import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 
 public class MTFiducial extends MTCircle {
 
@@ -16,9 +19,22 @@ public class MTFiducial extends MTCircle {
     double maxAlpha = 0.8;
     double mult = 1;
     MTFiducialConfig cfg;
+    OscSender oscSender;
+    float mCursor;
     
-	public synchronized void beat(double curso)
+	public synchronized void beat(OscSender oscSender, double curso)
 	{
+		this.oscSender = oscSender;
+		mCursor = (tempo / 5) * (float)curso;
+		
+		float cos = Double.valueOf(Math.cos(mCursor)).floatValue();
+		float sin = Double.valueOf(Math.sin(mCursor)).floatValue();
+		
+		if (1 >= sin && sin <0.95 && 0 < cos && cos < 0.5)
+		{
+			oscSender.sendMessage(new OSCMessage("/fmurf/live/"+cfg.getId()+"/bang/"+mCursor));
+		}
+
 		Color p = (Color) getFill();
 		if (p.getOpacity()>=maxAlpha)
 		{
@@ -33,6 +49,9 @@ public class MTFiducial extends MTCircle {
 		setStroke(p2);
 		
        ((NGFiducial)impl_getPeer()).setCursor(curso, tempo);
+       
+       
+       
 	}
 
 	public MTFiducial() {
@@ -80,6 +99,10 @@ public class MTFiducial extends MTCircle {
 				TouchPoint pt = event.getTouchPoint();
 				setCenterX(pt.getX());
 				setCenterY(pt.getY());
+				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/touch/"+mCursor);
+				msg.addArgument(pt.getX());
+				msg.addArgument(pt.getY());
+				oscSender.sendMessage(msg);
 			}
 		});
 		
@@ -90,6 +113,10 @@ public class MTFiducial extends MTCircle {
 				TouchPoint pt = event.getTouchPoint();
 				setCenterX(pt.getX());
 				setCenterY(pt.getY());
+				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/touch/"+mCursor);
+				msg.addArgument(pt.getX());
+				msg.addArgument(pt.getY());
+				oscSender.sendMessage(msg);
 			}
 		});
 		
@@ -99,6 +126,10 @@ public class MTFiducial extends MTCircle {
 				System.out.println("mouap");
 				setCenterX(event.getX());
 				setCenterY(event.getY());
+				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/drag/"+mCursor);
+				msg.addArgument(event.getX());
+				msg.addArgument(event.getY());
+				oscSender.sendMessage(msg);
 			}
 		});
 		
@@ -108,6 +139,10 @@ public class MTFiducial extends MTCircle {
 				System.out.println("draaaaag");
 				setCenterX(event.getX());
 				setCenterY(event.getY());
+				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/drag/"+mCursor);
+				msg.addArgument(event.getX());
+				msg.addArgument(event.getY());
+				oscSender.sendMessage(msg);
 			}
 		});
 	}

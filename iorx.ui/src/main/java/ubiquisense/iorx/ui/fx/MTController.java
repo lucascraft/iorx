@@ -3,6 +3,7 @@ package ubiquisense.iorx.ui.fx;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.illposed.osc.OSCMessage;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.layout.Pane;
 import ubiquisense.iorx.ui.AppFX;
 import ubiquisense.iorx.ui.config.MTConfig;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
+import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 import ubiquisense.iorx.ui.fx.fiducial.MTFiducial;
 
 //@IDProperty(value="mtMenuEdit")
@@ -21,13 +23,17 @@ public class MTController implements Initializable {
 	private AppFX app;
 	private MTConfig cfg;
 	
+	private OscSender oscSender;
+	
 	private double cursor;
+	private double lastBang = Double.MIN_VALUE;
 
 	
 	public void initData(AppFX app, MTConfig cfg, Pane pane) {
 		this.app = app;
 		this.cfg = cfg;
 		this.mtPane = pane;
+		oscSender = new OscSender(cfg.getOutAddr(), cfg.getOutOscPort());
 		
 		cfg.getFiducials().forEach(fidCfg -> { mtPane.getChildren().add(createMTFiducial(fidCfg)); });
 		
@@ -36,8 +42,14 @@ public class MTController implements Initializable {
 			public void run() {
 				do {
 					try {
+						if (cursor > lastBang)
+						{
+							oscSender.sendMessage(new OSCMessage("/fmurf/live/bang/"+lastBang));
+							lastBang = cursor+0.33; // 60 bpm
+						}
 						cursor += 0.01;
-						pane.getChildrenUnmodifiable().forEach(c -> { if (c instanceof MTFiducial) {((MTFiducial)c).beat(cursor);}});
+						System.out.println(cursor + " / " + lastBang);
+						pane.getChildrenUnmodifiable().forEach(c -> { if (c instanceof MTFiducial) {((MTFiducial)c).beat(oscSender, cursor);}});
 						Thread.sleep(50);
 					} catch (InterruptedException e) {
 						e.printStackTrace();

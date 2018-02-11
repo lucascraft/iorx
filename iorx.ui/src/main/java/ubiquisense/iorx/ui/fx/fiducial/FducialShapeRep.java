@@ -25,7 +25,7 @@ public class FducialShapeRep extends BasicShapeRep {
 		// g.fillEllipse(e.x, e.y, e.width, e.height);
 		g.fillRect(e.x + e.width / 4, e.y + e.height / 4, e.width / 2, e.height / 2);
 		
-		float mCursor = tempo * (float)cursor;
+		float mCursor = (tempo / 5) * (float)cursor;
 		float circumX = Double.valueOf(Math.cos(mCursor)*(Math.min(e.width, e.height)/2)).floatValue();
 		float circumY = Double.valueOf(Math.sin(mCursor)*(Math.min(e.width, e.height)/2)).floatValue();
 		
