@@ -13,15 +13,34 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import ubiquisense.iorx.ui.fmurf.SmurfBrainImpl;
+import ubiquisense.iorx.ui.fx.fiducial.MTFiducial;
 
 //@IDProperty(value="mtMenuEdit")
 public class MTController implements Initializable {
 	private SmurfBrainImpl brain;
 	private Pane mtPane;
+	
+	private double cursor;
 
+ 
 	public void initData(SmurfBrainImpl smurfBrain, Pane pane) {
 		brain = smurfBrain;
 		mtPane = pane;
+	  	Runnable r = new Runnable() {
+				@Override
+			public void run() {
+				do {
+					try {
+						cursor += 0.02;
+						pane.getChildrenUnmodifiable().forEach(c -> { if (c instanceof MTFiducial) {((MTFiducial)c).beat(cursor);}});
+							Thread.sleep(50);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}while (true);
+			}
+		};
+		new Thread(r).start();
 	}
 
 	@Override
@@ -52,11 +71,15 @@ public class MTController implements Initializable {
 	private void addFiducialAction(ActionEvent e) {
 		System.out.println("addFiducialAction");
 
-		MTCircle r = new MTCircle(100d);
 		Random ran = new Random();
+		MTFiducial r = new MTFiducial(Math.min(100d, ran.nextDouble()*175d), 50f * ran.nextFloat());
 		
 		r.setTranslateX(ran.nextDouble()*mtPane.getWidth());
 		r.setTranslateY(ran.nextDouble()*mtPane.getHeight());
+		Color c = Color.color(Math.min(0.7, ran.nextDouble()), Math.min(0.5, ran.nextDouble()), Math.min(0.6, ran.nextDouble()));
+		r.setFill(c/*.deriveColor(1.0, 1.0, 1.0, 0.2)*/);
+		r.setStroke(c);
+
 
 		mtPane.getChildren().add(r);
 	}
@@ -74,6 +97,7 @@ public class MTController implements Initializable {
 	@FXML
 	private void resetFiducialsAction(ActionEvent e) {
 		System.out.println("resetFiducialsAction");
+		mtPane.getChildren().clear();
 	}
 
 	@FXML

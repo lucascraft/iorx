@@ -1,4 +1,4 @@
-package ubiquisense.iorx.ui.fx;
+package ubiquisense.iorx.ui.fx.adapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

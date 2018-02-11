@@ -16,8 +16,8 @@ import ubiquisense.iorx.protocols.tuio.TuioCursor;
 import ubiquisense.iorx.protocols.tuio.TuioObject;
 import ubiquisense.iorx.protocols.tuio.TuioPoint;
 import ubiquisense.iorx.ui.fmurf.fx.fmf.FMFOscillator;
-import ubiquisense.iorx.ui.fx.INodeVisitor;
-import ubiquisense.iorx.ui.fx.NodeAdapter;
+import ubiquisense.iorx.ui.fx.adapter.INodeVisitor;
+import ubiquisense.iorx.ui.fx.adapter.NodeAdapter;
 
 public class SmurfBrainImpl {
 	Scene scene;
