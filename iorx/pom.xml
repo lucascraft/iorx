@@ -69,7 +69,6 @@
 							<!-- The commit message -->
 							<message>Building Iorx site</message>
 							<!-- The location where the site is uploaded -->
-							<oauth2Token></oauth2Token>
 							<path>ubiquisense/iorx</path>
 							<!-- Use merge or override the content -->
 							<merge>true</merge>
@@ -171,13 +170,14 @@
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/NativeFmodDesigner-win64.jar</systemPath>
 		</dependency>	
+		<!--  
 		<dependency>
 		    <groupId>rxtx</groupId>
 		    <artifactId>rxtx-win32-x86_64</artifactId>
 		    <version>rxtx-2.1.7</version>
 		    <scope>system</scope>
-		    <systemPath>${project.basedir}/src/libs/natives/win32/x86_64/RXTXcomm.jar</systemPath>
-		</dependency>	
+		    <systemPath>${project.basedir}/src/jars/RXTXcomm.jar</systemPath>
+		</dependency>	-->
 		<dependency>
 		    <groupId>bluecove</groupId>
 		    <artifactId>bluecove-win32-x86_64</artifactId>
@@ -191,10 +191,10 @@
 		<url>ubiquisense.com</url>
 	</organization>
 	<scm>
-		<url>https://github.com/lucascraft/iorx.git</url>
-		<developerConnection>https://github.com/lucascraft/iorx.git</developerConnection>
-		<connection>https://github.com/lucascraft/iorx.git</connection>
-		<tag>0..0.2-SNAPSHOT</tag>
+		<url>scm:https://github.com/lucascraft/iorx.git</url>
+		<developerConnection>scm:https://github.com/lucascraft/iorx.git</developerConnection>
+		<connection>scm:https://github.com/lucascraft/iorx.git</connection>
+		<tag>0.0.3-SNAPSHOT</tag>
 	</scm>
 
 	<distributionManagement>

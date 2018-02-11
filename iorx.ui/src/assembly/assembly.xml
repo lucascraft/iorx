@@ -9,10 +9,39 @@
 
 	<dependencySets>
 		<dependencySet>
-			<useProjectArtifact>false</useProjectArtifact>
+			<useProjectArtifact>true</useProjectArtifact>
 			<outputDirectory></outputDirectory>
 			<unpack>false</unpack>
-			<excludes><exclude>**/rxtx-2.1.7.jar</exclude></excludes>
 		</dependencySet>
 	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>src/resources</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>config</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/libs</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>../iorx/src/libs</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>../iorx/src/jars</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>../iorx/src/media</directory>
+			<outputDirectory>media</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/iorx</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+	</fileSets>
 </assembly>

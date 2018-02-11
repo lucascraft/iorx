@@ -23,10 +23,7 @@ public class AppFX extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("AddressApp");
 
-		
-		
 		initRootLayout();
-
 		initMTPane();
 	}
 
@@ -37,8 +34,7 @@ public class AppFX extends Application {
 	public void initRootLayout() {
 		try {
 			// Load root layout from fxml file.
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(AppFX.class.getResource("fxml/RootLayout.fxml"));
+			FXMLLoader loader = new FXMLLoader(AppFX.class.getResource("/fxml/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
 
 			// Show the scene containing the root layout.
@@ -57,12 +53,11 @@ public class AppFX extends Application {
 	public void initMTPane() {
 		try {
 			// Load person overview.
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(AppFX.class.getResource("fxml/MTScene.fxml"));
+			FXMLLoader loader = new FXMLLoader(AppFX.class.getResource("/fxml/MTScene.fxml"));
 			
 			GridPane mtPane = (GridPane) loader.load();
 			
-			MTConfig cfg = new JsonMTConfigParser().parse("src/config//iorx.config");
+			MTConfig cfg = new JsonMTConfigParser().parse("/config/iorx.config");
 
 			MTController controller = loader.<MTController>getController();
 

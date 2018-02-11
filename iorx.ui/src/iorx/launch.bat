@@ -1,0 +1,1 @@
+java  -jar iorx.ui-0.0.1-SNAPSHOT.jar  -Djava.library.path="natives\\win32\\x86_64"
