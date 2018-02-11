@@ -5,6 +5,9 @@ import java.util.Set;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import ubiquisense.iorx.ui.config.MTConfig;
+import ubiquisense.iorx.ui.fmurf.osc.OscReceiver;
+import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 
 public class SmurfFloorImpl {
 	SmurfBrainImpl brain;
@@ -14,9 +17,9 @@ public class SmurfFloorImpl {
 	int lastWaveUid;
 	boolean verbose;
 	
-	public SmurfFloorImpl(Scene scene, GridPane mtPane, int _bpm, int _speed) {
+	public SmurfFloorImpl(GridPane mtPane, int _bpm, int _speed, MTConfig cfg) {
 		waves = new HashSet<SWave>();
-		brain = new SmurfBrainImpl(scene, mtPane, _bpm);
+		brain = new SmurfBrainImpl(mtPane, _bpm, cfg.getOscInPort(), cfg.getOutAddr(), cfg.getOutOscPort());
 		bpm = _bpm;	
 		waveSpeed = _speed;
 		lastWaveUid = 0;

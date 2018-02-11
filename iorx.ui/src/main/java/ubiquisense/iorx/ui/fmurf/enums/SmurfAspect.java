@@ -1,4 +1,4 @@
-package ubiquisense.iorx.ui.fmurf;
+package ubiquisense.iorx.ui.fmurf.enums;
 
 public enum SmurfAspect {
 	SMURF_ASPECT_TRANSPARENT,

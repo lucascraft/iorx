@@ -1,4 +1,4 @@
-package ubiquisense.iorx.ui.fmurf.fx.fmf;
+package ubiquisense.iorx.ui.fmurf.fmf;
 
 public enum FMFType {
 	FMF_TYPE_OSC,

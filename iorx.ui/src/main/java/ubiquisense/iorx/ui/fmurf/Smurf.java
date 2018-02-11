@@ -6,6 +6,12 @@ import java.util.Set;
 
 import com.illposed.osc.OSCMessage;
 
+import ubiquisense.iorx.ui.fmurf.enums.SmurfAspect;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfEvt;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfFunction;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfKind;
+import ubiquisense.iorx.ui.fmurf.osc.OscSender;
+
 public interface Smurf extends Smurfer {
 	
 	public void addOscMsgOnEvent(SmurfEvt evt, OSCMessage msg);

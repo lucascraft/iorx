@@ -28,13 +28,13 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Pane id="mtCenterPane" onTouchMoved="#onTouchMovedAction" onTouchPressed="#onTouchPressedAction" onTouchReleased="#onTouchReleasedAction" onTouchStationary="#onTouchStationaryAction" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+      <Pane id="mtCenterPane" onContextMenuRequested="#onContextMenuRequestedAction" onRotate="#OnRotateAction" onRotationFinished="#OnRotationFinishedAction" onRotationStarted="#OnRotationStartedAction" onSwipeDown="#onSwipeDownAction" onSwipeLeft="#onSwipeLeftAction" onSwipeRight="#onSwipeRightAction" onSwipeUp="#onSwipeUpAction" onTouchMoved="#onTouchMovedAction" onTouchPressed="#onTouchPressedAction" onTouchReleased="#onTouchReleasedAction" onTouchStationary="#onTouchStationaryAction" onZoom="#onZoomAction" onZoomFinished="#onZoomAFinishedction" onZoomStarted="#onZoomStartedAction" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
       <ToolBar maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
         <items>
-            <Button fx:id="addFiducial" mnemonicParsing="false" onAction="#addFiducialAction" text="Add" />
-            <Button fx:id="deleteFiducial" mnemonicParsing="false" onAction="#deleteFiducialAction" text="Delete" />
-            <Button fx:id="editFiducial" mnemonicParsing="false" onAction="#editFiducialAction" text="Edit" />
-            <Button fx:id="resetFiducials" mnemonicParsing="false" onAction="#resetFiducialsAction" text="Reset" />
+            <Button mnemonicParsing="false" onAction="#addFiducialAction" text="Add" />
+            <Button mnemonicParsing="false" onAction="#deleteFiducialAction" text="Delete" />
+            <Button mnemonicParsing="false" onAction="#editFiducialAction" text="Edit" />
+            <Button mnemonicParsing="false" onAction="#resetFiducialsAction" text="Reset" />
         </items>
       </ToolBar>
    </children>

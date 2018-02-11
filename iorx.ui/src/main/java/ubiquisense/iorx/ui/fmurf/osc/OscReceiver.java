@@ -1,4 +1,4 @@
-package ubiquisense.iorx.ui.fmurf;
+package ubiquisense.iorx.ui.fmurf.osc;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -6,7 +6,7 @@ import com.illposed.osc.OSCMessage;
 
 public class OscReceiver {
 	private ConcurrentLinkedQueue<OSCMessage> messages;
-	public OscReceiver() {
+	public OscReceiver(int rcvPort) {
 		messages = new ConcurrentLinkedQueue<OSCMessage>();
 	}
 	

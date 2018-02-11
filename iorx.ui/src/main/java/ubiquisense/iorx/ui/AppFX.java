@@ -9,7 +9,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import ubiquisense.iorx.ui.fmurf.SmurfFloorImpl;
+import ubiquisense.iorx.ui.config.JsonMTConfigParser;
+import ubiquisense.iorx.ui.config.MTConfig;
 import ubiquisense.iorx.ui.fx.MTController;
 
 public class AppFX extends Application {
@@ -22,9 +23,11 @@ public class AppFX extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("AddressApp");
 
+		
+		
 		initRootLayout();
 
-		showPersonOverview();
+		initMTPane();
 	}
 
 	public static void main(String[] args) {
@@ -51,20 +54,22 @@ public class AppFX extends Application {
 	/**
 	 * Shows the person overview inside the root layout.
 	 */
-	public void showPersonOverview() {
+	public void initMTPane() {
 		try {
 			// Load person overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(AppFX.class.getResource("fxml/MTScene.fxml"));
 			
 			GridPane mtPane = (GridPane) loader.load();
-			SmurfFloorImpl smurfFloor = new SmurfFloorImpl(primaryStage.getScene(), mtPane, 80, 80);
+			
+			MTConfig cfg = new JsonMTConfigParser().parse("src/config//iorx.config");
 
 			MTController controller = loader.<MTController>getController();
-			controller.initData(smurfFloor.getBrain(), (Pane) mtPane.getChildren().get(1));
 
 			// Set person overview into the center of root layout.
 			rootLayout.setCenter(mtPane);
+			
+			controller.initData(this, cfg, (Pane) mtPane.getChildren().get(1));
 
 		} catch (IOException e) {
 			e.printStackTrace();

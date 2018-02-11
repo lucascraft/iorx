@@ -7,20 +7,19 @@ import com.google.common.collect.Sets;
 import com.illposed.osc.OSCMessage;
 
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import ubiquisense.iorx.protocols.tuio.TuioContainer;
 import ubiquisense.iorx.protocols.tuio.TuioCursor;
 import ubiquisense.iorx.protocols.tuio.TuioObject;
 import ubiquisense.iorx.protocols.tuio.TuioPoint;
-import ubiquisense.iorx.ui.fmurf.fx.fmf.FMFOscillator;
-import ubiquisense.iorx.ui.fx.adapter.INodeVisitor;
-import ubiquisense.iorx.ui.fx.adapter.NodeAdapter;
+import ubiquisense.iorx.ui.fmurf.enums.AnchorKind;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfKind;
+import ubiquisense.iorx.ui.fmurf.fmf.FMFOscillator;
+import ubiquisense.iorx.ui.fmurf.osc.OscReceiver;
+import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 
 public class SmurfBrainImpl {
-	Scene scene;
 	//
 	Set<Smurf> smurfs;
 	Set<SmurfFinger> fingers;
@@ -33,7 +32,7 @@ public class SmurfBrainImpl {
 	SmurfCfg config;
 	
 	SmurfBeat beat;
-	
+	GridPane mtPane;
 	boolean connectionsAllowed;
 	
 	Set<Smuon> selection;
@@ -41,13 +40,13 @@ public class SmurfBrainImpl {
 	//ConnectionUtils  connectionUtils;
 	int bpm;
 	int MIN_GESTURE_POINTS_THRESHOLD=15;
-	public SmurfBrainImpl(Scene scene, GridPane mtPane, int bpm)
+	public SmurfBrainImpl(GridPane mtPane, int bpm, int oscInPort, String outAddr, int oscOutPort)
 	{
-		this.scene = scene;
+		this.mtPane = mtPane;
 		
 		// OSC
-		sender = new OscSender();
-		receiver = new OscReceiver();
+		sender = new OscSender(outAddr, oscOutPort);
+		receiver = new OscReceiver(oscInPort);
 		
 		//config = loadConfig();
 		
@@ -97,11 +96,11 @@ public class SmurfBrainImpl {
 
 	public double ofGetWidth()
 	{
-		return scene.getWidth();
+		return mtPane.getWidth();
 	}
 	public double ofGetHeight()
 	{
-		return scene.getHeight();
+		return mtPane.getHeight();
 	}
 
 	public void handleBeat(int waveId, Set<SWave> waves) {
@@ -489,10 +488,10 @@ public class SmurfBrainImpl {
 						TuioPoint fromPt = new TuioPoint(from.getTuio().getPosition().getX(), from.getTuio().getPosition().getY());
 						TuioPoint toPt = new TuioPoint(to.getTuio().getPosition().getX(), to.getTuio().getPosition().getY());
 			
-						float fX = fromPt.getX() * (float) scene.getWidth();
-						float fY = fromPt.getY() * (float) scene.getHeight();
-						float tX = toPt.getX() * (float) scene.getWidth();
-						float tY = toPt.getY() * (float) scene.getHeight();
+						float fX = fromPt.getX() * (float) mtPane.getWidth();
+						float fY = fromPt.getY() * (float) mtPane.getHeight();
+						float tX = toPt.getX() * (float) mtPane.getWidth();
+						float tY = toPt.getY() * (float) mtPane.getHeight();
 			
 //						TuioPoint fnPt = new TuioPoint(fX, fY);
 //						TuioPoint tnPt = new TuioPoint(tX, tY);

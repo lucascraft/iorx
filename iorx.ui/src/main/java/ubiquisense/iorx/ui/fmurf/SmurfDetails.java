@@ -1,6 +1,8 @@
 package ubiquisense.iorx.ui.fmurf;
 
 import javafx.scene.paint.Color;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfAspect;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfFunction;
 
 public class SmurfDetails 
 {

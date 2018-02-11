@@ -7,6 +7,9 @@ import javafx.scene.paint.Color;
 import ubiquisense.iorx.protocols.tuio.TuioContainer;
 import ubiquisense.iorx.protocols.tuio.TuioObject;
 import ubiquisense.iorx.protocols.tuio.TuioPoint;
+import ubiquisense.iorx.ui.fmurf.enums.AnchorKind;
+import ubiquisense.iorx.ui.fmurf.enums.CloserEnum;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfKind;
 
 public class SmurfUtils {
 	static long virtualID;

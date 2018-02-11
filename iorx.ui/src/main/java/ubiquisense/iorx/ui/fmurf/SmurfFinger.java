@@ -8,6 +8,7 @@ import com.illposed.osc.OSCMessage;
 import ubiquisense.iorx.protocols.tuio.TuioContainer;
 import ubiquisense.iorx.protocols.tuio.TuioCursor;
 import ubiquisense.iorx.protocols.tuio.TuioPoint;
+import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 
 public class SmurfFinger extends SmuonImpl {
 	TuioContainer tuioObj;

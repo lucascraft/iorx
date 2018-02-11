@@ -1,39 +1,44 @@
 package ubiquisense.iorx.ui.fx;
 
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import ubiquisense.iorx.ui.fmurf.SmurfBrainImpl;
+import ubiquisense.iorx.ui.AppFX;
+import ubiquisense.iorx.ui.config.MTConfig;
+import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fx.fiducial.MTFiducial;
 
 //@IDProperty(value="mtMenuEdit")
 public class MTController implements Initializable {
-	private SmurfBrainImpl brain;
 	private Pane mtPane;
+	private AppFX app;
+	private MTConfig cfg;
 	
 	private double cursor;
 
- 
-	public void initData(SmurfBrainImpl smurfBrain, Pane pane) {
-		brain = smurfBrain;
-		mtPane = pane;
+	
+	public void initData(AppFX app, MTConfig cfg, Pane pane) {
+		this.app = app;
+		this.cfg = cfg;
+		this.mtPane = pane;
+		
+		cfg.getFiducials().forEach(fidCfg -> { mtPane.getChildren().add(createMTFiducial(fidCfg)); });
+		
 	  	Runnable r = new Runnable() {
 				@Override
 			public void run() {
 				do {
 					try {
-						cursor += 0.02;
+						cursor += 0.01;
 						pane.getChildrenUnmodifiable().forEach(c -> { if (c instanceof MTFiducial) {((MTFiducial)c).beat(cursor);}});
-							Thread.sleep(50);
+						Thread.sleep(50);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -69,19 +74,7 @@ public class MTController implements Initializable {
 
 	@FXML
 	private void addFiducialAction(ActionEvent e) {
-		System.out.println("addFiducialAction");
-
-		Random ran = new Random();
-		MTFiducial r = new MTFiducial(Math.min(100d, ran.nextDouble()*175d), 50f * ran.nextFloat());
-		
-		r.setTranslateX(ran.nextDouble()*mtPane.getWidth());
-		r.setTranslateY(ran.nextDouble()*mtPane.getHeight());
-		Color c = Color.color(Math.min(0.7, ran.nextDouble()), Math.min(0.5, ran.nextDouble()), Math.min(0.6, ran.nextDouble()));
-		r.setFill(c/*.deriveColor(1.0, 1.0, 1.0, 0.2)*/);
-		r.setStroke(c);
-
-
-		mtPane.getChildren().add(r);
+		mtPane.getChildren().add(new MTFiducial());
 	}
 
 	@FXML
@@ -103,7 +96,61 @@ public class MTController implements Initializable {
 	@FXML
 	private void closeMTApp(ActionEvent e) {
 		System.out.println("exit");
-		System.exit(0);
+		try {
+			app.stop();
+			PlatformImpl.exit();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 	}
-
+	
+	private MTFiducial createMTFiducial(MTFiducialConfig cfg)
+	{
+		return new MTFiducial(cfg);
+	}
+	
+	@FXML
+	private void onContextMenuRequestedAction()
+	{
+	}
+	@FXML
+	private void OnRotateAction()
+	{
+	}
+	@FXML
+	private void OnRotationFinishedAction()
+	{
+	}
+	@FXML
+	private void OnRotationStartedAction()
+	{
+	}
+	@FXML
+	private void onSwipeDownAction()
+	{
+	}
+	@FXML
+	private void onSwipeLeftAction()
+	{
+	}
+	@FXML
+	private void onSwipeRightAction()
+	{
+	}
+	@FXML
+	private void onSwipeUpAction()
+	{
+	}
+	@FXML
+	private void onZoomAction()
+	{
+	}
+	@FXML
+	private void onZoomAFinishedction()
+	{
+	}
+	@FXML
+	private void onZoomStartedAction()
+	{
+	}
 }

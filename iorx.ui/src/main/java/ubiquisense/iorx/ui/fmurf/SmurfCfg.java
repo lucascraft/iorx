@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.paint.Color;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfAspect;
+import ubiquisense.iorx.ui.fmurf.enums.SmurfFunction;
 
 public class SmurfCfg 
 {
