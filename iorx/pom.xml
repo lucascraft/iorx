@@ -170,14 +170,14 @@
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/NativeFmodDesigner-win64.jar</systemPath>
 		</dependency>	
-		<!--  
+		
 		<dependency>
 		    <groupId>rxtx</groupId>
 		    <artifactId>rxtx-win32-x86_64</artifactId>
 		    <version>rxtx-2.1.7</version>
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/RXTXcomm.jar</systemPath>
-		</dependency>	-->
+		</dependency>	
 		<dependency>
 		    <groupId>bluecove</groupId>
 		    <artifactId>bluecove-win32-x86_64</artifactId>

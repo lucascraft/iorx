@@ -21,8 +21,7 @@ public class AppFX extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("AddressApp");
-
+		this.primaryStage.setTitle("Iorx Mutlitouch");
 		initRootLayout();
 		initMTPane();
 	}
@@ -48,7 +47,7 @@ public class AppFX extends Application {
 	}
 
 	/**
-	 * Shows the person overview inside the root layout.
+	 * Shows the multitouch UI.
 	 */
 	public void initMTPane() {
 		try {
