@@ -7,14 +7,12 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
-import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.changes.NotificationAdapter;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.cmd.EngineUtil;
 import ubiquisense.iorx.cmd.PRIORITY;
-import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.event.impl.QxEventAdapterImpl;
 import ubiquisense.iorx.io.IXCmdInterpreter;
@@ -38,8 +36,6 @@ public class CmdPipeImpl implements CmdPipe
 	
 	String id;
 	String name;
-	
-	EngineApplication engineApplication;
 	
 	CmdEngine cmdEngine;
 	
@@ -113,16 +109,6 @@ public class CmdPipeImpl implements CmdPipe
 	@Override
 	public void setClient(CmdEngine value) {
 		cmdEngine = value;
-	}
-
-	@Override
-	public EngineApplication getApplication() {
-		return engineApplication;
-	}
-
-	@Override
-	public void setApplication(EngineApplication value) {
-		engineApplication = value;
 	}
 
 	@Override

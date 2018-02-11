@@ -35,20 +35,12 @@
 
 package ubiquisense.iorx.comm.midi.io;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 
-import com.google.common.collect.Lists;
-
-import ubiquisense.iorx.protocols.midi.internal.MidiCmdUtils;
 import ubiquisense.iorx.protocols.midi.internal.MidiSystemUtils;
 import ubiquisense.iorx.protocols.midi.internal.dsl.DSLMidiMessage;
 

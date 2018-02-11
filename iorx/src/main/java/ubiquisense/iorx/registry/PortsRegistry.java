@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.bluetooth.L2CAPConnection;
 import javax.microedition.io.Connector;
 
-import ubiquisense.iorx.app.EngineApplication;
-import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.InputJob;
 import ubiquisense.iorx.comm.InputJobImpl;
@@ -30,16 +27,13 @@ import ubiquisense.iorx.comm.tcp.TcpPortImpl;
 import ubiquisense.iorx.comm.tcp.io.TcpTransportCommunicator;
 import ubiquisense.iorx.comm.tcp.io.impl.TcpInputPortJob;
 import ubiquisense.iorx.comm.udp.UdpPortImpl;
-import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
 import ubiquisense.iorx.comm.udp.io.UdpInputPortJob;
+import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
 import ubiquisense.iorx.comm.usb.USBPortImpl;
 import ubiquisense.iorx.comm.usb.io.ISerialCommunicator;
 import ubiquisense.iorx.comm.usb.rxtx.RXTXSerialUtil;
-import ubiquisense.iorx.event.IQxEventHandler;
-import ubiquisense.iorx.io.TransportChannel;
-import ubiquisense.iorx.io.IXCmdInterpreter;
-import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.utils.Platform;
 
 public final class PortsRegistry {

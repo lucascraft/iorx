@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
@@ -33,17 +32,8 @@ public class AppTest extends GuiceInjectionTest
 	
 	@Test
 	public void testBuildEngineApp() {
-		EngineApplication engineApp = mojo.buildEngineApp("truc", "midi");
 		
-		assertNotNull(engineApp);
-		assertNotNull(engineApp.getClients());
-		assertNotNull(engineApp.getEngine());
-		
-		engineApp.getClients().forEach(c -> assertNotNull(c.getApplication()));
-		engineApp.getClients().forEach(c -> assertNotNull(c.getEngines()));
-		engineApp.getClients().forEach(c -> assertNotNull(c.getRunner()));
-		
-		CmdPipe engine = engineApp.getEngine().get(0);
+		CmdPipe engine = mojo.buildEngineApp("truc", "midi");
 		
 		assertEquals("midi", engine.getCommunicationProtocol());
 		assertTrue(engine.getInputInterpreter() instanceof MidiQxCmdHandler);

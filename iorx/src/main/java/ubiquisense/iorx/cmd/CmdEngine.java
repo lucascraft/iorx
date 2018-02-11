@@ -2,8 +2,6 @@ package ubiquisense.iorx.cmd;
 
 import java.util.List;
 
-import ubiquisense.iorx.app.EngineApplication;
-
 public interface CmdEngine {
 	List<CmdPipe> getEngines();
 
@@ -31,8 +29,5 @@ public interface CmdEngine {
 
 	void deactivate();
 
-	EngineApplication getApplication();
-
-	void setApplication(EngineApplication value);
 
 }

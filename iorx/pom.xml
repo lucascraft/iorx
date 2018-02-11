@@ -131,8 +131,12 @@
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
 			<version>0.9.11</version>
-		</dependency>
-		<!--  
+		</dependency><!-- 
+		<dependency>
+		  <groupId>org.dyndns.jkiddo</groupId>
+		  <artifactId>jolivia</artifactId>
+		  <version>0.0.1</version>
+		</dependency>		 
 		<dependency>
 			<groupId>com.rapplogic</groupId>
 			<artifactId>xbee-api</artifactId>

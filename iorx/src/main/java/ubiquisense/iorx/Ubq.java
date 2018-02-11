@@ -1,8 +1,5 @@
 package ubiquisense.iorx;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,15 +9,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
@@ -29,24 +22,6 @@ import ubiquisense.iorx.discovery.ICmdPipeLifecycleListener;
 import ubiquisense.iorx.discovery.Supervisor;
 import ubiquisense.iorx.discovery.TopologyManager;
 import ubiquisense.iorx.event.IQxEventHandler;
-//import net.sf.smbt.comm.extensions.protocol.ProtocolReactor;
-//import net.sf.smbt.comm.extensions.protocol.ProtocolWithSpecificTransportConfig;
-//import net.sf.smbt.comm.http.io.HttpCommunicator;
-//import net.sf.smbt.comm.script.netConf.TRANSPORT_PROTOCOL;
-//import net.sf.smbt.midi.utils.MidiCommunicator;
-//import net.sf.smbt.quantic.services.EzTargetConfig;
-//import net.sf.smbt.quantic.services.QuanticComm;
-//import net.sf.smbt.quantic.warp.AbstractQxEventHandlerImpl;
-//import net.sf.smbt.quantic.warp.CmdEngine;
-//import net.sf.smbt.quantic.warp.EngineFactory;
-//import net.sf.smbt.quantic.warp.IChannel;
-//import net.sf.smbt.quantic.warp.ICmdPipeLifecycleListener;
-//import net.sf.smbt.quantic.warp.IDxxpManager;
-//import net.sf.smbt.quantic.warp.IPipeBuilder;
-//import net.sf.smbt.quantic.warp.IQxEventHandler;
-//import net.sf.smbt.quantic.warp.IWarpManager;
-//import net.sf.smbt.quantic.warp.Orchestror;
-//import net.sf.xqz.script.utils.OrchestrorUtil;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
@@ -55,8 +30,8 @@ import ubiquisense.iorx.qx.QxProcessingStrategy;
 import ubiquisense.iorx.registry.CommProtocolConfig;
 import ubiquisense.iorx.registry.ConfigurationModule;
 import ubiquisense.iorx.registry.DnsSdRegistry;
-import ubiquisense.iorx.registry.ProtocolRegistry;
 import ubiquisense.iorx.registry.PortsRegistry;
+import ubiquisense.iorx.registry.ProtocolRegistry;
 import ubiquisense.iorx.topology.core.TopologyCache;
 import ubiquisense.iorx.topology.core.impl.TopologyCacheImpl;
 
@@ -73,7 +48,7 @@ public final class Ubq
 	public Ubq() {
 		lifecycleListeners = new ConcurrentLinkedQueue<ICmdPipeLifecycleListener>();
 		localPipes = new HashSet<CmdPipe>();
-		genesis();
+//		genesis();
 	}
 	
 	public ConcurrentLinkedQueue<ICmdPipeLifecycleListener> getLifecycleListeners() {
@@ -271,8 +246,7 @@ public final class Ubq
 	
 	
 	public CmdPipe createPipe(String transportID, String commProtocolID, String pipeID, String address, int acceptedPorts[], int speed, Map<Object, Object> options, boolean locked) {
-		EngineApplication app = buildEngineApp(pipeID, commProtocolID);
-		CmdPipe pipe = app.getEngine().size() == 1 ? app.getEngine().get(0) : null;
+		CmdPipe pipe = buildEngineApp(pipeID, commProtocolID);
 
 		if (pipe == null) {
 			return null;
@@ -734,19 +708,18 @@ public final class Ubq
 	 * 
 	 * @return newly created {@link EngineApplication} application
 	 */
-	public EngineApplication buildEngineApp(String appID, String protocolID) {
+	public CmdPipe buildEngineApp(String appID, String protocolID) {
 		Injector injector = Guice.createInjector(new ConfigurationModule());
 
-		EngineApplication app = injector.getInstance(EngineApplication.class);
-        
-        CommProtocolConfig protocol = Protocol.getCommunicationProtocol(protocolID);
+		CmdPipe cmdEngine = injector.getInstance(CmdPipe.class);
+
+		CommProtocolConfig protocol = Protocol.getCommunicationProtocol(protocolID);
         
         if (protocol != null) {
 	        IXCmdInterpreter cmdInterpreter		= protocol.getCmdInterpreter();
 	        IXFrameInterpreter frameInterpreter = protocol.getFrameInterpreter();
 	        IQxEventHandler eventHandler		= protocol.getEventHandler();
 	        
-	        CmdPipe cmdEngine = injector.getInstance(CmdPipe.class);
 	
 	        if (cmdInterpreter != null) {
 	        	cmdEngine.setOutputInterpreter(cmdInterpreter);
@@ -759,17 +732,13 @@ public final class Ubq
 	        }
 	        cmdEngine.setCommunicationProtocol(protocolID);
         
-	        app.getEngine().add(cmdEngine);
-	        
-	        app.setId(appID);
-	        app.setName("Application Engine " + appID);
         }
         else
         {
         	throw new RuntimeException("protocol " + protocolID + " unknown");
         }
         
-        return app;
+        return cmdEngine;
 	}
 
 }

@@ -5,8 +5,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
 import ubiquisense.iorx.annotations.Binder;
-import ubiquisense.iorx.app.EngineApplication;
-import ubiquisense.iorx.app.EngineApplicationImpl;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
@@ -23,9 +21,9 @@ import ubiquisense.iorx.dndns.services.DnDnsService;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.event.impl.EventImpl;
-import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.protocols.firmata.FirmataCmdQxEventHandler;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
@@ -65,7 +63,6 @@ public class ConfigurationModule extends AbstractModule
 		//
 		
 		bind(CmdEngine.class).to(CmdEngineImpl.class);
-		bind(EngineApplication.class).to(EngineApplicationImpl.class);
 		bind(Event.class).to(EventImpl.class);
 		
 		//

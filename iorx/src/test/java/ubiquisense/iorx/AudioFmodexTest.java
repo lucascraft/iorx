@@ -25,21 +25,25 @@ import org.jouvieje.fmodex.System;
 import org.jouvieje.fmodex.enumerations.FMOD_RESULT;
 import org.jouvieje.fmodex.exceptions.InitException;
 import org.jouvieje.fmodex.structures.FMOD_CREATESOUNDEXINFO;
+import org.junit.Before;
 import org.junit.Test;
 
+import ubiquisense.iorx.media.fmodex.AudioChannel;
+import ubiquisense.iorx.media.fmodex.AudioSound;
+import ubiquisense.iorx.media.fmodex.DSP_KIND;
+import ubiquisense.iorx.media.fmodex.FMDSP;
+import ubiquisense.iorx.media.fmodex.utils.AudioUtils;
 import ubiquisense.iorx.nojunit.Medias;
 
 public class AudioFmodexTest {
 	private  static FMOD_CREATESOUNDEXINFO exinfo;
 	private  static int version;
 	private static  org.jouvieje.fmodex.System system;
-	private  static ByteBuffer soundBuffer;
-	private  static ByteBuffer buffer;
-	
-	private  static Channel systemChannel;
 
-	@Test
-	public void testFModexInit() {
+	@Before
+	public void init()
+	{
+		
 		/*
 		 * NativeFmodEx/NativeFmodDesigner Init
 		 */
@@ -69,13 +73,13 @@ public class AudioFmodexTest {
 			return;
 		}
 		
-		initBuffers();
 		initSystem();
 
 		errorCheck(FmodEx.System_Create(system));
+		ByteBuffer bufferr = newByteBuffer(SIZEOF_INT);
 
-		errorCheck(system.getVersion(buffer.asIntBuffer()));
-		version = buffer.getInt(0);
+		errorCheck(system.getVersion(bufferr.asIntBuffer()));
+		version = bufferr.getInt(0);
 
 		if(version < FMOD_VERSION) {
 			printfExit("Error!  You are using an old version of FMOD %08x.  This program requires %08x\n", version,
@@ -83,8 +87,12 @@ public class AudioFmodexTest {
 			return;
 		}
 		errorCheck(system.init(32, FMOD_INIT_NORMAL, null));
+	}
+	
+	@Test
+	public void testFModexInit() {
 		
-		systemChannel = new Channel();
+		Channel systemChannel = new Channel();
 		
 		for (String soundFile : new String[] {"riviere3.wav", "buzz.wav", "tone7.au", "", "sound37.mp3"}) 
 		{
@@ -93,7 +101,7 @@ public class AudioFmodexTest {
 	        java.nio.file.Path path = Paths.get("src\\media\\" + soundFile);
 			java.lang.System.out.println("About to init media\\9_klingeln.wav Sound Buffer");
 			try {
-				soundBuffer = Medias.loadMediaIntoMemory(path.toAbsolutePath().toString());
+				ByteBuffer soundBuffer = Medias.loadMediaIntoMemory(path.toAbsolutePath().toString());
 				if (soundBuffer != null) {
 						java.lang.System.out.println("Sound Buffer init succeeded");
 					exinfo = FMOD_CREATESOUNDEXINFO.allocate();
@@ -109,25 +117,53 @@ public class AudioFmodexTest {
 			}
 			system.playSound(FMOD_CHANNEL_FREE, sound, false, systemChannel);
 		}
-		
 	}
-	 static void initSystem() {
+	
+	@Test
+	public void testPlayAudioFile()
+	{
+		AudioChannel aChannel = AudioUtils.INSTANCE.createChannel();
+		
+		FMDSP dsp = AudioUtils.INSTANCE.createDSP(
+			DSP_KIND.ECHO, 
+			0f, 
+			1f, 
+			0.5f
+		);
+		AudioUtils.INSTANCE.addDSP(
+			dsp
+		);
+        java.nio.file.Path path = Paths.get("src\\media\\sound37.mp3");
+		AudioSound aSound2 = AudioUtils.INSTANCE.createSound(
+			path.toAbsolutePath().toString(), 
+			FMOD_DEFAULT | FMOD_SOFTWARE | /*FMOD_LOOP_NORMAL |*/ FMOD_OPENMEMORY
+		);
+
+		AudioUtils.INSTANCE.playSound(
+			aSound2, 
+			aChannel
+		);
+	}
+	
+	static void initSystem() {
 		system = new System();
 	}
-	 static void initBuffers() {
-		buffer = newByteBuffer(SIZEOF_INT);
-	}
+	
 	private static void errorCheck(FMOD_RESULT result) {
 		if(result != FMOD_RESULT.FMOD_OK) {
 			printfExit("FMOD error! (%d) %s\n", result.asInt(), FmodEx.FMOD_ErrorString(result));
 		}
 	}
+	
 	protected static  void print(String message) {}
 	protected static  void printExit(String message) {
 		print(message);
 	}
+	
 	protected static  void printfExit(String format, Object... args) {
 		printExit(String.format(format, args));
 	}
+	
+	
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
 
@@ -14,7 +13,6 @@ public class CmdEngineImpl implements CmdEngine {
 	String id;
 	String name;
 	
-	EngineApplication engineApplication;
 	
 	Object runner;
 	
@@ -93,16 +91,6 @@ public class CmdEngineImpl implements CmdEngine {
 	public void deactivate() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public EngineApplication getApplication() {
-		return engineApplication;
-	}
-
-	@Override
-	public void setApplication(EngineApplication value) {
-		engineApplication	= value;
 	}
 
 }

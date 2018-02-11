@@ -3,7 +3,6 @@ package ubiquisense.iorx.cmd;
 import java.util.List;
 import java.util.Set;
 
-import ubiquisense.iorx.app.EngineApplication;
 import ubiquisense.iorx.changes.NotificationAdapter;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
@@ -20,8 +19,6 @@ public interface CmdPipe {
 	List<Qx> getQueues();
 	CmdEngine getClient();
 	void setClient(CmdEngine value);
-	EngineApplication getApplication();
-	void setApplication(EngineApplication value);
 	String getId();
 	void setId(String value);
 	String getName();

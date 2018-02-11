@@ -272,11 +272,13 @@ public class AudioUtils {
 		fDSP.setKind(kind);
 		return fDSP;
 	}
+	
 	public AudioSound createSound(AudioSoundGroup group, String filePath, int flags) {
 		AudioSound aSound = createSound(filePath, flags);
 		group.getChildren().add(aSound);
 		return aSound;
 	}
+	
 	public String resolveMediaPath(String filePath) {
 		for (String f : mediaFilePaths) {
 			if (f.contains(filePath)) {
@@ -286,16 +288,19 @@ public class AudioUtils {
 		}
 		return null;
 	}
+	
 	public AudioSystem createAudioSystem() {
 		AudioSystem s = new AudioSystemImpl();
 		s.setFmodex(system);
 		return s;
 	}
+	
 	public void addDSP(FMDSP dsp) {
 		if (dsp.getFmodex() != null) {
 			errorCheck(system.addDSP(dsp.getFmodex(), null));
 		}
 	}
+	
 	public AudioSound createSound(String filePath, int flags) {
 		String path = resolveMediaPath(filePath);
 		if (path == null) {
@@ -310,12 +315,14 @@ public class AudioUtils {
 		}
 		return createSoundFromFile(filePath, flags);
 	}
+	
 	public AudioChannel createChannel() {
 		AudioChannel aChannel =  new AudioChannelImpl();
 		Channel channel = new Channel();
 		aChannel.setFmodex(channel);
 		return aChannel;
 	}
+	
 	public AudioSound createSoundFromFile(String path, int flags) {
 		if (path != null) {
 			AudioSound aSound =  new AudioSoundImpl();
@@ -362,6 +369,7 @@ public class AudioUtils {
 		track.getDevices().add(device);
 		return track;
 	}
+	
 	public Device createAudioDevice(String ID, AudioChannel aChannel, AudioTrack aTrack) {
 		Device device =  new DeviceImpl();
 		device.setChannel(aChannel);
@@ -369,6 +377,7 @@ public class AudioUtils {
 		device.setID(ID);
 		return device;
 	}
+	
 	public AudioScene createAudioScene() {
 		AudioScene scene =  new AudioSceneImpl();
 		for (int i=0;i<25;i++) {
@@ -376,15 +385,18 @@ public class AudioUtils {
 		}
 		return scene;
 	}
+	
 	public AudioClip createClip(String label) {
 		AudioClip clip =  new AudioClipImpl();
 		clip.setLabel(label);
 		return clip;
 	}	
+	
 	public AudioClip createClip() {
 		AudioClip clip =  new AudioClipImpl();
 		return clip;
 	}	
+	
 	public AudioProject createAudioProject() {
 		AudioProject p =  new AudioProjectImpl();
 		p.setSystem(createAudioSystem());
@@ -393,9 +405,11 @@ public class AudioUtils {
 		}
 		return p;
 	}
+	
 	public void end() {
 		system.release();
 	}	
+	
 	public void playSystemSound(AudioSound aSound, Channel aChannel) {
 		java.lang.System.out.println("Enter playSystemSound");
 		if (aSound != null && aSound.getFmodex() != null && aChannel != null) {
@@ -407,6 +421,7 @@ public class AudioUtils {
 			java.lang.System.err.println("playSystemSound Finished with unknown error");
 		}
 	}
+	
 	public void playSound(AudioSound aSound, AudioChannel aChannel) {
 		if (Platform.inDebugMode()) {
 			java.lang.System.out.println("playSound");
@@ -420,9 +435,11 @@ public class AudioUtils {
 			java.lang.System.out.println("playSound Finished with unknown error");
 		}
 	}
+	
 //	public void stopSound(AudioSound aSound, AudioChannel aChannel) {
 //		errorCheck(system.playSound(FMOD_CHANNEL_FREE, aSound.getFmodex(), false, aChannel.getFmodex()));
 //	}
+	
 	public TimeTag getTimePosition(AudioSound aSound, AudioChannel aChannel) {
 		Sound sound		=  aSound.getFmodex();;
 		Channel channel = aChannel.getFmodex();
@@ -476,6 +493,7 @@ public class AudioUtils {
 		
 		return tag;
 	}
+	
 	public boolean isPlaying(AudioChannel aChannel) {
 		try {
 			if (aChannel != null && aChannel.getFmodex() instanceof Channel) {
