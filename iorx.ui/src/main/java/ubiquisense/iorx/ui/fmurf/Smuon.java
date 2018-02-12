@@ -1,7 +1,7 @@
 package ubiquisense.iorx.ui.fmurf;
 
 import javafx.scene.paint.Color;
-import ubiquisense.iorx.protocols.tuio.TuioContainer;
+import ubiquisense.iorx.ui.tuio11.impl.TuioContainer;
 
 public interface Smuon {
 	//

@@ -1,9 +1,9 @@
 package ubiquisense.iorx.ui.fmurf.fmf;
 
 import javafx.scene.paint.Color;
-import ubiquisense.iorx.protocols.tuio.TuioObject;
 import ubiquisense.iorx.ui.fmurf.Smurf;
 import ubiquisense.iorx.ui.fmurf.enums.SmurfKind;
+import ubiquisense.iorx.ui.tuio11.impl.TuioObject;
 
 public class FMFUtils {
 	

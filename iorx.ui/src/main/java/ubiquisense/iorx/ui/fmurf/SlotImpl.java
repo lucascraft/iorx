@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.illposed.osc.OSCMessage;
 
-import ubiquisense.iorx.protocols.tuio.TuioContainer;
+import ubiquisense.iorx.ui.tuio11.impl.TuioContainer;
 
 public class SlotImpl extends SmuonImpl implements Slot {
 	Set<OSCMessage> oscMsg;

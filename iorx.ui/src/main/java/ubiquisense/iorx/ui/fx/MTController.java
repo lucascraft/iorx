@@ -3,6 +3,8 @@ package ubiquisense.iorx.ui.fx;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.kordamp.jsilhouette.javafx.Lauburu;
+
 import com.illposed.osc.OSCMessage;
 import com.sun.javafx.application.PlatformImpl;
 
@@ -11,11 +13,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import ubiquisense.iorx.ui.AppFX;
 import ubiquisense.iorx.ui.config.MTConfig;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 import ubiquisense.iorx.ui.fx.fiducial.MTFiducial;
+import ubiquisense.iorx.ui.fx.fiducial.MTPane;
 
 //@IDProperty(value="mtMenuEdit")
 public class MTController implements Initializable {
@@ -48,7 +53,6 @@ public class MTController implements Initializable {
 							lastBang = cursor+0.33; // 60 bpm
 						}
 						cursor += 0.01;
-						System.out.println(cursor + " / " + lastBang);
 						pane.getChildrenUnmodifiable().forEach(c -> { if (c instanceof MTFiducial) {((MTFiducial)c).beat(oscSender, cursor);}});
 						Thread.sleep(50);
 					} catch (InterruptedException e) {
@@ -60,6 +64,8 @@ public class MTController implements Initializable {
 		new Thread(r).start();
 	}
 
+	
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 	}
@@ -86,7 +92,7 @@ public class MTController implements Initializable {
 
 	@FXML
 	private void addFiducialAction(ActionEvent e) {
-		mtPane.getChildren().add(new MTFiducial());
+		mtPane.getChildren().add(new MTFiducial(oscSender));
 	}
 
 	@FXML
@@ -116,9 +122,9 @@ public class MTController implements Initializable {
 		}
 	}
 	
-	private MTFiducial createMTFiducial(MTFiducialConfig cfg)
+	private MTFiducial /*MtGridPane*/ createMTFiducial(MTFiducialConfig cfg)
 	{
-		return new MTFiducial(cfg);
+		return /* new MtGridPane(cfg); */ new MTFiducial(cfg);
 	}
 	
 	@FXML

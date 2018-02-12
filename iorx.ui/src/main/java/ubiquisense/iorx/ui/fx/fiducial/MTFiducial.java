@@ -9,10 +9,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.input.TouchPoint;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 
-public class MTFiducial extends MTCircle {
+public class MTFiducial extends Circle {
 
 	float tempo;
     double minAlpha = 0.33;
@@ -32,7 +33,10 @@ public class MTFiducial extends MTCircle {
 		
 		if (1 >= sin && sin <0.95 && 0 < cos && cos < 0.5)
 		{
-			oscSender.sendMessage(new OSCMessage("/fmurf/live/"+cfg.getId()+"/bang/"+mCursor));
+			if (oscSender != null && cfg != null)
+			{
+				oscSender.sendMessage(new OSCMessage("/fmurf/live/"+cfg.getId()+"/bang/"+mCursor));
+			}
 		}
 
 		Color p = (Color) getFill();
@@ -47,15 +51,13 @@ public class MTFiducial extends MTCircle {
 		Color p2 = Color.color(p.getRed(), p.getGreen(), p.getBlue(), p.getOpacity()+ (mult*0.01));
 		setFill(p2);
 		setStroke(p2);
-		
-       ((NGFiducial)impl_getPeer()).setCursor(curso, tempo);
-       
-       
-       
 	}
 
-	public MTFiducial() {
+	
+
+	public MTFiducial(OscSender oscSender) {
 		super((int)Math.min(100d, new Random().nextInt()*175));
+		this.oscSender = oscSender;
 		Random ran =new Random();
 		this.tempo = 50 * ran.nextInt();
 		setTranslateX(ran.nextDouble()*640);

@@ -3,7 +3,6 @@ package ubiquisense.iorx.ui.fmurf;
 import java.util.HashSet;
 import java.util.Set;
 
-import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import ubiquisense.iorx.ui.config.MTConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscReceiver;

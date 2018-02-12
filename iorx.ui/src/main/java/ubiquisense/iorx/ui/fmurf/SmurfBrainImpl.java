@@ -9,15 +9,15 @@ import com.illposed.osc.OSCMessage;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import ubiquisense.iorx.protocols.tuio.TuioContainer;
-import ubiquisense.iorx.protocols.tuio.TuioCursor;
-import ubiquisense.iorx.protocols.tuio.TuioObject;
-import ubiquisense.iorx.protocols.tuio.TuioPoint;
 import ubiquisense.iorx.ui.fmurf.enums.AnchorKind;
 import ubiquisense.iorx.ui.fmurf.enums.SmurfKind;
 import ubiquisense.iorx.ui.fmurf.fmf.FMFOscillator;
 import ubiquisense.iorx.ui.fmurf.osc.OscReceiver;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
+import ubiquisense.iorx.ui.tuio11.impl.TuioContainer;
+import ubiquisense.iorx.ui.tuio11.impl.TuioCursor;
+import ubiquisense.iorx.ui.tuio11.impl.TuioObject;
+import ubiquisense.iorx.ui.tuio11.impl.TuioPoint;
 
 public class SmurfBrainImpl {
 	//

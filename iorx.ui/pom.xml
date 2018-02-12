@@ -70,11 +70,13 @@
 			<artifactId>json</artifactId>
 			<version>20171018</version>
 		</dependency>
+		<!--  
 		<dependency>
 			<groupId>ubiquisense</groupId>
 			<artifactId>iorx</artifactId>
 			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -99,6 +101,11 @@
 			<groupId>com.illposed.osc</groupId>
 			<artifactId>javaosc-core</artifactId>
 			<version>0.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.kordamp.jsilhouette</groupId>
+		    <artifactId>jsilhouette-javafx</artifactId>
+		    <version>0.2.2</version>
 		</dependency>
 	</dependencies>
 </project>

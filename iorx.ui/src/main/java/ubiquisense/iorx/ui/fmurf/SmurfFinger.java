@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.illposed.osc.OSCMessage;
 
-import ubiquisense.iorx.protocols.tuio.TuioContainer;
-import ubiquisense.iorx.protocols.tuio.TuioCursor;
-import ubiquisense.iorx.protocols.tuio.TuioPoint;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
+import ubiquisense.iorx.ui.tuio11.impl.TuioContainer;
+import ubiquisense.iorx.ui.tuio11.impl.TuioCursor;
+import ubiquisense.iorx.ui.tuio11.impl.TuioPoint;
 
 public class SmurfFinger extends SmuonImpl {
 	TuioContainer tuioObj;

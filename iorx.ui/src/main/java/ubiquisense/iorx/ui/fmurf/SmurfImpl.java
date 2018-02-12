@@ -9,12 +9,12 @@ import java.util.Set;
 
 import com.illposed.osc.OSCMessage;
 
-import ubiquisense.iorx.protocols.tuio.TuioObject;
 import ubiquisense.iorx.ui.fmurf.enums.SmurfAspect;
 import ubiquisense.iorx.ui.fmurf.enums.SmurfEvt;
 import ubiquisense.iorx.ui.fmurf.enums.SmurfFunction;
 import ubiquisense.iorx.ui.fmurf.enums.SmurfKind;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
+import ubiquisense.iorx.ui.tuio11.impl.TuioObject;
 
 public class SmurfImpl extends SmurferImpl implements Smurf{
 
