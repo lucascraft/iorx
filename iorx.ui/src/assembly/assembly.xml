@@ -31,5 +31,17 @@
 			<directory>src/iorx</directory>
 			<outputDirectory></outputDirectory>
 		</fileSet>
+		<fileSet>
+			<directory>../iorx/src/libs</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>../iorx/src/jars</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>../iorx/src/media</directory>
+			<outputDirectory>media</outputDirectory>
+		</fileSet>
 	</fileSets>
 </assembly>

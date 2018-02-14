@@ -22,6 +22,7 @@ public class MTFiducialConfig {
 		Color c = Color.color(Math.min(0.7, ran.nextDouble()), Math.min(0.5, ran.nextDouble()), Math.min(0.6, ran.nextDouble()));
 		this.fg = c;
 		this.bg = c;
+		this.range = 2 * radius;
 	}
 	
 	public MTFiducialConfig(String id, String radius, String kind, String tempo, String fg, String bg, String range, String weight) {

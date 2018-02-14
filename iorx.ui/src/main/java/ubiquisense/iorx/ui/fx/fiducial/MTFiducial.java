@@ -22,11 +22,15 @@ public class MTFiducial extends Circle {
     MTFiducialConfig cfg;
     OscSender oscSender;
     float mCursor;
-    
+    int range;
+    public int getRange() {
+		return range;
+	}
 	public synchronized void beat(OscSender oscSender, double curso)
 	{
 		this.oscSender = oscSender;
 		mCursor = (tempo / 5) * (float)curso;
+		range = cfg.getRange();
 		
 		float cos = Double.valueOf(Math.cos(mCursor)).floatValue();
 		float sin = Double.valueOf(Math.sin(mCursor)).floatValue();
@@ -60,92 +64,38 @@ public class MTFiducial extends Circle {
 		this.oscSender = oscSender;
 		Random ran =new Random();
 		this.tempo = 50 * ran.nextInt();
-		setTranslateX(ran.nextDouble()*640);
-		setTranslateY(ran.nextDouble()*480);
-		initHandlers();
 		Color c = Color.color(Math.min(0.7, ran.nextDouble()), Math.min(0.5, ran.nextDouble()), Math.min(0.6, ran.nextDouble()));
 		setFill(c/*.deriveColor(1.0, 1.0, 1.0, 0.2)*/);
 		setStroke(c);
+		range = 120;
+	}
+	
+	private void init()
+	{
+		setFill(cfg.getFg());
+		setStroke(cfg.getFg());
+		range = cfg.getRange();
 	}
 	
 	public MTFiducial(MTFiducialConfig cfg) {
 		super(cfg.getRadius());
 		this.cfg = cfg;
 		this.tempo = cfg.getTempo();
-		Random ran = new Random();
-		setTranslateX(ran.nextDouble()*640);
-		setTranslateY(ran.nextDouble()*480);
-		setFill(cfg.getFg());
-		setStroke(cfg.getFg());
-		initHandlers();
+		init();
 	}
 
 	public MTFiducial(int radius, int tempo) {
 		super(radius);
 		this.cfg = new MTFiducialConfig(radius, tempo);
 		this.tempo = tempo;
-		Random ran = new Random();
-		setTranslateX(ran.nextDouble()*640);
-		setTranslateY(ran.nextDouble()*480);
-		setFill(cfg.getFg());
-		setStroke(cfg.getFg());
-		initHandlers();
+		init();
 	}
 
-	private void initHandlers()
+	private void react(double x, double y)
 	{
-		setOnTouchPressed(new EventHandler<TouchEvent>() {
-			@Override
-			public void handle(TouchEvent event) {
-				System.out.println("mouap");
-				TouchPoint pt = event.getTouchPoint();
-				setCenterX(pt.getX());
-				setCenterY(pt.getY());
-				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/touch/"+mCursor);
-				msg.addArgument(pt.getX());
-				msg.addArgument(pt.getY());
-				oscSender.sendMessage(msg);
-			}
-		});
-		
-		setOnTouchMoved(new EventHandler<TouchEvent>() {
-			@Override
-			public void handle(TouchEvent event) {
-				System.out.println("draaaaag");
-				TouchPoint pt = event.getTouchPoint();
-				setCenterX(pt.getX());
-				setCenterY(pt.getY());
-				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/touch/"+mCursor);
-				msg.addArgument(pt.getX());
-				msg.addArgument(pt.getY());
-				oscSender.sendMessage(msg);
-			}
-		});
-		
-		setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				System.out.println("mouap");
-				setCenterX(event.getX());
-				setCenterY(event.getY());
-				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/drag/"+mCursor);
-				msg.addArgument(event.getX());
-				msg.addArgument(event.getY());
-				oscSender.sendMessage(msg);
-			}
-		});
-		
-		setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				System.out.println("draaaaag");
-				setCenterX(event.getX());
-				setCenterY(event.getY());
-				OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/drag/"+mCursor);
-				msg.addArgument(event.getX());
-				msg.addArgument(event.getY());
-				oscSender.sendMessage(msg);
-			}
-		});
+		OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/touch/"+mCursor);
+		msg.addArgument(x);
+		msg.addArgument(y);
+		oscSender.sendMessage(msg);
 	}
 }
