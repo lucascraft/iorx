@@ -26,38 +26,10 @@ public class MTFiducial extends Circle {
     public int getRange() {
 		return range;
 	}
-	public synchronized void beat(OscSender oscSender, double curso)
-	{
-		this.oscSender = oscSender;
-		mCursor = (tempo / 5) * (float)curso;
-		range = cfg.getRange();
-		
-		float cos = Double.valueOf(Math.cos(mCursor)).floatValue();
-		float sin = Double.valueOf(Math.sin(mCursor)).floatValue();
-		
-		if (1 >= sin && sin <0.95 && 0 < cos && cos < 0.5)
-		{
-			if (oscSender != null && cfg != null)
-			{
-				oscSender.sendMessage(new OSCMessage("/fmurf/live/"+cfg.getId()+"/bang/"+mCursor));
-			}
-		}
-
-		Color p = (Color) getFill();
-		if (p.getOpacity()>=maxAlpha)
-		{
-			mult = -1;
-		} 
-		else if (p.getOpacity()<=minAlpha)
-		{
-			mult = 1;
-		}
-		Color p2 = Color.color(p.getRed(), p.getGreen(), p.getBlue(), p.getOpacity()+ (mult*0.01));
-		setFill(p2);
-		setStroke(p2);
-	}
-
-	
+    public String getID()
+    {
+    	return "" + cfg.getId();
+    }
 
 	public MTFiducial(OscSender oscSender) {
 		super((int)Math.min(100d, new Random().nextInt()*175));
@@ -65,7 +37,7 @@ public class MTFiducial extends Circle {
 		Random ran =new Random();
 		this.tempo = 50 * ran.nextInt();
 		Color c = Color.color(Math.min(0.7, ran.nextDouble()), Math.min(0.5, ran.nextDouble()), Math.min(0.6, ran.nextDouble()));
-		setFill(c/*.deriveColor(1.0, 1.0, 1.0, 0.2)*/);
+		setFill(c);
 		setStroke(c);
 		range = 120;
 	}
