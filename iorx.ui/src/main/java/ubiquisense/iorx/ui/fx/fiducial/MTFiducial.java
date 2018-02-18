@@ -2,12 +2,6 @@ package ubiquisense.iorx.ui.fx.fiducial;
 
 import java.util.Random;
 
-import com.illposed.osc.OSCMessage;
-
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TouchEvent;
-import javafx.scene.input.TouchPoint;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
@@ -23,14 +17,24 @@ public class MTFiducial extends Circle {
     OscSender oscSender;
     float mCursor;
     int range;
+    
+    public OscSender getOscSender() {
+		return oscSender;
+	}
+    
     public int getRange() {
 		return range;
 	}
+    
     public String getID()
     {
     	return "" + cfg.getId();
     }
 
+    public void setOscSender(OscSender oscSender) {
+		this.oscSender = oscSender;
+	}
+    
 	public MTFiducial(OscSender oscSender) {
 		super((int)Math.min(100d, new Random().nextInt()*175));
 		this.oscSender = oscSender;
@@ -62,12 +66,5 @@ public class MTFiducial extends Circle {
 		this.tempo = tempo;
 		init();
 	}
-
-	private void react(double x, double y)
-	{
-		OSCMessage msg = new OSCMessage("/fmurf/live/"+cfg.getId()+"/fid/touch/"+mCursor);
-		msg.addArgument(x);
-		msg.addArgument(y);
-		oscSender.sendMessage(msg);
-	}
+	
 }

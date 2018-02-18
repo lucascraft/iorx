@@ -1,7 +1,6 @@
 package ubiquisense.iorx.ui.fx;
 
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.illposed.osc.OSCMessage;
@@ -27,6 +26,7 @@ public class MTController implements Initializable {
 	private double lastBang = Double.MIN_VALUE;
 	
 	public void initData(AppFX app, MTConfig cfg, Pane pane) {
+		
 		this.app = app;
 		this.mtPane = pane;
 		this.oscSender = new OscSender(cfg.getOutAddr(), cfg.getOutOscPort());
@@ -63,27 +63,41 @@ public class MTController implements Initializable {
 	@FXML
 	public void onTouchMovedAction(TouchEvent e) {
 		System.out.println("onTouchMovedAction");
+		OSCMessage msg = new OSCMessage("/fmurf/live/touch/"+e.getTouchPoint().getId()+"/moved");
+		msg.addArgument(e.getTouchPoint().getX());
+		msg.addArgument(e.getTouchPoint().getY());
+		oscSender.sendMessage(msg);
 	}
 
 	@FXML
 	public void onTouchPressedAction(TouchEvent e) {
 		System.out.println("onTouchPressedAction");
+		OSCMessage msg = new OSCMessage("/fmurf/live/touch/"+e.getTouchPoint().getId()+"/pressed");
+		msg.addArgument(e.getTouchPoint().getX());
+		msg.addArgument(e.getTouchPoint().getY());
+		oscSender.sendMessage(msg);
 	}
 
 	@FXML
 	public void onTouchReleasedAction(TouchEvent e) {
 		System.out.println("onTouchReleasedAction");
+		OSCMessage msg = new OSCMessage("/fmurf/live/touch/"+e.getTouchPoint().getId()+"/released");
+		msg.addArgument(e.getTouchPoint().getX());
+		msg.addArgument(e.getTouchPoint().getY());
+		oscSender.sendMessage(msg);
 	}
 
 	@FXML
 	public void onTouchStationaryAction(TouchEvent e) {
-		System.out.println("onTouchStationaryAction");
+		OSCMessage msg = new OSCMessage("/fmurf/live/touch/"+e.getTouchPoint().getId()+"/stationnary");
+		msg.addArgument(e.getTouchPoint().getX());
+		msg.addArgument(e.getTouchPoint().getY());
+		oscSender.sendMessage(msg);
 	}
 
 	@FXML
 	private void addFiducialAction(ActionEvent e) {
-		Random ran = new Random();
-		mtPane.getChildren().add(new MTPane( new MTFiducialConfig(100, 100)));
+		mtPane.getChildren().add(new MTPane(new MTFiducialConfig(100, 100)));
 	}
 
 	@FXML

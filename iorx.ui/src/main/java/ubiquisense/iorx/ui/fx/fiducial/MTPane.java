@@ -1,6 +1,5 @@
 package ubiquisense.iorx.ui.fx.fiducial;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -8,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.javatuples.Pair;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.illposed.osc.OSCMessage;
 
@@ -21,6 +19,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
@@ -32,7 +32,7 @@ public class MTPane extends Pane {
 	RotateTransition rt;
 	MTFiducialConfig cfg;
 	OscSender oscSender;
-	
+	Set<Pair<MTFiducial, MTFiducial>> connected;
 	float tempo;
     double minAlpha = 0.33;
     double maxAlpha = 0.8;
@@ -44,11 +44,13 @@ public class MTPane extends Pane {
     	this.cfg = cfg;
     	initHandlers();
     	createShape();
+    	connected = Sets.newHashSet();
     }
     
 	public synchronized void beat(OscSender oscSender, double curso)
 	{
 		this.oscSender = oscSender;
+		fiducial.setOscSender(oscSender);
 		mCursor = (tempo / 5) * (float)curso;
 		
 		float cos = Double.valueOf(Math.cos(mCursor)).floatValue();
@@ -58,7 +60,7 @@ public class MTPane extends Pane {
 		{
 			if (oscSender != null && cfg != null)
 			{
-				oscSender.sendMessage(new OSCMessage("/fmurf/live/"+cfg.getId()+"/bang/"+mCursor));
+				oscSender.sendMessage(new OSCMessage("/fmurf/live/"+fiducial.getId()+"/bang/"+mCursor));
 			}
 		}
 	}
@@ -90,8 +92,11 @@ public class MTPane extends Pane {
 			line.setEndY(p2.getY());
 			line.toBack();
 		});
+		
+		
+		//handleEvents(connectibles);
+		
 	}
-
 	public Set<Pair<MTFiducial, MTFiducial>> computeConnectibles()
 	{
 		Set<Pair<MTFiducial, MTFiducial>> connectibles = Sets.newHashSet();
@@ -143,6 +148,7 @@ public class MTPane extends Pane {
 		rt = new RotateTransition(Duration.millis(1250), p);
 		
 		fiducial = new MTFiducial(cfg);
+		fiducial.setOscSender(oscSender);
 		getChildren().add(fiducial);
 		
 		Rectangle c3 = new Rectangle(60, 60);
@@ -152,11 +158,27 @@ public class MTPane extends Pane {
 		c3.setTranslateY(-c3.getHeight()/2);
 		getChildren().add(c3);
 		
+		Text text = new Text(fiducial.getID());
+		text.setFont(new Font("Tahoma", 32));
+		text.setFill(getFiducial().getFill());
+		text.setStroke(getFiducial().getStroke());
+		text.setTranslateX(-text.getBoundsInLocal().getHeight()/4);
+		text.setTranslateY(+text.getBoundsInLocal().getWidth()/2);
+
+		getChildren().add(text);
+		
 		p.getChildren().add(fiducial);
 		p.getChildren().add(c3);
 
 		getChildren().add(p);
+		text.toFront();
 		
+		MTCursor cursor = new MTCursor(getFiducial());
+		cursor.setRadius(20);
+		cursor.toFront();
+
+		getChildren().add(cursor);
+
 	    rt.setByAngle(180);
 	    rt.setCycleCount(Integer.MAX_VALUE);
 	    rt.setAutoReverse(true);
