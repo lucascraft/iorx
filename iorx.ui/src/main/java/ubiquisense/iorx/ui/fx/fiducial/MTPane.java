@@ -17,6 +17,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -82,7 +84,7 @@ public class MTPane extends Pane {
 			Line line = new Line();
 			((Pane)getParent()).getChildren().add(line);
 			line.setFill(Color.RED);
-			line.setStrokeWidth(4);
+			line.setStrokeWidth(12);
 			line.setStroke(Color.RED);
 			Point2D p1 = k.getValue0().localToScene(new Point2D(k.getValue0().getCenterX(), k.getValue0().getCenterY()));
 			Point2D p2 = k.getValue1().localToScene(new Point2D(k.getValue1().getCenterX(), k.getValue1().getCenterY()));
@@ -173,10 +175,24 @@ public class MTPane extends Pane {
 		getChildren().add(p);
 		text.toFront();
 		
-		MTCursor cursor = new MTCursor(getFiducial());
+		Arc arc = new Arc();
+		arc.setCenterX(getFiducial().getCenterX());
+		arc.setCenterY(getFiducial().getCenterY());
+		arc.setRadiusX(getFiducial().getRadius()-6);
+		arc.setRadiusY(getFiducial().getRadius()-6);
+		arc.setStartAngle(0f);
+		arc.setStroke(Color.RED);
+		arc.setStrokeWidth(12);
+		arc.setFill(null);
+		arc.setType(ArcType.OPEN);
+
+		MTCursor cursor = new MTCursor(getFiducial(), arc);
 		cursor.setRadius(20);
+		
+        arc.toFront();
 		cursor.toFront();
 
+		getChildren().add(arc);
 		getChildren().add(cursor);
 
 	    rt.setByAngle(180);

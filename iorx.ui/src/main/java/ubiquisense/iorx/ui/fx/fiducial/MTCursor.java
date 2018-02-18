@@ -4,15 +4,22 @@ import com.illposed.osc.OSCMessage;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
 public class MTCursor extends Circle {
 	double angle;
 	double value;
 	MTFiducial fiducial;
+	Arc arc;
+
+	public double getValue() {
+		return value;
+	}
 	
-	public MTCursor(MTFiducial fiducial) {
+	public MTCursor(MTFiducial fiducial, Arc arc) {
 		angle = 0;
+		this.arc = arc;
 		this.fiducial = fiducial;
 		
 		setFill(Color.RED);
@@ -25,7 +32,12 @@ public class MTCursor extends Circle {
 			setManaged(false);
 			Point2D pt = localToParent(new Point2D(event.getX(), event.getY()));
 			angle = borderLayouted(pt.getX(),pt.getY());
-			value = angle * (Math.PI * 2);
+			double angleDegrees = Math.toDegrees(angle);
+
+		    if (angleDegrees < 0) {
+		    	angleDegrees += 360;
+		    };
+			value = angleDegrees / 360;
 			
 			setTranslateX(Math.cos(angle)*fiducial.getRadius());
 			setTranslateY(Math.sin(angle)*fiducial.getRadius());
@@ -34,7 +46,8 @@ public class MTCursor extends Circle {
 			msg.addArgument(Double.valueOf(value).floatValue());
 			
 			fiducial.getOscSender().sendMessage(msg);
-			
+			System.out.println(value);
+			arc.setLength(getValue()*-360f);
 			event.consume();
 		});
 		
