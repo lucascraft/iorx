@@ -7,16 +7,13 @@ import javafx.scene.shape.Circle;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 
-public class MTFiducial extends Circle {
+public abstract class MTFiducial extends Circle {
 
-	float tempo;
-    double minAlpha = 0.33;
-    double maxAlpha = 0.8;
-    double mult = 1;
-    MTFiducialConfig cfg;
-    OscSender oscSender;
-    float mCursor;
-    int range;
+	private float tempo;
+	private int range;
+	private String id;
+	private MTFiducialConfig cfg;
+	private OscSender oscSender;
     
     public OscSender getOscSender() {
 		return oscSender;
@@ -26,10 +23,18 @@ public class MTFiducial extends Circle {
 		return range;
 	}
     
+    public void setID(String id)
+    {
+    	this.id = id;
+    }
+    
     public String getID()
     {
-    	return "" + cfg.getId();
+    	return this.id;
     }
+    public void setRange(int range) {
+		this.range = range;
+	}
 
     public void setOscSender(OscSender oscSender) {
 		this.oscSender = oscSender;
@@ -43,7 +48,8 @@ public class MTFiducial extends Circle {
 		Color c = Color.color(Math.min(0.7, ran.nextDouble()), Math.min(0.5, ran.nextDouble()), Math.min(0.6, ran.nextDouble()));
 		setFill(c);
 		setStroke(c);
-		range = 120;
+		range = 0;
+		id = "-1";
 	}
 	
 	private void init()
@@ -57,6 +63,7 @@ public class MTFiducial extends Circle {
 		super(cfg.getRadius());
 		this.cfg = cfg;
 		this.tempo = cfg.getTempo();
+		id = "" + cfg.getId();
 		init();
 	}
 
@@ -64,6 +71,7 @@ public class MTFiducial extends Circle {
 		super(radius);
 		this.cfg = new MTFiducialConfig(radius, tempo);
 		this.tempo = tempo;
+		id = "-1";
 		init();
 	}
 	

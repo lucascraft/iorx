@@ -26,6 +26,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
+import ubiquisense.iorx.ui.fx.fiducial.impl.SimpleMTFiducial;
 
 public class MTPane extends Pane {
 	
@@ -40,13 +41,30 @@ public class MTPane extends Pane {
     double maxAlpha = 0.8;
     double mult = 1;
     float mCursor;
+    boolean fixed;
     
+    public MTPane() {
+    	fixed = false;
+    	connected = Sets.newHashSet();
+    	initHandlers();
+	}
+    
+    public void setFiducial(MTFiducial fiducial) {
+		this.fiducial = fiducial;
+	}
+    
+    public void setFixed(boolean fixed) {
+		this.fixed = fixed;
+	}
+    
+    public boolean isFixed() {
+		return fixed;
+	}
 
     public MTPane(MTFiducialConfig cfg) {
+    	this();
     	this.cfg = cfg;
-    	initHandlers();
     	createShape();
-    	connected = Sets.newHashSet();
     }
     
 	public synchronized void beat(OscSender oscSender, double curso)
@@ -95,10 +113,89 @@ public class MTPane extends Pane {
 			line.toBack();
 		});
 		
-		
-		//handleEvents(connectibles);
-		
+		handleEvents(connectibles);
 	}
+	
+	private void handleEvents(Set<Pair<MTFiducial, MTFiducial>> connectibles)
+	{
+		Set<Pair<MTFiducial, MTFiducial>> removed = Sets.newHashSet();
+		for (Pair<MTFiducial, MTFiducial> alreadyConected : connected)
+		{
+			boolean wasRemoved = true;
+			for (Pair<MTFiducial, MTFiducial> connectible : connectibles)
+			{
+				if (connectible.getValue0().equals(alreadyConected.getValue0()) && connectible.getValue1().equals(alreadyConected.getValue1()))
+				{
+					wasRemoved = false;
+				}
+				else if (connectible.getValue0().equals(alreadyConected.getValue1()) && connectible.getValue1().equals(alreadyConected.getValue0()))
+				{
+					wasRemoved = false;
+				} 
+			}
+			if (wasRemoved)
+			{
+					removed.add(alreadyConected);
+			}
+		}
+		for (Pair<MTFiducial, MTFiducial> toRemove : removed)
+		{
+			if (toRemove.getValue0().equals(getFiducial()) || toRemove.getValue1().equals(getFiducial()))
+			{
+				onRemove(toRemove);
+			}
+		}
+		
+		Set<Pair<MTFiducial, MTFiducial>>  added = Sets.newHashSet();
+		for (Pair<MTFiducial, MTFiducial> connectible : connectibles)
+		{
+			boolean wasAdded = true;
+			for (Pair<MTFiducial, MTFiducial> c : connected)
+			{
+				if (connectible.getValue0().equals(c.getValue0()) && connectible.getValue1().equals(c.getValue1()))
+				{
+					wasAdded = false;
+					break;
+				}
+				else if (connectible.getValue0().equals(c.getValue1()) && connectible.getValue1().equals(c.getValue0()))
+				{
+					wasAdded = false;
+					break;
+				} 
+			}
+			if (wasAdded)
+			{
+				added.add(connectible);
+			}
+		}
+		for (Pair<MTFiducial, MTFiducial> toAdd : added)
+		{
+			if (toAdd.getValue0().equals(getFiducial()) || toAdd.getValue1().equals(getFiducial()))
+			{
+				onAdd(toAdd);
+			}
+		}
+		
+		connected.clear();
+		connected.addAll(connectibles);
+	}
+	
+	private void onAdd(Pair<MTFiducial, MTFiducial> added)
+	{
+		OSCMessage msg = new OSCMessage("/fmurf/live/connection/added");
+		msg.addArgument(added.getValue0().getID());
+		msg.addArgument(added.getValue1().getID());
+		fiducial.getOscSender().sendMessage(msg);
+	}
+	
+	private void onRemove(Pair<MTFiducial, MTFiducial> removed)
+	{
+		OSCMessage msg = new OSCMessage("/fmurf/live/connection/removed");
+		msg.addArgument(removed.getValue0().getID());
+		msg.addArgument(removed.getValue1().getID());
+		fiducial.getOscSender().sendMessage(msg);
+	}
+
 	public Set<Pair<MTFiducial, MTFiducial>> computeConnectibles()
 	{
 		Set<Pair<MTFiducial, MTFiducial>> connectibles = Sets.newHashSet();
@@ -126,19 +223,39 @@ public class MTPane extends Pane {
 	private void initHandlers()
 	{
 		setOnTouchMoved(event -> {
-		    setManaged(false);
-		    this.setTranslateX(event.getTouchPoint().getX() + this.getTranslateX());
-		    this.setTranslateY(event.getTouchPoint().getY() + this.getTranslateY());
-		    rt.setAxis(new Point3D(event.getTouchPoint().getX(), event.getTouchPoint().getY(), 0));
-		    event.consume();
-		    updateConnections();
+			setManaged(false);
+			if (!isFixed())
+			{
+			    this.setTranslateX(event.getTouchPoint().getX() + this.getTranslateX());
+			    this.setTranslateY(event.getTouchPoint().getY() + this.getTranslateY());
+			    rt.setAxis(new Point3D(event.getTouchPoint().getX(), event.getTouchPoint().getY(), 0));
+			    
+			    OSCMessage msg = new OSCMessage("/fmurf/live/"+fiducial.getID()+"/move");
+			    msg.addArgument(event.getTouchPoint().getX());
+			    msg.addArgument(event.getTouchPoint().getY());
+			    
+			    fiducial.getOscSender().sendMessage(msg);
+			    
+			    event.consume();
+			}
+			updateConnections();
 		});
+		
 		setOnMouseDragged(event -> {
 		    setManaged(false);
-		    this.setTranslateX(event.getX() + this.getTranslateX());
-		    this.setTranslateY(event.getY() + this.getTranslateY());
-		    rt.setAxis(new Point3D(event.getX(), event.getY(), 0));
-		    event.consume();
+			if (!isFixed())
+			{
+			    this.setTranslateX(event.getX() + this.getTranslateX());
+			    this.setTranslateY(event.getY() + this.getTranslateY());
+			    rt.setAxis(new Point3D(event.getX(), event.getY(), 0));
+			    
+			    OSCMessage msg = new OSCMessage("/fmurf/live/"+fiducial.getID()+"/move");
+			    msg.addArgument(event.getX());
+			    msg.addArgument(event.getY());
+			    
+			    fiducial.getOscSender().sendMessage(msg);
+			    event.consume();
+			}
 		    updateConnections();
 		});
 	}
@@ -149,7 +266,7 @@ public class MTPane extends Pane {
 
 		rt = new RotateTransition(Duration.millis(1250), p);
 		
-		fiducial = new MTFiducial(cfg);
+		fiducial = new SimpleMTFiducial(cfg);
 		fiducial.setOscSender(oscSender);
 		getChildren().add(fiducial);
 		
@@ -178,8 +295,8 @@ public class MTPane extends Pane {
 		Arc arc = new Arc();
 		arc.setCenterX(getFiducial().getCenterX());
 		arc.setCenterY(getFiducial().getCenterY());
-		arc.setRadiusX(getFiducial().getRadius()-6);
-		arc.setRadiusY(getFiducial().getRadius()-6);
+		arc.setRadiusX(getFiducial().getRadius()-8);
+		arc.setRadiusY(getFiducial().getRadius()-8);
 		arc.setStartAngle(0f);
 		arc.setStroke(Color.RED);
 		arc.setStrokeWidth(12);

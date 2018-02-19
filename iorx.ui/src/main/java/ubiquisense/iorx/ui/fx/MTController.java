@@ -10,11 +10,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import ubiquisense.iorx.ui.AppFX;
 import ubiquisense.iorx.ui.config.MTConfig;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
 import ubiquisense.iorx.ui.fx.fiducial.MTPane;
+import ubiquisense.iorx.ui.fx.fiducial.impl.DacMTFiducial;
 
 public class MTController implements Initializable {
 	
@@ -24,13 +26,29 @@ public class MTController implements Initializable {
 	
 	private double cursor;
 	private double lastBang = Double.MIN_VALUE;
+	private DacMTFiducial dac;
 	
 	public void initData(AppFX app, MTConfig cfg, Pane pane) {
 		
 		this.app = app;
 		this.mtPane = pane;
 		this.oscSender = new OscSender(cfg.getOutAddr(), cfg.getOutOscPort());
-
+		
+		
+		MTPane dacPAne = new MTPane();
+		
+		dac = new DacMTFiducial(oscSender);
+		dac.setOscSender(oscSender);
+		dac.setId("440");
+		dac.setFill(Color.WHITE);
+		dac.setRadius(50);
+		dac.setRange(50);
+		dacPAne.setFixed(true);;
+		dacPAne.setFiducial(dac);
+		dacPAne.getChildren().add(dac);
+		mtPane.getChildren().add(dacPAne);
+		
+		
 		cfg.getFiducials().forEach(fidCfg -> { mtPane.getChildren().add(createMTFiducial(fidCfg)); });
 		
 	  	Runnable r = new Runnable() {
@@ -45,6 +63,9 @@ public class MTController implements Initializable {
 						}
 						cursor += 0.01;
 						pane.getChildrenUnmodifiable().forEach(c -> { if (c instanceof MTPane) {((MTPane)c).beat(oscSender, cursor);}});
+						
+						dac.setCenterX(mtPane.getWidth()/2);
+						dac.setCenterY(mtPane.getHeight()/2);
 
 						Thread.sleep(50);
 					} catch (InterruptedException e) {

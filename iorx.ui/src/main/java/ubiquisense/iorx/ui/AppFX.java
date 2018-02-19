@@ -22,6 +22,7 @@ public class AppFX extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Iorx Mutlitouch");
+		
 		initRootLayout();
 		initMTPane();
 	}
@@ -40,6 +41,7 @@ public class AppFX extends Application {
 			Scene scene = new Scene(rootLayout);
 
 			primaryStage.setScene(scene);
+			primaryStage.setFullScreen(true);
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

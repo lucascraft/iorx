@@ -18,7 +18,7 @@ public class MTCursor extends Circle {
 	}
 	
 	public MTCursor(MTFiducial fiducial, Arc arc) {
-		angle = 0;
+		this.angle = 0;
 		this.arc = arc;
 		this.fiducial = fiducial;
 		
@@ -46,7 +46,7 @@ public class MTCursor extends Circle {
 			msg.addArgument(Double.valueOf(value).floatValue());
 			
 			fiducial.getOscSender().sendMessage(msg);
-			System.out.println(value);
+
 			arc.setLength(getValue()*-360f);
 			event.consume();
 		});
