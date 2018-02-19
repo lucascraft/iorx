@@ -25,8 +25,9 @@ public class MTCursor extends Circle {
 		setFill(Color.RED);
 		setStroke(Color.RED);
 		
-		setTranslateX(Math.cos(angle)*fiducial.getRadius());
-		setTranslateY(Math.sin(angle)*fiducial.getRadius());
+		Point2D posStart = computePosition();
+		setTranslateX(posStart.getX());
+		setTranslateY(posStart.getY());
 		
 		setOnMouseDragged(event -> {
 			setManaged(false);
@@ -39,8 +40,9 @@ public class MTCursor extends Circle {
 		    };
 			value = angleDegrees / 360;
 			
-			setTranslateX(Math.cos(angle)*fiducial.getRadius());
-			setTranslateY(Math.sin(angle)*fiducial.getRadius());
+			Point2D pos = computePosition();
+			setTranslateX(pos.getX());
+			setTranslateY(pos.getY());
 
 			OSCMessage msg = new OSCMessage("/fmurf/live/"+fiducial.getID()+"/rotate");
 			msg.addArgument(Double.valueOf(value).floatValue());
@@ -53,10 +55,20 @@ public class MTCursor extends Circle {
 		
 		setOnTouchMoved(event -> {
 			setManaged(false);
-			setTranslateX(Math.cos(angle)*fiducial.getRadius());
-			setTranslateY(Math.sin(angle)*fiducial.getRadius());
+			Point2D pt = computePosition();
+			setTranslateX(pt.getX());
+			setTranslateY(pt.getY());
 			event.consume();
 		});
+	}
+	
+	private Point2D computePosition()
+	{
+		return new Point2D(
+			Math.cos(angle)*(fiducial.getRadius()-10),
+			Math.sin(angle)*(fiducial.getRadius()-10)
+		);
+		
 	}
 	
 	private double borderLayouted(double x, double y)
@@ -64,7 +76,7 @@ public class MTCursor extends Circle {
 		return calcRotationAngleInRadians(new Point2D(0, 0), new Point2D(x, y));
 	}
 
-	public static double calcRotationAngleInRadians(Point2D centerPt, Point2D targetPt)
+	private double calcRotationAngleInRadians(Point2D centerPt, Point2D targetPt)
 	{
 	    return Math.atan2(targetPt.getY() - centerPt.getY() , targetPt.getX()  - centerPt.getX());
 	}

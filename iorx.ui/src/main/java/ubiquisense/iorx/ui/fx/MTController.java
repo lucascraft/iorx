@@ -1,8 +1,12 @@
 package ubiquisense.iorx.ui.fx;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import com.google.common.io.Files;
 import com.illposed.osc.OSCMessage;
 
 import javafx.event.ActionEvent;
@@ -11,7 +15,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import ubiquisense.iorx.ui.AppFX;
+import ubiquisense.iorx.ui.config.JsonMTConfigParser;
 import ubiquisense.iorx.ui.config.MTConfig;
 import ubiquisense.iorx.ui.config.MTFiducialConfig;
 import ubiquisense.iorx.ui.fmurf.osc.OscSender;
@@ -27,13 +33,13 @@ public class MTController implements Initializable {
 	private double cursor;
 	private double lastBang = Double.MIN_VALUE;
 	private DacMTFiducial dac;
+	private MTConfig cfg;
 	
 	public void initData(AppFX app, MTConfig cfg, Pane pane) {
-		
+		this.cfg = cfg;
 		this.app = app;
 		this.mtPane = pane;
 		this.oscSender = new OscSender(cfg.getOutAddr(), cfg.getOutOscPort());
-		
 		
 		MTPane dacPAne = new MTPane();
 		
@@ -135,6 +141,37 @@ public class MTController implements Initializable {
 	private void resetFiducialsAction(ActionEvent e) {
 		System.out.println("resetFiducialsAction");
 		mtPane.getChildren().clear();
+	}
+
+	@FXML
+	private void loadFiducialsAction(ActionEvent e) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Config File");
+		File file = fileChooser.showOpenDialog(app.getPrimaryStage());
+		
+		try {
+			MTConfig cfg = JsonMTConfigParser.loadCfgFile(Paths.get(file.getCanonicalPath()));
+			mtPane.getChildren().clear();
+			cfg.getFiducials().forEach(fidCfg -> { mtPane.getChildren().add(createMTFiducial(fidCfg)); });
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	@FXML
+	private void saveFiducialsAction(ActionEvent e) {
+		System.out.println("saveFiducialsAction");
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Config Resource File");
+		fileChooser.setInitialFileName("iorix.config");
+		File file = fileChooser.showOpenDialog(app.getPrimaryStage());
+		
+		try {
+			JsonMTConfigParser.saveCfgFile(cfg, Paths.get(file.getCanonicalPath()));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@FXML

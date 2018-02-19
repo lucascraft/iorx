@@ -35,6 +35,8 @@
             <Button mnemonicParsing="false" onAction="#deleteFiducialAction" text="Delete" />
             <Button mnemonicParsing="false" onAction="#editFiducialAction" text="Edit" />
             <Button mnemonicParsing="false" onAction="#resetFiducialsAction" text="Reset" />
+            <Button mnemonicParsing="false" onAction="#saveFiducialsAction" text="Save" />
+            <Button mnemonicParsing="false" onAction="#loadFiducialsAction" text="Load..." />
         </items>
       </ToolBar>
    </children>
