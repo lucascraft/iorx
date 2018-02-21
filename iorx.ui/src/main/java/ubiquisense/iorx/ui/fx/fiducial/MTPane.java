@@ -30,18 +30,18 @@ import ubiquisense.iorx.ui.fx.fiducial.impl.SimpleMTFiducial;
 
 public class MTPane extends Pane {
 	
-	Group p;
-	MTFiducial fiducial;
-	RotateTransition rt;
-	MTFiducialConfig cfg;
-	OscSender oscSender;
-	Set<Pair<MTFiducial, MTFiducial>> connected;
-	float tempo;
-    double minAlpha = 0.33;
-    double maxAlpha = 0.8;
-    double mult = 1;
-    float mCursor;
-    boolean fixed;
+	private Group p;
+	private MTFiducial fiducial;
+	private RotateTransition rt;
+	private MTFiducialConfig cfg;
+	private OscSender oscSender;
+	private Set<Pair<MTFiducial, MTFiducial>> connected;
+	private float tempo;
+	private double minAlpha = 0.33;
+	private double maxAlpha = 0.8;
+	private double mult = 1;
+	private float mCursor;
+	private boolean fixed;
     
     public MTPane() {
     	fixed = false;
@@ -80,7 +80,21 @@ public class MTPane extends Pane {
 		{
 			if (oscSender != null && cfg != null)
 			{
-				oscSender.sendMessage(new OSCMessage("/fmurf/live/"+fiducial.getId()+"/bang/"+mCursor));
+				OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getId()+"/add/");
+
+				Point2D pt = fiducial.localToScene(new Point2D(fiducial.getCenterX(), fiducial.getCenterY()));
+
+			    float x = Double.valueOf(pt.getX()).floatValue();
+			    float y = Double.valueOf(pt.getY()).floatValue();
+			    
+			    float r = Double.valueOf(fiducial.getAngle()).floatValue();
+			    
+			    msg.addArgument(x);
+				msg.addArgument(y);
+				
+			    msg.addArgument(r);
+
+				oscSender.sendMessage(msg);
 			}
 		}
 	}
@@ -182,17 +196,35 @@ public class MTPane extends Pane {
 	
 	private void onAdd(Pair<MTFiducial, MTFiducial> added)
 	{
-		OSCMessage msg = new OSCMessage("/fmurf/live/connection/added");
-		msg.addArgument(added.getValue0().getID());
-		msg.addArgument(added.getValue1().getID());
-		fiducial.getOscSender().sendMessage(msg);
+		OSCMessage msg = new OSCMessage("/smurf/connection/add");
+		
+		int from = Integer.valueOf(added.getValue0().getID());
+		int to = Integer.valueOf(added.getValue1().getID());
+		int r = Double.valueOf(fiducial.getAngle()).intValue();
+		
+		msg.addArgument(from);
+		msg.addArgument(to);
+	    msg.addArgument(r);
+	    
+	    System.out.println("/smurf/connection/add (" + from + " to " + to + ")");
+		
+	    fiducial.getOscSender().sendMessage(msg);
 	}
 	
 	private void onRemove(Pair<MTFiducial, MTFiducial> removed)
 	{
-		OSCMessage msg = new OSCMessage("/fmurf/live/connection/removed");
-		msg.addArgument(removed.getValue0().getID());
-		msg.addArgument(removed.getValue1().getID());
+		OSCMessage msg = new OSCMessage("/smurf/connection/remove");
+		
+		int from = Integer.valueOf(removed.getValue0().getID());
+		int to = Integer.valueOf(removed.getValue1().getID());
+		int r = Double.valueOf(fiducial.getAngle()).intValue();
+		
+		msg.addArgument(from);
+		msg.addArgument(to);
+	    msg.addArgument(r);
+	
+	    System.out.println("/smurf/connection/remove (" + from + " to " + to + ")");
+
 		fiducial.getOscSender().sendMessage(msg);
 	}
 
@@ -230,10 +262,22 @@ public class MTPane extends Pane {
 			    this.setTranslateY(event.getTouchPoint().getY() + this.getTranslateY());
 			    rt.setAxis(new Point3D(event.getTouchPoint().getX(), event.getTouchPoint().getY(), 0));
 			    
-			    OSCMessage msg = new OSCMessage("/fmurf/live/"+fiducial.getID()+"/move");
-			    msg.addArgument(event.getTouchPoint().getX());
-			    msg.addArgument(event.getTouchPoint().getY());
+				Point2D pt = fiducial.localToScene(new Point2D(event.getTouchPoint().getX() + this.getTranslateX(), event.getTouchPoint().getY() + this.getTranslateY()));
+
+			    float x = Double.valueOf(pt.getX()).floatValue();
+			    float y = Double.valueOf(pt.getY()).floatValue();
 			    
+			    float r = Double.valueOf(fiducial.getAngle()).floatValue();
+			    
+			    OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getID()+"/update");
+			    
+			    msg.addArgument(x);
+			    msg.addArgument(y);
+			    msg.addArgument(r);
+			    msg.addArgument(100f);
+			    
+			    System.out.println("/smurf/fid/"+fiducial.getID()+"/update"+ "("+x+","+y+","+r+")");
+
 			    fiducial.getOscSender().sendMessage(msg);
 			    
 			    event.consume();
@@ -249,10 +293,22 @@ public class MTPane extends Pane {
 			    this.setTranslateY(event.getY() + this.getTranslateY());
 			    rt.setAxis(new Point3D(event.getX(), event.getY(), 0));
 			    
-			    OSCMessage msg = new OSCMessage("/fmurf/live/"+fiducial.getID()+"/move");
-			    msg.addArgument(event.getX());
-			    msg.addArgument(event.getY());
+				Point2D pt = fiducial.localToScene(new Point2D(event.getX() + this.getTranslateX(), event.getY() + this.getTranslateY()));
+
+			    float x = Double.valueOf(pt.getX()).floatValue();
+			    float y = Double.valueOf(pt.getY()).floatValue();
 			    
+			    float r = Double.valueOf(fiducial.getAngle()).floatValue();
+			    
+			    OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getID()+"/update");
+			    
+			    msg.addArgument(x);
+			    msg.addArgument(y);
+			    msg.addArgument(r);
+			    msg.addArgument(100f);
+	    
+			    System.out.println("/smurf/fid/"+fiducial.getID()+"/update"+ "("+x+","+y+","+r+")");
+
 			    fiducial.getOscSender().sendMessage(msg);
 			    event.consume();
 			}
@@ -316,5 +372,6 @@ public class MTPane extends Pane {
 	    rt.setCycleCount(Integer.MAX_VALUE);
 	    rt.setAutoReverse(true);
 	    rt.play();
+	    
 	}
 }

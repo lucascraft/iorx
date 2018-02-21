@@ -44,9 +44,24 @@ public class MTCursor extends Circle {
 			setTranslateX(pos.getX());
 			setTranslateY(pos.getY());
 
-			OSCMessage msg = new OSCMessage("/fmurf/live/"+fiducial.getID()+"/rotate");
-			msg.addArgument(Double.valueOf(value).floatValue());
+			OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getID()+"/update");
 			
+			Point2D ptXY = fiducial.localToScene(new Point2D(fiducial.getCenterX(), fiducial.getCenterY()));
+
+		    float x = Double.valueOf(ptXY.getX()).floatValue();
+		    float y = Double.valueOf(ptXY.getY()).floatValue();
+		    
+		    float r = Double.valueOf(value).floatValue();
+		    
+			fiducial.setAngle(r);
+			
+			msg.addArgument(x);
+			msg.addArgument(y);
+			msg.addArgument(r);
+			msg.addArgument(100f);
+			
+		    System.out.println("/smurf/fid/"+fiducial.getID()+"/update"+ "("+x+","+y+","+r+")");
+
 			fiducial.getOscSender().sendMessage(msg);
 
 			arc.setLength(getValue()*-360f);

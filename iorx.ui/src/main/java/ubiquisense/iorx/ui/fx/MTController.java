@@ -45,7 +45,7 @@ public class MTController implements Initializable {
 		
 		dac = new DacMTFiducial(oscSender);
 		dac.setOscSender(oscSender);
-		dac.setId("440");
+		dac.setId("-440");
 		dac.setFill(Color.WHITE);
 		dac.setRadius(50);
 		dac.setRange(50);

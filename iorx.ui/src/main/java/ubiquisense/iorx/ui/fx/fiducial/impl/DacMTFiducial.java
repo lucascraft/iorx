@@ -15,4 +15,8 @@ public class DacMTFiducial extends MTFiducial {
 		super(cfg);
 	}
 
+	@Override
+	public String getID() {
+		return "-440";
+	}
 }

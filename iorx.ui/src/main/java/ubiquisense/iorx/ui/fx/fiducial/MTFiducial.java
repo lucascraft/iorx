@@ -14,6 +14,7 @@ public abstract class MTFiducial extends Circle {
 	private String id;
 	private MTFiducialConfig cfg;
 	private OscSender oscSender;
+	float angle;
     
     public OscSender getOscSender() {
 		return oscSender;
@@ -38,6 +39,14 @@ public abstract class MTFiducial extends Circle {
 
     public void setOscSender(OscSender oscSender) {
 		this.oscSender = oscSender;
+	}
+    
+    public void setAngle(float angle) {
+		this.angle = angle;
+	}
+    
+    public float getAngle() {
+		return angle;
 	}
     
 	public MTFiducial(OscSender oscSender) {
