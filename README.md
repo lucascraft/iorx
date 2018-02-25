@@ -1,6 +1,4 @@
-# iorxh 
-
-<img src="https://github.com/lucascraft/iorx/blob/master/iorx.png"/>
+# iorx <img src="https://github.com/lucascraft/iorx/blob/master/iorx.png"/>
 
 async rx IO queues and multitouch UI
 
