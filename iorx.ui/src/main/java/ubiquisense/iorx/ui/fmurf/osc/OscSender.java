@@ -36,4 +36,21 @@ public class OscSender {
 		}
 
 	}
+	
+	public void emit(String msg, Object... args)
+	{
+		String text = msg;
+		
+		OSCMessage oscMsg = new OSCMessage(msg);
+		
+		for (Object arg : args)
+		{
+			oscMsg.addArgument(arg);
+			text += " " + arg;
+		}
+		
+		System.out.println(text);
+		
+		sendMessage(oscMsg);
+	}
 }

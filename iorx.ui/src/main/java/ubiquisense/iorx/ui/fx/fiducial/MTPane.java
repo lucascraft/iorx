@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.javatuples.Pair;
 
 import com.google.common.collect.Sets;
-import com.illposed.osc.OSCMessage;
 
 import javafx.animation.RotateTransition;
 import javafx.geometry.Point2D;
@@ -80,8 +79,6 @@ public class MTPane extends Pane {
 		{
 			if (oscSender != null && cfg != null)
 			{
-				OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getId()+"/add/");
-
 				Point2D pt = fiducial.localToScene(new Point2D(fiducial.getCenterX(), fiducial.getCenterY()));
 
 			    float x = Double.valueOf(pt.getX()).floatValue();
@@ -89,12 +86,7 @@ public class MTPane extends Pane {
 			    
 			    float r = Double.valueOf(fiducial.getAngle()).floatValue();
 			    
-			    msg.addArgument(x);
-				msg.addArgument(y);
-				
-			    msg.addArgument(r);
-
-				oscSender.sendMessage(msg);
+				oscSender.emit("/smurf/fid/"+fiducial.getId()+"/add/",  Float.valueOf(x), Float.valueOf(y), Float.valueOf(r));
 			}
 		}
 	}
@@ -129,6 +121,40 @@ public class MTPane extends Pane {
 		
 		handleEvents(connectibles);
 	}
+	
+	
+	private Set<Pair<MTFiducial, MTFiducial>> intersects(Set<Pair<MTFiducial, MTFiducial>> left, Set<Pair<MTFiducial, MTFiducial>> right)
+	{
+		Set<Pair<MTFiducial, MTFiducial>> result = Sets.newHashSet();
+		for (Pair<MTFiducial, MTFiducial> lv : left)
+		{
+			boolean wasRemoved = true;
+			for (Pair<MTFiducial, MTFiducial> rv : right)
+			{
+				if (rv.getValue0().equals(lv.getValue0()) && rv.getValue1().equals(lv.getValue1()))
+				{
+					wasRemoved = false;
+				}
+				else if (rv.getValue0().equals(lv.getValue1()) && rv.getValue1().equals(lv.getValue0()))
+				{
+					wasRemoved = false;
+				} 
+			}
+			if (wasRemoved)
+			{
+					result.add(lv);
+			}
+		}
+		for (Pair<MTFiducial, MTFiducial> toRemove : result)
+		{
+			if (toRemove.getValue0().equals(getFiducial()) || toRemove.getValue1().equals(getFiducial()))
+			{
+				onRemove(toRemove);
+			}
+		}
+		return result;
+	}
+	
 	
 	private void handleEvents(Set<Pair<MTFiducial, MTFiducial>> connectibles)
 	{
@@ -196,36 +222,18 @@ public class MTPane extends Pane {
 	
 	private void onAdd(Pair<MTFiducial, MTFiducial> added)
 	{
-		OSCMessage msg = new OSCMessage("/smurf/connection/add");
-		
 		int from = Integer.valueOf(added.getValue0().getID());
 		int to = Integer.valueOf(added.getValue1().getID());
-		int r = Double.valueOf(fiducial.getAngle()).intValue();
 		
-		msg.addArgument(from);
-		msg.addArgument(to);
-	    msg.addArgument(r);
-	    
-	    System.out.println("/smurf/connection/add (" + from + " to " + to + ")");
-		
-	    fiducial.getOscSender().sendMessage(msg);
+	    fiducial.getOscSender().emit("/smurf/connection/add",  Integer.valueOf(from), Integer.valueOf(to), Integer.valueOf(1));
 	}
 	
 	private void onRemove(Pair<MTFiducial, MTFiducial> removed)
 	{
-		OSCMessage msg = new OSCMessage("/smurf/connection/remove");
-		
 		int from = Integer.valueOf(removed.getValue0().getID());
 		int to = Integer.valueOf(removed.getValue1().getID());
-		int r = Double.valueOf(fiducial.getAngle()).intValue();
 		
-		msg.addArgument(from);
-		msg.addArgument(to);
-	    msg.addArgument(r);
-	
-	    System.out.println("/smurf/connection/remove (" + from + " to " + to + ")");
-
-		fiducial.getOscSender().sendMessage(msg);
+	    fiducial.getOscSender().emit("/smurf/connection/remove", Integer.valueOf(from), Integer.valueOf(to), Integer.valueOf(1));
 	}
 
 	public Set<Pair<MTFiducial, MTFiducial>> computeConnectibles()
@@ -269,17 +277,8 @@ public class MTPane extends Pane {
 			    
 			    float r = Double.valueOf(fiducial.getAngle()).floatValue();
 			    
-			    OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getID()+"/update");
-			    
-			    msg.addArgument(x);
-			    msg.addArgument(y);
-			    msg.addArgument(r);
-			    msg.addArgument(100f);
-			    
-			    System.out.println("/smurf/fid/"+fiducial.getID()+"/update"+ "("+x+","+y+","+r+")");
+			    fiducial.getOscSender().emit("/smurf/fid/"+fiducial.getID()+"/update",  Float.valueOf(x), Float.valueOf(y), Float.valueOf(r), 100f);
 
-			    fiducial.getOscSender().sendMessage(msg);
-			    
 			    event.consume();
 			}
 			updateConnections();
@@ -300,16 +299,8 @@ public class MTPane extends Pane {
 			    
 			    float r = Double.valueOf(fiducial.getAngle()).floatValue();
 			    
-			    OSCMessage msg = new OSCMessage("/smurf/fid/"+fiducial.getID()+"/update");
+			    fiducial.getOscSender().emit("/smurf/fid/"+fiducial.getID()+"/update", x, y, r,100f);
 			    
-			    msg.addArgument(x);
-			    msg.addArgument(y);
-			    msg.addArgument(r);
-			    msg.addArgument(100f);
-	    
-			    System.out.println("/smurf/fid/"+fiducial.getID()+"/update"+ "("+x+","+y+","+r+")");
-
-			    fiducial.getOscSender().sendMessage(msg);
 			    event.consume();
 			}
 		    updateConnections();
