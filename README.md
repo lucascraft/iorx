@@ -15,3 +15,13 @@ It is mandatory to download chuck VM and/or editor separatly in order to get the
 
 http://audicle.cs.princeton.edu/mini/
 
+To proceed :
+
+1) unzip the iorx.ui-0.0.1-SNAPSHOT-with-dependencies.zip archive
+2) execute launch.bat
+3) open fmurfOsc.ck into miniAudicle editor
+3) Launch chuck VM
+4) Add Shred to VM (Plus button)
+5) play
+6) hack
+7) goto (5) : until statified or fail : goto youtube 
