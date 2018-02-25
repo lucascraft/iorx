@@ -1,6 +1,8 @@
-# iorx <img src="https://github.com/lucascraft/iorx/blob/master/iorx.png"/>
+<img src="https://github.com/lucascraft/iorx/blob/master/iorx.png"/>
 
-async rx IO queues and multitouch UI
+# iorx 
+
+RX IO queues and multitouch UI
 
 Multitouch OSC UI alpha demo :
 
@@ -26,3 +28,6 @@ To proceed :
 5) play
 6) hack
 7) goto (5) : until statified or fail : goto youtube 
+
+
+<img src="demo-multtouch-iorx-ui.png"/>
