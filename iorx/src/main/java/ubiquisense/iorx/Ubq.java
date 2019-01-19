@@ -81,7 +81,9 @@ public final class Ubq
 		for (CmdPipe pipe : getPipes()) {
 			if (pipe.getPorts().contains(port)) {
 				if (pipe.getTransportProtocol() != null && pipe.getTransportProtocol().equals(transportID)) {
-					if (pipe.getCommunicationProtocol() != null && pipe.getCommunicationProtocol().equals(protocoleID)) {
+					if (pipe.getCommunicationProtocolIn() != null && pipe.getCommunicationProtocolIn().equals(protocoleID)) {
+						return pipe;
+					} else if (pipe.getCommunicationProtocolOut() != null && pipe.getCommunicationProtocolOut().equals(protocoleID)) {
 						return pipe;
 					}
 				}
@@ -94,7 +96,9 @@ public final class Ubq
 		for (CmdPipe pipe : getPipes()) {
 			if (pipe.getAddr() != null && pipe.getAddr().equals(address)) {
 				if (pipe.getTransportProtocol() != null && pipe.getTransportProtocol().equals(transportID)) {
-					if (pipe.getCommunicationProtocol() != null && pipe.getCommunicationProtocol().equals(protocoleID)) {
+					if (pipe.getCommunicationProtocolIn() != null && pipe.getCommunicationProtocolIn().equals(protocoleID)) {
+						return pipe;
+					} else if (pipe.getCommunicationProtocolOut() != null && pipe.getCommunicationProtocolOut().equals(protocoleID)) {
 						return pipe;
 					}
 				}
@@ -135,8 +139,11 @@ public final class Ubq
 				if (pipe.getAddr() != null && pipe.getAddr().equals(address)) {
 					if (pipe.getTransportProtocol() != null && 
 							pipe.getTransportProtocol().equals(transportID)) {
-						if (pipe.getCommunicationProtocol() != null && 
-								pipe.getCommunicationProtocol().equals(protocoleID)) {
+						if (pipe.getCommunicationProtocolIn() != null && 
+								pipe.getCommunicationProtocolIn().equals(protocoleID)) {
+							return pipe;
+						} else if (pipe.getCommunicationProtocolOut() != null && 
+								pipe.getCommunicationProtocolOut().equals(protocoleID)) {
 							return pipe;
 						}
 					}
@@ -198,8 +205,10 @@ public final class Ubq
 			if (pipe.getTransportProtocol() != null && 
 						pipe.getTransportProtocol().equals(TRANSPORT_PROTOCOL.USB.getLiteral())) {
 				if (pipe.getAddr() != null && pipe.getAddr().equals(address)) {
-					if (pipe.getCommunicationProtocol() != null && 
-							pipe.getCommunicationProtocol().equals(protocoleID)) {
+					if ((pipe.getCommunicationProtocolIn() != null && 
+							pipe.getCommunicationProtocolIn().equals(protocoleID))||
+							(pipe.getCommunicationProtocolOut() != null && 
+									pipe.getCommunicationProtocolOut().equals(protocoleID))) {
 						if (pipe.getSpeed() > 0 && pipe.getSpeed() == speed) {
 							return pipe;
 						}
@@ -223,8 +232,10 @@ public final class Ubq
 			if (pipe.getAddr() != null && pipe.getAddr().equals(address)) {
 				if (pipe.getTransportProtocol() != null && 
 						pipe.getTransportProtocol().equals(transportID)) {
-					if (pipe.getCommunicationProtocol() != null && 
-							pipe.getCommunicationProtocol().equals(protocoleID)) {
+					if ((pipe.getCommunicationProtocolIn() != null && 
+							pipe.getCommunicationProtocolIn().equals(protocoleID)) || 
+							(pipe.getCommunicationProtocolOut() != null && 
+									pipe.getCommunicationProtocolOut().equals(protocoleID))) {
 						if (TRANSPORT_PROTOCOL.USB.getLiteral().equals(transportID)) {
 							return pipe.getSpeed() > 0 && speed == pipe.getSpeed() ? pipe : null;
 						}
@@ -274,7 +285,8 @@ public final class Ubq
 		pipe.setPort(port);
 
 		pipe.setTransportProtocol(transportID);
-		pipe.setCommunicationProtocol(commProtocolID);
+		pipe.setCommunicationProtocolIn(commProtocolID);
+		pipe.setCommunicationProtocolOut(commProtocolID);
 		pipe.setId(pipeID);
 		pipe.setSpeed(speed);
 		pipe.setLocked(locked);
@@ -558,11 +570,16 @@ public final class Ubq
 		List<CmdPipe> lst = new ArrayList<CmdPipe>();
 		for (CmdPipe pipe : getPipes()) {
 			if (	
-				pipe.getCommunicationProtocol() != null && 
-				pipe.getCommunicationProtocol().equals(ID)
+				pipe.getCommunicationProtocolIn() != null && 
+				pipe.getCommunicationProtocolIn().equals(ID)
 			) {
 				lst.add(pipe);
-			}
+			} else if (	
+					pipe.getCommunicationProtocolOut() != null && 
+					pipe.getCommunicationProtocolOut().equals(ID)
+				) {
+					lst.add(pipe);
+				}
 		}
 		return lst;
 	}
@@ -584,8 +601,10 @@ public final class Ubq
 		List<CmdPipe> lst = new ArrayList<CmdPipe>();
 		for (CmdPipe pipe : getPipes()) {
 			if (	
-				pipe.getCommunicationProtocol() != null && 
-				pipe.getCommunicationProtocol().equals(commID) &&
+				((pipe.getCommunicationProtocolIn() != null && 
+				pipe.getCommunicationProtocolIn().equals(commID)) ||
+				(pipe.getCommunicationProtocolOut() != null && 
+				pipe.getCommunicationProtocolOut().equals(commID))) &&
 				pipe.getTransportProtocol() != null && 
 				pipe.getTransportProtocol().equals(transportID)
 			) {
@@ -730,7 +749,8 @@ public final class Ubq
 	        if (eventHandler != null) {
 	        	cmdEngine.addQxEventHandler(eventHandler);
 	        }
-	        cmdEngine.setCommunicationProtocol(protocolID);
+	        cmdEngine.setCommunicationProtocolIn(protocolID);
+	        cmdEngine.setCommunicationProtocolOut(protocolID);
         
         }
         else
@@ -738,6 +758,71 @@ public final class Ubq
         	throw new RuntimeException("protocol " + protocolID + " unknown");
         }
         
+        return cmdEngine;
+	}
+	
+	/**
+	 * Build a minimalistic application engine dedicated to a given protocol commands handling
+	 * 
+	 * @param appID application ID
+	 * @param protocolID protocol ID
+	 * 
+	 * @return newly created {@link EngineApplication} application
+	 */
+	public CmdPipe buildEngineApp(String appID, String protocolIDIn, String protocolIDOut) {
+		Injector injector = Guice.createInjector(new ConfigurationModule());
+
+		CmdPipe cmdEngine = injector.getInstance(CmdPipe.class);
+
+		CommProtocolConfig protocolIn = Protocol.getCommunicationProtocol(protocolIDIn);
+		CommProtocolConfig protocolOut = Protocol.getCommunicationProtocol(protocolIDOut);
+        
+        if (protocolIn != null) {
+	        IXCmdInterpreter cmdInterpreterIn		= protocolIn.getCmdInterpreter();
+	        IXFrameInterpreter frameInterpreterIn = protocolIn.getFrameInterpreter();
+	        IQxEventHandler eventHandlerIn		= protocolIn.getEventHandler();
+	        
+	
+	        if (cmdInterpreterIn != null) {
+	        	cmdEngine.setOutputInterpreter(cmdInterpreterIn);
+	        }
+	        if (frameInterpreterIn != null) {
+	        	cmdEngine.setInputInterpreter(frameInterpreterIn);
+	        }
+	        if (eventHandlerIn != null) {
+	        	cmdEngine.addQxEventHandler(eventHandlerIn);
+	        }
+	        cmdEngine.setCommunicationProtocolIn(protocolIDIn);
+        
+        }
+        else
+        {
+        	throw new RuntimeException("protocol " + protocolIDIn + " unknown");
+        }
+        
+        if (protocolOut != null) {
+	        IXCmdInterpreter cmdInterpreterOut		= protocolOut.getCmdInterpreter();
+	        IXFrameInterpreter frameInterpreterOut = protocolOut.getFrameInterpreter();
+	        IQxEventHandler eventHandlerOut		= protocolOut.getEventHandler();
+	        
+	
+	        if (protocolOut != null) {
+	        	cmdEngine.setOutputInterpreter(cmdInterpreterOut);
+	        }
+	        if (frameInterpreterOut != null) {
+	        	cmdEngine.setInputInterpreter(frameInterpreterOut);
+	        }
+	        if (eventHandlerOut != null) {
+	        	cmdEngine.addQxEventHandler(eventHandlerOut);
+	        }
+	        cmdEngine.setCommunicationProtocolIn(protocolIDOut);
+        
+        }
+        else
+        {
+        	throw new RuntimeException("protocol " + protocolIDOut + " unknown");
+        }
+
         return cmdEngine;
 	}
 

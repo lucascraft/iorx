@@ -18,9 +18,9 @@ import ubiquisense.iorx.qx.Tx;
  */
 public class AppTest extends GuiceInjectionTest
 {
-	CmdPipe pipe;
-	CmdEngine engineClient;
-	Ubq mojo;
+	private CmdPipe pipe;
+	private CmdEngine engineClient;
+	private Ubq mojo;
 
 	@Before
 	public void initEngines()
@@ -32,10 +32,10 @@ public class AppTest extends GuiceInjectionTest
 	
 	@Test
 	public void testBuildEngineApp() {
-		
 		CmdPipe engine = mojo.buildEngineApp("truc", "midi");
 		
-		assertEquals("midi", engine.getCommunicationProtocol());
+		assertEquals("midi", engine.getCommunicationProtocolIn());
+		assertEquals("midi", engine.getCommunicationProtocolOut());
 		assertTrue(engine.getInputInterpreter() instanceof MidiQxCmdHandler);
 		assertTrue(engine.getOutputInterpreter() instanceof MidiQxCmdHandler);
 	}

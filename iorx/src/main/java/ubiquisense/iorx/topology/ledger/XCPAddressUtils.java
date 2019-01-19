@@ -61,14 +61,13 @@ public class XCPAddressUtils {
 		XCPAddress target = new XCPAddressImpl();
 		if (pipe!=null) {
 			target.setAddr(pipe.getAddr());
-			target.setProtocolID(pipe.getCommunicationProtocol());
+			target.setProtocolID(pipe.getCommunicationProtocolOut());
 			target.setTransportID(TRANSPORT_PROTOCOL.get(pipe.getTransportProtocol()).getLiteral());
 			target.getPorts().addAll(pipe.getPorts());
 			target.setSpeed(pipe.getSpeed());
 		}
 		return target;
 	}
-	
 	
 	public CmdPipe getCmdPipe(XCPAddress target, boolean createIfMissing) {
 		CmdPipe pipe = null;

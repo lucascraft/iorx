@@ -14,9 +14,9 @@ import ubiquisense.iorx.topology.core.SessionManager;
 import ubiquisense.iorx.topology.core.TopologyCache;
 
 public class TopologyCacheImpl implements TopologyCache {
-	List<AbstractTopologyItem> topologyItems;
+	private List<AbstractTopologyItem> topologyItems;
 
-	SessionManager sessionManager;
+	private SessionManager sessionManager;
 
 	public TopologyCacheImpl() {
 		topologyItems = new ArrayList<AbstractTopologyItem>();

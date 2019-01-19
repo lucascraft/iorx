@@ -17,11 +17,11 @@ import ubiquisense.iorx.topology.core.UDPConnection;
 import ubiquisense.iorx.topology.core.UsbConnection;
 
 public class SessionManagerImpl implements SessionManager {
-	List<UsbConnection> usbConnections;
-	List<BluetoothConnection> bluetoothConnections;
-	List<UDPConnection> udpConnections;
-	List<TcpConnection> tcpConnections;
-	List<HTTPConnection> httpConnections;
+	private List<UsbConnection> usbConnections;
+	private List<BluetoothConnection> bluetoothConnections;
+	private List<UDPConnection> udpConnections;
+	private List<TcpConnection> tcpConnections;
+	private List<HTTPConnection> httpConnections;
 
 	public SessionManagerImpl() {
 		usbConnections = new ArrayList<UsbConnection>();

@@ -7,9 +7,9 @@ import com.google.common.collect.Lists;
 import ubiquisense.iorx.topology.ledger.XCPAddress;
 
 public class XCPAddressImpl implements XCPAddress {
-	String type, addr, alias, name, transportID, protocolID;
-	int speed, port;
-	List<Integer> ports;
+	private String type, addr, alias, name, transportID, protocolID;
+	private int speed, port;
+	private List<Integer> ports;
 	
 	public XCPAddressImpl() {
 		ports = Lists.newArrayList();

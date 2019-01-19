@@ -11,10 +11,10 @@ import ubiquisense.iorx.topology.core.TopologyNode;
 import ubiquisense.iorx.topology.ledger.XCPDevice;
 
 public class TopologyNodeImpl extends AbstractTopologyItemImpl implements TopologyNode {
-	XCPDevice device;
-	Mime mime;
-	String id;
-	int beat;
+	private XCPDevice device;
+	private Mime mime;
+	private String id;
+	private int beat;
 
 	public XCPDevice getDevice() {
 		return device;

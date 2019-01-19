@@ -24,6 +24,7 @@ import ubiquisense.iorx.event.impl.EventImpl;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.TransportChannel;
+import ubiquisense.iorx.protocols.dmx.DMXQxCmdHandler;
 import ubiquisense.iorx.protocols.firmata.FirmataCmdQxEventHandler;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
@@ -105,6 +106,12 @@ public class ConfigurationModule extends AbstractModule
 		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("raw")).to(RawQxCmdHandler.class);
 		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("raw")).to(RawQxCmdHandler.class);
 		bind(IQxEventHandler.class).annotatedWith(Binder.communication("raw")).to(RawQxCmdHandler.class);
+		
+		// -- dmx --
+		
+		bind(IXFrameInterpreter.class).annotatedWith(Binder.communication("dmx")).to(DMXQxCmdHandler.class);
+		bind(IXCmdInterpreter.class).annotatedWith(Binder.communication("dmx")).to(DMXQxCmdHandler.class);
+		bind(IQxEventHandler.class).annotatedWith(Binder.communication("dmx")).to(DMXQxCmdHandler.class);
 		
 	
 		

@@ -36,9 +36,9 @@ import ubiquisense.iorx.media.fmodex.utils.AudioUtils;
 import ubiquisense.iorx.nojunit.Medias;
 
 public class AudioFmodexTest {
-	private  static FMOD_CREATESOUNDEXINFO exinfo;
-	private  static int version;
-	private static  org.jouvieje.fmodex.System system;
+	protected  static FMOD_CREATESOUNDEXINFO exinfo;
+	protected  static int version;
+	protected static  org.jouvieje.fmodex.System system;
 
 	@Before
 	public void init()

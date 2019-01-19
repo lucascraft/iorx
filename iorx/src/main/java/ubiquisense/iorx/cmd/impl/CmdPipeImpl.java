@@ -51,7 +51,8 @@ public class CmdPipeImpl implements CmdPipe
 	Set<NotificationAdapter<Cmd>> adapters;
 	
 	String transportProtocol;
-	String communicationProtocol;
+	String communicationProtocolIn;
+	String communicationProtocolOut;
 	
 	boolean locked;
 	String address;
@@ -185,8 +186,12 @@ public class CmdPipeImpl implements CmdPipe
 	}
 
 	@Override
-	public String getCommunicationProtocol() {
-		return communicationProtocol;
+	public String getCommunicationProtocolIn() {
+		return communicationProtocolIn;
+	}
+	@Override
+	public String getCommunicationProtocolOut() {
+		return communicationProtocolOut;
 	}
 
 	@Override
@@ -195,8 +200,13 @@ public class CmdPipeImpl implements CmdPipe
 	}
 
 	@Override
-	public void setCommunicationProtocol(String value) {
-		communicationProtocol = value;
+	public void setCommunicationProtocolIn(String value) {
+		communicationProtocolIn = value;
+	}
+
+	@Override
+	public void setCommunicationProtocolOut(String value) {
+		communicationProtocolOut = value;
 	}
 	
 	@Override

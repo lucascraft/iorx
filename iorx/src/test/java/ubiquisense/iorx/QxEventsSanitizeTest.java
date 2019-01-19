@@ -16,10 +16,10 @@ import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
 
 public class QxEventsSanitizeTest extends GuiceInjectionTest {
 	
-	int pipeIo1Count;
-	int pipeIo2Count;
-	int pipeIo3Count;
-	int pipeIo4Count;
+	private int pipeIo1Count;
+	private int pipeIo2Count;
+	private int pipeIo3Count;
+	private int pipeIo4Count;
 
 	@Before
 	public void init()

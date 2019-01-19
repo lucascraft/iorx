@@ -11,7 +11,7 @@ import java.net.DatagramSocket;
 import ubiquisense.iorx.topology.core.UDPConnection;
 
 public class UDPConnectionImpl implements UDPConnection {
-	DatagramSocket dataSocket;
+	private DatagramSocket dataSocket;
 	public DatagramSocket getDatagramSocket() {
 		return dataSocket;
 	}

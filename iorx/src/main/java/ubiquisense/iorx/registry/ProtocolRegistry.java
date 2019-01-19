@@ -45,7 +45,6 @@ public final class ProtocolRegistry extends GuiceRegistery
 		}
 		return null;
 	}
-	
 
 	public TransportChannel getTransportCommunicator(TransportProtocol protocol)
 	{

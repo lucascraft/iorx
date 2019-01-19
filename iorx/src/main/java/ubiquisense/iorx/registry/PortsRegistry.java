@@ -128,7 +128,7 @@ public final class PortsRegistry {
 			if (RXTXSerialUtil.INSTANCE.isAlreadyOpen(portID)) {
 				return null;
 			}
-			USBPortImpl usbPort =new USBPortImpl();
+			USBPortImpl usbPort = new USBPortImpl();
 			if (speed > 0) {
 				ISerialCommunicator serialCommunicator = RXTXSerialUtil.INSTANCE
 						.openPort(usbPort, portID, speed, options);

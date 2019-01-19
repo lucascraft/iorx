@@ -11,6 +11,7 @@ import ubiquisense.iorx.annotations.Binder;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
+import ubiquisense.iorx.protocols.dmx.DMXQxCmdHandler;
 import ubiquisense.iorx.protocols.firmata.FirmataCmdQxEventHandler;
 import ubiquisense.iorx.protocols.midi.MidiQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
@@ -55,6 +56,13 @@ public class CommunicationProtocolsBasicTest extends GuiceInjectionTest {
 		assertTrue(ubiquinoCmdInterpreter instanceof FirmataCmdQxEventHandler);
 		assertTrue(ubiquinoQxEventInterpreter instanceof FirmataCmdQxEventHandler);
 		
+		IXFrameInterpreter dmxFrameInterpreter= injector.getInstance(Key.get(IXFrameInterpreter.class, Binder.communication("dmx"))); 
+		IXCmdInterpreter dmxCmdInterpreter= injector.getInstance(Key.get(IXCmdInterpreter.class, Binder.communication("dmx"))); 
+		IQxEventHandler dmxQxEventInterpreter= injector.getInstance(Key.get(IQxEventHandler.class, Binder.communication("dmx"))); 
+		
+		assertTrue(dmxFrameInterpreter instanceof DMXQxCmdHandler);
+		assertTrue(dmxCmdInterpreter instanceof DMXQxCmdHandler);
+		assertTrue(dmxQxEventInterpreter instanceof DMXQxCmdHandler);
 	}
 
 }

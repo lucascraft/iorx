@@ -37,9 +37,11 @@ public interface CmdPipe {
 	void receive(byte[] frame);	
 	Set<Integer> getPorts();
 	String getTransportProtocol();
-	String getCommunicationProtocol();
+	String getCommunicationProtocolIn();
+	String getCommunicationProtocolOut();
 	void setTransportProtocol(String value);
-	void setCommunicationProtocol(String value);
+	void setCommunicationProtocolIn(String value);
+	void setCommunicationProtocolOut(String value);
 	boolean isLocked();
 	void setLocked(boolean value);
 	String getAddr();

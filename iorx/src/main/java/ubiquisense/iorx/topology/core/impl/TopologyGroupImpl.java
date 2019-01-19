@@ -13,7 +13,7 @@ import ubiquisense.iorx.topology.core.AbstractTopologyItem;
 import ubiquisense.iorx.topology.core.TopologyGroup;
 
 public class TopologyGroupImpl extends AbstractTopologyItemImpl implements TopologyGroup {
-	List<AbstractTopologyItem> children;
+	private List<AbstractTopologyItem> children;
 	public TopologyGroupImpl() {
 		children = new ArrayList<>();
 	}

@@ -12,7 +12,7 @@ import ubiquisense.iorx.topology.core.TcpConnection;
 
 
 public class TcpConnectionImpl implements TcpConnection {
-	Socket socket;
+	private Socket socket;
 	public Socket getSocket() {
 		return socket;
 

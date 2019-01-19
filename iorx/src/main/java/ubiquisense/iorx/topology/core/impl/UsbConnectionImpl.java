@@ -10,7 +10,7 @@ import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.topology.core.UsbConnection;
 
 public class UsbConnectionImpl  implements UsbConnection {
-	UsbSerialTransportCommunicator serial;
+	private UsbSerialTransportCommunicator serial;
 	public UsbSerialTransportCommunicator getSerial() {
 		return serial;
 	}

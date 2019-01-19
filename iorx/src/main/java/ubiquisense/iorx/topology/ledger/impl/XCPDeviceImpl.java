@@ -11,13 +11,13 @@ import ubiquisense.iorx.topology.ledger.XCPDevice;
 import ubiquisense.iorx.topology.ledger.XCPServiceStatus;
 
 public class XCPDeviceImpl extends GuiceRegistery implements XCPDevice {
-	DnDnsService service;
-	XCPServiceStatus status;
-	Object device;
-	ServiceInfo serviceInfo;
-	String ServiceInfo;
-	String name;
-	XCPAddress addr;
+	private DnDnsService service;
+	private XCPServiceStatus status;
+	private Object device;
+	private ServiceInfo serviceInfo;
+	private String ServiceInfo;
+	private String name;
+	private XCPAddress addr;
 	
 	public XCPDeviceImpl()
 	{
