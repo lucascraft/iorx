@@ -6,8 +6,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
+
 import ubiquisense.iorx.cmd.CmdPipe;
-import ubiquisense.iorx.cmd.EngineUtil;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
 import ubiquisense.iorx.utils.CmdUtil;
@@ -20,8 +21,8 @@ public class CmdPipeBasicTest extends GuiceInjectionTest {
 	{
 		CmdPipe pipe = injector.getInstance(CmdPipe.class);
 		
-		Set<Rx> rxQueues = EngineUtil.INSTANCE.getRxQueues(pipe);
-		Set<Tx> txQueues = EngineUtil.INSTANCE.getTxQueues(pipe);
+		Set<Rx> rxQueues = Sets.newHashSet(pipe.getRx());
+		Set<Tx> txQueues = Sets.newHashSet(pipe.getTx()); 
 		
 		assertEquals("Only one rx queue allowed in normal pipes", 1, rxQueues.size());
 		assertEquals("Only one tx queue allowed in normal pipes", 1, txQueues.size());

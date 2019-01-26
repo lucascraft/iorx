@@ -60,7 +60,7 @@ public class DmxAppTest extends GuiceInjectionTest
 		pipe.setId("Engine_DMX_1");
 	}
 	
-	@Test
+	//@Test
 	public void testPipe()
 	{
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "usb://com4", 57600);

@@ -11,7 +11,6 @@ import ubiquisense.iorx.changes.NotificationAdapter;
 import ubiquisense.iorx.cmd.Cmd;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
-import ubiquisense.iorx.cmd.EngineUtil;
 import ubiquisense.iorx.cmd.PRIORITY;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.event.impl.QxEventAdapterImpl;
@@ -160,7 +159,7 @@ public class CmdPipeImpl implements CmdPipe
 
 	@Override
 	public void send(Cmd cmd) {
-		EngineUtil.INSTANCE.sendCmd(tx, cmd);
+		tx.getCommands().add(cmd);
 	}
 	
 	@Override
@@ -172,7 +171,7 @@ public class CmdPipeImpl implements CmdPipe
 	@Override
 	public void receive(byte[] frame)
 	{
-		EngineUtil.INSTANCE.sendCmd(rx, getInputInterpreter().byteArray2Cmd(frame));
+		rx.getCommands().add(getInputInterpreter().byteArray2Cmd(frame));
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import ubiquisense.iorx.media.fmodex.utils.AudioUtils;
 
 public class DSLAudioFmodexTest  {
 
-	@Test
+	//@Test
 	public void testDSLFmodexAudioCreation()
 	{
 		
@@ -24,6 +24,10 @@ public class DSLAudioFmodexTest  {
 		audioProject.getChannels().add(channel);
 		audioProject.setSystem(audioSystem);
 		audioProject.getTracks().add(track);
+		
+		//AudioUtils.INSTANCE.createAudioFile(null);
+		
+		//track.getClips().add(clip)
 	}
 	
 }
