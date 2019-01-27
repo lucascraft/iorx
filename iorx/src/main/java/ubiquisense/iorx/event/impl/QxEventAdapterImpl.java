@@ -41,9 +41,6 @@ public class QxEventAdapterImpl implements NotificationAdapter<Cmd>
 			for (Cmd c : msg.getValue()) {
 				for (IQxEventHandler h : c.getQx().getEngine().getQxEventHandlers()) {
 					if (h != null) {
-						if (Platform.inDebugMode()) {
-							System.out.println("Qx Handler To Process Event");
-						}
 						if (Notification.ADD_MANY.equals(msg.getNotification()))
 						{
 							h.handleQxEvent(new EventImpl(new Add<Cmd>(c)));
@@ -63,9 +60,6 @@ public class QxEventAdapterImpl implements NotificationAdapter<Cmd>
 		if (activated) {
 			for (IQxEventHandler h : change.getValue().getQx().getEngine().getQxEventHandlers()) {
 				if (h != null) {
-					if (Platform.inDebugMode()) {
-						System.out.println("Qx Handler To Process Event");
-					}
 					h.handleQxEvent(new EventImpl(change) );
 				}
 			}
