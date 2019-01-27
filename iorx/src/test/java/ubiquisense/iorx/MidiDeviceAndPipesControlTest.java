@@ -63,7 +63,7 @@ public class MidiDeviceAndPipesControlTest {
 					channels[msgON.getChannel()].allNotesOff();
 					channels[msgON.getChannel()].noteOn((int) msgON.getByte1(), (int) msgON.getByte2());
 					try {
-						Thread.sleep(175);
+						Thread.sleep(75);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -80,11 +80,6 @@ public class MidiDeviceAndPipesControlTest {
 			for (Integer keyCode : MidiSystemUtils.INSTANCE.getNotes(octave, keys1)) {
 				DSLMidiMessage msgON = MidiCmdUtils.INSTANCE.createMidiMessage(ShortMessage.NOTE_ON, (byte) keyCode.intValue(), (byte) 89);
 				midiPipe.send(msgON);
-				try {
-					Thread.sleep(75);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}

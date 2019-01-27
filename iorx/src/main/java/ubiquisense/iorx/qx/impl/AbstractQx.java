@@ -51,8 +51,11 @@ public class AbstractQx implements Qx {
 				Observable.just(arg0).subscribe(new Action1<Cmd>() {
 					@Override
 					public void call(Cmd s) {
-						s.setQx(Instance);
-						pipe.eAdapters().forEach(a -> a.notifyChanged(new Add<Cmd>((Cmd) arg0)));
+						if (s!=null)
+						{
+							s.setQx(Instance);
+							pipe.eAdapters().forEach(a -> a.notifyChanged(new Add<Cmd>((Cmd) arg0)));
+						}
 					}
 				});
 				return super.add(arg0);
