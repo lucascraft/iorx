@@ -10,7 +10,7 @@ import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
-import ubiquisense.iorx.media.fmodex.IChannel;
+import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.protocols.dmx.internal.model.DMXSetCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.DMXSndCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
@@ -48,14 +48,15 @@ public class DMXQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 		}
 		
 		if (evt.getQx().getEngine().getPort() != null) {
-			Object obj = evt.getQx().getEngine().getPort().getChannel();
-			synchronized (evt.getQx().getEngine().getOutputInterpreter()) {
-				IXCmdInterpreter outputInterpreter = evt.getQx().getEngine().getOutputInterpreter();
-				if (outputInterpreter != null) {
-					if (obj instanceof IChannel) { // Serial
+			TransportChannel obj = evt.getQx().getEngine().getPort().getChannel();
+			IXCmdInterpreter outputInterpreter = evt.getQx().getEngine().getOutputInterpreter();
+		
+			if (outputInterpreter != null) {
+				synchronized (evt.getQx().getEngine().getOutputInterpreter()) {
+					if (obj instanceof TransportChannel) { // Serial
 						byte[] frame = outputInterpreter.cmd2ByteArray(evt.getCmd());
 						if (frame != null && frame.length > 0) {
-							//((Channel) obj).send(frame);
+							((TransportChannel) obj).send(frame);
 						}
 					}
 				}
@@ -87,6 +88,6 @@ public class DMXQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 
 	@Override
 	public String getID() {
-		return "DMX";
+		return "dmx";
 	}
 }
