@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Scanner;
 import java.util.UUID;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -199,4 +200,6 @@ public class QxRcvEventsSanitizeTest extends GuiceInjectionTest {
 		assertEquals(10, pipeOut4Count);
 			
 	}
+	
+
 }

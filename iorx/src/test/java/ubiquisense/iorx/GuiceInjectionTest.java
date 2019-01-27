@@ -1,5 +1,6 @@
 package ubiquisense.iorx;
 
+import org.junit.After;
 import org.junit.Before;
 
 import com.google.inject.Guice;
@@ -15,5 +16,14 @@ public abstract class GuiceInjectionTest {
 		Ubq no_access____qm = Ubq.Reactor;
 		injector = Guice.createInjector(new ConfigurationModule());
 	}
+	
+	
+	@After
+	public void after()
+	{
+		Ubq.Reactor.closeAll();
+		Ubq.Reactor.terminate();
+	}
+
 
 }

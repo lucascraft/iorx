@@ -21,17 +21,15 @@ import ubiquisense.iorx.qx.QxProcessingStrategy;
 
 public class AbstractQx implements Qx {
 
-	List<Cmd> commands;
-	boolean deliver;
-	QxProcessingStrategy strategy;
-	AbstractQx Instance;
+	private List<Cmd> commands;
+	private boolean deliver;
+	private QxProcessingStrategy strategy;
+	private AbstractQx Instance;
 	@Inject
-	CmdPipe pipe;
-
-	Port port;
-
-	long ttl;
-	int max;
+	private CmdPipe pipe;
+	private Port port;
+	private long ttl;
+	private int max;
 
 	@Inject
 	public AbstractQx() {
@@ -42,22 +40,23 @@ public class AbstractQx implements Qx {
 		ttl = 10;
 		commands = new ArrayList<Cmd>() {
 			/**
-			 * 
+			 * uuid
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean add(Cmd arg0) {
-				Observable.just(arg0).subscribe(new Action1<Cmd>() {
+				Action1<Cmd> action = new Action1<Cmd>() {
 					@Override
 					public void call(Cmd s) {
 						if (s!=null)
 						{
 							s.setQx(Instance);
-							pipe.eAdapters().forEach(a -> a.notifyChanged(new Add<Cmd>((Cmd) arg0)));
+							pipe.eAdapters().forEach(adater -> adater.notifyChanged(new Add<Cmd>(s)));
 						}
 					}
-				});
+				};
+				Observable.just(arg0).subscribe(action);
 				return super.add(arg0);
 			}
 
@@ -66,8 +65,8 @@ public class AbstractQx implements Qx {
 				Observable.just(arg0).subscribe(new Action1<Object>() {
 					@Override
 					public void call(Object s) {
-						((Cmd) arg0).setQx(Instance);
-						pipe.eAdapters().forEach(a -> a.notifyChanged(new Remove<Cmd>((Cmd) arg0)));
+						((Cmd) s).setQx(Instance);
+						pipe.eAdapters().forEach(a -> a.notifyChanged(new Remove<Cmd>((Cmd) s)));
 					}
 				});
 				return super.remove(arg0);
@@ -79,8 +78,8 @@ public class AbstractQx implements Qx {
 					@Override
 					public void call(Collection<? extends Cmd> s) {
 						List<Cmd> cmds = Lists.newArrayList(arg0);
-						cmds.stream().forEach(q -> q.setQx(Instance));
-						pipe.eAdapters().forEach(a -> a.notifyManyChanged(new AddMany<Cmd>(cmds)));
+						cmds.stream().forEach(c -> c.setQx(Instance));
+						pipe.eAdapters().forEach(adapter -> adapter.notifyManyChanged(new AddMany<Cmd>(cmds)));
 					}
 				});
 				return super.addAll(arg0);
@@ -162,4 +161,13 @@ public class AbstractQx implements Qx {
 			return commands.remove(commands.size()-1);
 		}
 	}
+	
+	public boolean isDeliver() {
+		return deliver;
+	}
+	
+	public void setDeliver(boolean deliver) {
+		this.deliver = deliver;
+	}
+	
 }

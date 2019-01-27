@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.UUID;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -95,4 +96,12 @@ public class QxEventsSanitizeTest extends GuiceInjectionTest {
 		assertEquals(1000, pipeIo4Count);
 
 	}
+	
+	
+	@After
+	public void after()
+	{
+		Ubq.Reactor.closeAll();
+	}
+
 }
