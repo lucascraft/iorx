@@ -17,5 +17,7 @@ public interface OpenDMXCmd extends Cmd {
 	void setData(byte[] value);
 	byte getEnd();
 	void setEnd(byte value);
+	int getChannel();
+	void setChannel(int channel);
 
 } // OpenDMXCmd

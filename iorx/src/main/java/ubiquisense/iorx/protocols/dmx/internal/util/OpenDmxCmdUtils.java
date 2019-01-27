@@ -35,6 +35,8 @@
 
 package ubiquisense.iorx.protocols.dmx.internal.util;
 
+import java.util.Arrays;
+
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXChangeOfStatePacketCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXChangeOfStatePacketCmdImpl;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
@@ -249,6 +251,15 @@ public class OpenDmxCmdUtils {
 		dmxCmd.setEnd((byte) 0xe7);
 		return dmxCmd;
 	}
+	
+	public OpenDMXCmd createOpenDMXFadeLRGBFullCmd(int lValue, int rValue, int gValue, int bValue) {
+		OpenDMXFadeFullImpl dmxCmd = new OpenDMXFadeFullImpl();
+		dmxCmd.setStart((byte) 0x7e);
+		dmxCmd.setLabel((byte) 0x06);
+		dmxCmd.setData(new byte[] { (byte)lValue, (byte)rValue, (byte)gValue, (byte)bValue});
+		dmxCmd.setEnd((byte) 0xe7);
+		return dmxCmd;
+	}
 	public OpenDMXCmd createOpenDMXCmd(byte[] bytes) {
 		OpenDMXFade dmxCmd =  new OpenDMXFadeImpl();
 		dmxCmd.setStart((byte) 0x7e);
@@ -296,7 +307,7 @@ public class OpenDmxCmdUtils {
 		
 		return null;
 	}
-	
+
 	/**
 	 * Dump as byte[] the current valuation of an OpenDMX command
 	 * 
@@ -305,15 +316,28 @@ public class OpenDmxCmdUtils {
 	 * @return the byte[] form of the given OpenDMX command
 	 */
 	public byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd) {
+		return dumpOpenDMXCmd(dmxCmd, dmxCmd.getChannel());
+	}
+
+	/**
+	 * Dump as byte[] the current valuation of an OpenDMX command
+	 * 
+	 * @param dmxCmd an OpenDMX command
+	 * 
+	 * @return the byte[] form of the given OpenDMX command
+	 */
+	public byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd, int channel) {
 		if (dmxCmd !=null) {
-			int dataLength = dmxCmd.getData().length;
-			byte[] frame = new byte[5 + dataLength];
+			int dataLength = 512+1;
+			byte[] frame = new byte[5 + 512 + 1];
+			Arrays.fill(frame, (byte) 0);
 			frame[0] = (byte) 0x7e; 
 			frame[1] = dmxCmd.getLabel();
 			frame[2] = (byte) (dataLength & 255);
 			frame[3] = (byte) ((dataLength >> 8) & 255);
-			frame[dataLength+4] = (byte) 0xe7;
-			System.arraycopy(dmxCmd.getData(), 0, frame, 4, dataLength);
+			frame[4] = (byte) 0; // universe 0
+			frame[512+5] = (byte) 0xe7;
+			System.arraycopy(dmxCmd.getData(), 0, frame, 4+channel, dmxCmd.getData().length);
 			return frame;
 		}
 		return new byte[0];

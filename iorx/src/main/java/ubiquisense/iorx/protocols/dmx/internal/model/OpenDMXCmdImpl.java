@@ -13,6 +13,7 @@ import ubiquisense.iorx.utils.CmdUtil;
 public abstract class OpenDMXCmdImpl extends CmdImpl implements OpenDMXCmd {
 	byte start, label, end;
 	byte[] data;
+	int channel;
 	protected OpenDMXCmdImpl() {
 		super();
 	}
@@ -44,6 +45,16 @@ public abstract class OpenDMXCmdImpl extends CmdImpl implements OpenDMXCmd {
 	@Override
 	public String toString() {
 		return CmdUtil.INSTANCE.getFrameHexInfo(getData());
+	}
+	
+	@Override
+	public int getChannel() {
+		return channel;
+	}
+	
+	@Override
+	public void setChannel(int channel) {
+		this.channel = channel;
 	}
 
 } //OpenDMXCmdImpl
