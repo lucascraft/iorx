@@ -476,7 +476,7 @@ public class UsbSerialTransportCommunicator extends TransportChannelImpl impleme
 		try {
 			if (output instanceof OutputStream) {
 				output.write(bytes);
-				output.flush(); // hmm, not sure if a good idea
+				//output.flush(); // hmm, not sure if a good idea
 			}
 		} catch (Exception e) { // null pointer or serial port dead
 			e.printStackTrace();

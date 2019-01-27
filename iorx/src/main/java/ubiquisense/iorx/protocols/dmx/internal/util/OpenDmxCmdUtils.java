@@ -260,6 +260,14 @@ public class OpenDmxCmdUtils {
 		dmxCmd.setEnd((byte) 0xe7);
 		return dmxCmd;
 	}
+	public OpenDMXCmd createOpenDMXFadeRGBFullCmd(int rValue, int gValue, int bValue) {
+		OpenDMXFadeFullImpl dmxCmd = new OpenDMXFadeFullImpl();
+		dmxCmd.setStart((byte) 0x7e);
+		dmxCmd.setLabel((byte) 0x06);
+		dmxCmd.setData(new byte[] { (byte)rValue, (byte)gValue, (byte)bValue});
+		dmxCmd.setEnd((byte) 0xe7);
+		return dmxCmd;
+	}
 	public OpenDMXCmd createOpenDMXCmd(byte[] bytes) {
 		OpenDMXFade dmxCmd =  new OpenDMXFadeImpl();
 		dmxCmd.setStart((byte) 0x7e);
@@ -318,7 +326,19 @@ public class OpenDmxCmdUtils {
 	public byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd) {
 		return dumpOpenDMXCmd(dmxCmd, dmxCmd.getChannel());
 	}
-
+	
+	public byte[] dumpOpenDMXCmd(OpenDMXCmd... dmxCmd) {
+		byte[] frame = new byte[5 + 512 + 1];
+		for (OpenDMXCmd cmd : dmxCmd)
+		{
+			dumpOpenDMXCmd(cmd, cmd.getChannel(), false, frame);
+		}
+		return frame;
+	}
+	private byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd, int channel) {
+		byte[] frame = new byte[5 + 512 + 1];
+		return dumpOpenDMXCmd(dmxCmd, channel, true, frame);
+	}
 	/**
 	 * Dump as byte[] the current valuation of an OpenDMX command
 	 * 
@@ -326,11 +346,13 @@ public class OpenDmxCmdUtils {
 	 * 
 	 * @return the byte[] form of the given OpenDMX command
 	 */
-	public byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd, int channel) {
+	private byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd, int channel, boolean forceFillZero, byte[] frame) {
 		if (dmxCmd !=null) {
 			int dataLength = 512+1;
-			byte[] frame = new byte[5 + 512 + 1];
-			Arrays.fill(frame, (byte) 0);
+			if (forceFillZero)
+			{
+				Arrays.fill(frame, (byte) 0);
+			}
 			frame[0] = (byte) 0x7e; 
 			frame[1] = dmxCmd.getLabel();
 			frame[2] = (byte) (dataLength & 255);
@@ -341,6 +363,25 @@ public class OpenDmxCmdUtils {
 			return frame;
 		}
 		return new byte[0];
+	}
+	
+	//
+	// Short hand
+	//
+	
+	public OpenDMXCmd createFadeRGB(int channel, int rValue, int gValue, int bValue)
+	{
+		OpenDMXCmd dmxCmd = createOpenDMXFadeRGBFullCmd(rValue, gValue, bValue);
+		dmxCmd.setChannel(channel);
+		return dmxCmd;
+	}
+
+	
+	public OpenDMXCmd createFadeLRGB(int channel, int lValue, int rValue, int gValue, int bValue)
+	{
+		OpenDMXCmd dmxCmd = createOpenDMXFadeLRGBFullCmd(lValue, rValue, gValue, bValue);
+		dmxCmd.setChannel(channel);
+		return dmxCmd;
 	}
 }
 

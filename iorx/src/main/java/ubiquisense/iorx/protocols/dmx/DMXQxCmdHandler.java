@@ -34,7 +34,8 @@ public class DMXQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 	@Override
 	public synchronized void handleQxEvent(Event event) {
 		if (isAValidOpenDMXCmd(event.getCmd())) {
-			if (event.getKind() == EVENT_KIND.TX_DONE) {
+			
+			if (event.getKind() == EVENT_KIND.TX_READY) {
 				handleQxEvent(event, event.getCmd());
 			}
 		}
@@ -46,15 +47,13 @@ public class DMXQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 				handleQxEvent(evt, cc);
 			}
 		}
-		
 		if (evt.getQx().getEngine().getPort() != null) {
 			TransportChannel obj = evt.getQx().getEngine().getPort().getChannel();
 			IXCmdInterpreter outputInterpreter = evt.getQx().getEngine().getOutputInterpreter();
-		
 			if (outputInterpreter != null) {
 				synchronized (evt.getQx().getEngine().getOutputInterpreter()) {
 					if (obj instanceof TransportChannel) { // Serial
-						byte[] frame = outputInterpreter.cmd2ByteArray(evt.getCmd());
+					byte[] frame = outputInterpreter.cmd2ByteArray(evt.getCmd());
 						if (frame != null && frame.length > 0) {
 							((TransportChannel) obj).send(frame);
 						}
@@ -68,7 +67,7 @@ public class DMXQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 	// think compound !!!
 	//
 	boolean isAValidOpenDMXCmd(Cmd cmd) {
-		if (cmd instanceof DMXSndCmd || cmd instanceof OpenDMXFade || cmd instanceof DMXSetCmd) {
+		if (cmd instanceof OpenDMXCmd || cmd instanceof ByteCmd || cmd instanceof DMXSndCmd || cmd instanceof OpenDMXFade || cmd instanceof DMXSetCmd) {
 			return true;
 		} else if (cmd instanceof CompoundCmd) {
 			for (Cmd c : ((CompoundCmd)cmd).getChildren()) {
