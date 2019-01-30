@@ -36,6 +36,7 @@
 package ubiquisense.iorx.protocols.dmx.internal.util;
 
 import java.util.Arrays;
+import java.util.List;
 
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXChangeOfStatePacketCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXChangeOfStatePacketCmdImpl;
@@ -327,7 +328,7 @@ public class OpenDmxCmdUtils {
 		return dumpOpenDMXCmd(dmxCmd, dmxCmd.getChannel());
 	}
 	
-	public byte[] dumpOpenDMXCmd(OpenDMXCmd... dmxCmd) {
+	public byte[] dumpOpenDMXCmd(List<OpenDMXCmd> dmxCmd) {
 		byte[] frame = new byte[5 + 512 + 1];
 		for (OpenDMXCmd cmd : dmxCmd)
 		{
@@ -335,10 +336,11 @@ public class OpenDmxCmdUtils {
 		}
 		return frame;
 	}
+	
 	private byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd, int channel) {
-		byte[] frame = new byte[5 + 512 + 1];
-		return dumpOpenDMXCmd(dmxCmd, channel, true, frame);
+		return dumpOpenDMXCmd(dmxCmd, channel, true, new byte[5 + 512 + 1]);
 	}
+	
 	/**
 	 * Dump as byte[] the current valuation of an OpenDMX command
 	 * 
@@ -348,7 +350,7 @@ public class OpenDmxCmdUtils {
 	 */
 	private byte[] dumpOpenDMXCmd(OpenDMXCmd dmxCmd, int channel, boolean forceFillZero, byte[] frame) {
 		if (dmxCmd !=null) {
-			int dataLength = 512+1;
+			int dataLength = 512 + 1;
 			if (forceFillZero)
 			{
 				Arrays.fill(frame, (byte) 0);
@@ -357,7 +359,7 @@ public class OpenDmxCmdUtils {
 			frame[1] = dmxCmd.getLabel();
 			frame[2] = (byte) (dataLength & 255);
 			frame[3] = (byte) ((dataLength >> 8) & 255);
-			frame[4] = (byte) 0; // universe 0
+			frame[4] = (byte) 0; 
 			frame[512+5] = (byte) 0xe7;
 			System.arraycopy(dmxCmd.getData(), 0, frame, 4+channel, dmxCmd.getData().length);
 			return frame;
@@ -375,7 +377,13 @@ public class OpenDmxCmdUtils {
 		dmxCmd.setChannel(channel);
 		return dmxCmd;
 	}
-
+	
+	public OpenDMXCmd createFadeBRG(int channel, int rValue, int gValue, int bValue)
+	{
+		OpenDMXCmd dmxCmd = createOpenDMXFadeRGBFullCmd(bValue, rValue, gValue);
+		dmxCmd.setChannel(channel);
+		return dmxCmd;
+	}
 	
 	public OpenDMXCmd createFadeLRGB(int channel, int lValue, int rValue, int gValue, int bValue)
 	{

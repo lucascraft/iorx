@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -95,7 +94,7 @@ public class DmxAppTest extends GuiceInjectionTest
 	}
 	
 	@Test
-	public void testDmxFadeToRedOnChannel064()
+	public void testDmxFadeToRaimbowOnChannel064Step100()
 	{
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "COM5", 57600);
 		assertNotNull(dmxUsbCom4);
@@ -103,22 +102,23 @@ public class DmxAppTest extends GuiceInjectionTest
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
 		
-		for (int n=0;n<100;n+=1)
+		for (int n=0;n<10;n+=1)
 		{
 			for (int i=0;i<255;i+=1)
 			{
 				List<OpenDMXCmd> stack = Lists.newArrayList();
-				for (int c=0;c<100;c++)
+				for (int c=0;c<300;c+=3)
 				{
 					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, 255-i, (2*i)%255));
 				}				
 				
-				ByteCmd byteFrame = new ByteCmdImpl();
-				byteFrame.setMessage(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmdCompound(stack.toArray(new OpenDMXCmd[0])));
-				System.out.println("--> "+CmdUtil.INSTANCE.getFrameHexInfo(byteFrame.getMessage()));
+				dmxUsbCom4.send(new ByteCmdImpl(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack)));
 				
-				dmxUsbCom4.send(byteFrame);
-
+				try {
+					Thread.sleep(25l);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
