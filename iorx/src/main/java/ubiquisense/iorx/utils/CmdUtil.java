@@ -127,9 +127,9 @@ public final class CmdUtil implements ICmdUtil {
      */
     public synchronized String getCmdInfo(Cmd c) {
     	if (c == null) {
-    		return "";
+    		return "cmd null";
     	}
-        return c.getClass().getName() + " with " + c.getPriority().getName() + " priority";
+        return c.getClass().getName() + " with " + ((c.getPriority()!=null)?(c.getPriority().getName() + " priority"):"");
     }
     
     /**
@@ -154,6 +154,7 @@ public final class CmdUtil implements ICmdUtil {
     		}
     		return textualized;
     	}
+    	System.out.println("pas bon");
     	return "";
     }
     

@@ -10,14 +10,19 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.protocols.dmx.DMXQxCmdHandler;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
 import ubiquisense.iorx.protocols.dmx.internal.util.OpenDmxCmdUtils;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
+import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
+import ubiquisense.iorx.utils.CmdUtil;
 
 /**
  * Unit test for simple App.
@@ -65,7 +70,7 @@ public class DmxAppTest extends GuiceInjectionTest
 		pipe.setId("Engine_DMX_1");
 	}
 	
-	@Test
+	//@Test
 	public void testDmxFadeToRedOnChannel001()
 	{
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "COM5", 57600);
@@ -73,27 +78,47 @@ public class DmxAppTest extends GuiceInjectionTest
 		
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
-		
-		List<Integer> channels = Arrays.asList(new Integer[] {9, 13, 16, 20, 24, 28, 32, 36, 40});
 
-		for (int n=0;n<255;n+=1)
+		for (int n=0;n<10;n+=1)
 		{
 			for (int i=0;i<255;i+=1)
 			{
-//				List<OpenDMXCmd> stack = Lists.newArrayList();
-				for (Integer c : channels)
-				{
-					OpenDMXCmd c1 = OpenDmxCmdUtils.INSTANCE.createFadeRGB(c, i, 255-i, (2*i)%255);
-					dmxUsbCom4.send(c1);
-					//stack.add(c1);
+				OpenDMXCmd c1 = OpenDmxCmdUtils.INSTANCE.createFadeBRG(1, i, 255-i, (2*i)%255);
+				dmxUsbCom4.send(c1);
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				OpenDMXCmd c2 = OpenDmxCmdUtils.INSTANCE.createFadeLRGB(1, i, i, 255-i, (2*i)%255);
-				//stack.add(c2);
-				dmxUsbCom4.send(c2);
-//				ByteCmd byteFrame = new ByteCmdImpl();
-//				byteFrame.setMessage(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack.toArray(new OpenDMXCmd[0])));
-//				CmdUtil.INSTANCE.getFrameHexInfo(byteFrame.getMessage());
-//				dmxUsbCom4.send(byteFrame);
+			}
+		}
+	}
+	
+	@Test
+	public void testDmxFadeToRedOnChannel064()
+	{
+		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "COM5", 57600);
+		assertNotNull(dmxUsbCom4);
+		
+		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
+		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
+		
+		for (int n=0;n<100;n+=1)
+		{
+			for (int i=0;i<255;i+=1)
+			{
+				List<OpenDMXCmd> stack = Lists.newArrayList();
+				for (int c=0;c<100;c++)
+				{
+					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, 255-i, (2*i)%255));
+				}				
+				
+				ByteCmd byteFrame = new ByteCmdImpl();
+				byteFrame.setMessage(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmdCompound(stack.toArray(new OpenDMXCmd[0])));
+				System.out.println("--> "+CmdUtil.INSTANCE.getFrameHexInfo(byteFrame.getMessage()));
+				
+				dmxUsbCom4.send(byteFrame);
+
 			}
 		}
 	}
