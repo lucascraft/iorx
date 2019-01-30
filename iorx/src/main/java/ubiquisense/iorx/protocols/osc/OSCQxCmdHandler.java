@@ -15,6 +15,7 @@ import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.TransportChannel;
 import ubiquisense.iorx.protocols.osc.internal.OscCmd;
 import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
+import ubiquisense.iorx.protocols.raw.internal.RawCmd;
 
 @CommunicationProtocol(type = "osc")
 @Singleton
@@ -41,6 +42,11 @@ public class OSCQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 	public byte[] cmd2ByteArray(Cmd cmd) {
 		if (cmd instanceof OscCmd) {
 			return ((OscCmd)cmd).getMsg().getByteArray();
+		} 
+		else if (cmd instanceof RawCmd)
+		{
+			System.out.println("raw");
+			return ((RawCmd)cmd).getBytes();
 		}
 		return new byte[0];
 	}
