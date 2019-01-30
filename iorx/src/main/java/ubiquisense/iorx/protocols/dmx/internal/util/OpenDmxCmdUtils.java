@@ -330,6 +330,7 @@ public class OpenDmxCmdUtils {
 	
 	public byte[] dumpOpenDMXCmd(List<OpenDMXCmd> dmxCmd) {
 		byte[] frame = new byte[5 + 512 + 1];
+		Arrays.fill(frame, (byte)0x00);
 		for (OpenDMXCmd cmd : dmxCmd)
 		{
 			dumpOpenDMXCmd(cmd, cmd.getChannel(), false, frame);

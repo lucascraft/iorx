@@ -17,11 +17,9 @@ import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.protocols.dmx.DMXQxCmdHandler;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
 import ubiquisense.iorx.protocols.dmx.internal.util.OpenDmxCmdUtils;
-import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
-import ubiquisense.iorx.utils.CmdUtil;
 
 /**
  * Unit test for simple App.
@@ -122,4 +120,6 @@ public class DmxAppTest extends GuiceInjectionTest
 			}
 		}
 	}
+	
+
 }
