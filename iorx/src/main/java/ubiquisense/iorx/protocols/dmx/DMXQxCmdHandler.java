@@ -11,7 +11,6 @@ import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.io.IXCmdInterpreter;
 import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.TransportChannel;
-import ubiquisense.iorx.protocols.dmx.internal.model.DMXSetCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.DMXSndCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
 import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXFade;
@@ -67,7 +66,7 @@ public class DMXQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 	// think compound !!!
 	//
 	boolean isAValidOpenDMXCmd(Cmd cmd) {
-		if (cmd instanceof OpenDMXCmd || cmd instanceof ByteCmd || cmd instanceof DMXSndCmd || cmd instanceof OpenDMXFade || cmd instanceof DMXSetCmd) {
+		if (cmd instanceof OpenDMXCmd || cmd instanceof ByteCmd || cmd instanceof DMXSndCmd || cmd instanceof OpenDMXFade) {
 			return true;
 		} else if (cmd instanceof CompoundCmd) {
 			for (Cmd c : ((CompoundCmd)cmd).getChildren()) {

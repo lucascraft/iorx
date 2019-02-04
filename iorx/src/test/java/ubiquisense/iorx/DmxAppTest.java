@@ -105,7 +105,7 @@ public class DmxAppTest extends GuiceInjectionTest
 			for (int i=0;i<255;i+=1)
 			{
 				List<OpenDMXCmd> stack = Lists.newArrayList();
-				for (int c=0;c<300;c+=3)
+				for (int c=0;c<450;c+=3)
 				{
 					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, 255-i, (2*i)%255));
 				}				

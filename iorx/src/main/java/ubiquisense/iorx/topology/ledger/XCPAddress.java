@@ -27,5 +27,6 @@ public interface XCPAddress  {
 	void setPort(int value);
 	String getName();
 	void setName(String value);
+	String getPrimeName();
 
 } // XCPAddress

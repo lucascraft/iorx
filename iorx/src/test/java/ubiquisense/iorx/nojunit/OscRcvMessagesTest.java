@@ -50,7 +50,7 @@ public class OscRcvMessagesTest extends GuiceInjectionTest {
 		pipeIn1.addQxEventHandler(new OSCQxCmdHandler() {
 			@Override
 			public void handleQxEvent(Event event) {
-				if (EVENT_KIND.RX_READY.equals(event.getKind()))
+				//if (EVENT_KIND.RX_READY.equals(event.getKind()))
 				{
 					super.handleQxEvent(event);
 				} 

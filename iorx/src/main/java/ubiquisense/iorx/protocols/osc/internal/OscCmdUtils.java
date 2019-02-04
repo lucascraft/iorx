@@ -117,6 +117,14 @@ public class OscCmdUtils {
 		}
 		return null;
 	}
+
+	public Cmd createOscBundleCmd(OSCBundle packet) {
+		CompoundCmd cmd = new CompoundCmdImpl();
+		for (OSCPacket p : ((OSCBundle)packet).getPackets()) {
+			cmd.getChildren().add(createOscCmd(p));
+		}
+		return cmd;
+	}
 	
 	public Cmd createOscCmd(OSCMessage packet) {
 		if (packet instanceof OSCMessage) {

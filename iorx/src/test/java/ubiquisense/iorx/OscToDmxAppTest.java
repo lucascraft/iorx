@@ -17,6 +17,7 @@ import com.illposed.osc.OSCMessage;
 import ubiquisense.iorx.cmd.CmdEngine;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.cmd.CompoundCmd;
+import ubiquisense.iorx.cmd.impl.CompoundCmdImpl;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.event.EVENT_KIND;
@@ -26,6 +27,7 @@ import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
 import ubiquisense.iorx.protocols.dmx.internal.util.OpenDmxCmdUtils;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.internal.OscCmd;
+import ubiquisense.iorx.protocols.osc.internal.OscCmdUtils;
 import ubiquisense.iorx.protocols.raw.internal.impl.RawCmdImpl;
 
 /**
@@ -45,14 +47,13 @@ public class OscToDmxAppTest extends GuiceInjectionTest
 		mojo = new Ubq();
 	}
 	
-	//@Test
+	@Test
 	public void testDmxFadeToRaimbowOnChannel064Step100()
 	{
 		CmdPipe pipeOut1 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost:4444", new int[] {}, -1, null, true);
-
 		CmdPipe pipeIn1 = Ubq.Reactor.createPipe(TRANSPORT_PROTOCOL.UDP.getLiteral(), "osc", "osc@" + UUID.randomUUID().toString(), "localhost", new int[] {4444}, -1, null, true);
-	
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "COM5", 57600);
+		
 		assertNotNull(dmxUsbCom4);
 		
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
@@ -61,7 +62,7 @@ public class OscToDmxAppTest extends GuiceInjectionTest
 		pipeIn1.addQxEventHandler(new OSCQxCmdHandler() {
 			@Override
 			public void handleQxEvent(Event event) {
-				if (EVENT_KIND.RX_READY.equals(event.getKind()))
+				//if (EVENT_KIND.RX_READY.equals(event.getKind()))
 				{
 					System.out.println("hello");
 					if (event.getCmd() instanceof CompoundCmd)
@@ -82,21 +83,20 @@ public class OscToDmxAppTest extends GuiceInjectionTest
 			}
 		});
 
-		for (int n = 1; n<=10; n++)
+		
+		int i = 0;
+		for (int n = 1; n<=100; n++)
 		{
 			OSCBundle bundle = new OSCBundle();
-			for (int i=0;i<255;i+=1)
+			for (int c=0;c<3;c+=3)
 			{
-				for (int c=0;c<300;c+=3)
-				{
-					OSCMessage cc = new OSCMessage("/dmx/fade/bgr");
-					cc.addArgument(new Integer(c+64));
-					cc.addArgument(new Integer(i));
-					cc.addArgument(new Integer(255-i));
-					cc.addArgument(new Integer((2*i)%255));
-					bundle.addPacket(cc);
-					System.out.println("added");
-				}
+				OSCMessage cc = new OSCMessage("/dmx/fade/bgr");
+				cc.addArgument(new Integer(64));
+				cc.addArgument(new Integer(i));
+				cc.addArgument(new Integer(255-i));
+				cc.addArgument(new Integer((2*i)%255));
+				
+				bundle.addPacket(cc);
 			}
 			
 			try {
@@ -105,10 +105,8 @@ public class OscToDmxAppTest extends GuiceInjectionTest
 				e.printStackTrace();
 			}
 			
-			RawCmdImpl raw = new RawCmdImpl();
-			raw.setBytes(bundle.getByteArray());
-			System.out.println("send");
-			pipeOut1.send(raw);
+			pipeOut1.send(OscCmdUtils.INSTANCE.createOscBundleCmd(bundle));
+			
 			System.out.println("sent");
 		}
 		

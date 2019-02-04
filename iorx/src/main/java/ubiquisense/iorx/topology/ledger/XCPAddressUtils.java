@@ -63,7 +63,10 @@ public class XCPAddressUtils {
 			target.setAddr(pipe.getAddr());
 			target.setProtocolID(pipe.getCommunicationProtocolOut());
 			target.setTransportID(TRANSPORT_PROTOCOL.get(pipe.getTransportProtocol()).getLiteral());
-			target.getPorts().addAll(pipe.getPorts());
+			if (pipe.getPorts() != null && target.getPorts()  != null)
+			{
+				target.getPorts().addAll(pipe.getPorts());
+			}
 			target.setSpeed(pipe.getSpeed());
 		}
 		return target;

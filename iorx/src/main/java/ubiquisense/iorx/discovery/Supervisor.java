@@ -2,6 +2,9 @@
 
 package ubiquisense.iorx.discovery;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.jmdns.ServiceInfo;
 
 import ubiquisense.iorx.registry.DnsSdRegistry;
@@ -11,20 +14,17 @@ import ubiquisense.iorx.topology.core.TopologyNode;
 import ubiquisense.iorx.topology.core.impl.TopologyNodeImpl;
 import ubiquisense.iorx.topology.ledger.XCPDevice;
 
-public class Supervisor extends Thread implements IXCPDeviceLifecycleListener {
+public class Supervisor extends TimerTask implements IXCPDeviceLifecycleListener {
 	private TopologyCache cache;
 	public Supervisor(TopologyCache cache) {
-		super("Ubiquisense_Supervisor"); 
+		super(); 
 		this.cache = cache;
+		Timer t = new Timer() ;
+		t.scheduleAtFixedRate(this, 0, 10*1000);
 	}
 	@Override
 	public void run() {
 		checkToplogy();
-		try {
-			sleep(9000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} // every 9 sec	
 	}
 	
 	@Override
@@ -73,7 +73,7 @@ public class Supervisor extends Thread implements IXCPDeviceLifecycleListener {
 	 * or a group of devices.
 	 */
 	void checkToplogy() {
-		for (ServiceInfo info : DnsSdRegistry.INSTANCE.getDnsSdRegistry().list("_ezmojo._udp.local.")) {
+		for (ServiceInfo info : DnsSdRegistry.INSTANCE.getDnsSdRegistry().list("_iorx._udp.local.")) {
 			if (info instanceof ServiceInfo) {
 				DnsSdRegistry.INSTANCE.checkForDistantPipes(info);
 			}

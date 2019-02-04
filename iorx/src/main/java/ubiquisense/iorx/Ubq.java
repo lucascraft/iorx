@@ -13,6 +13,7 @@ import javax.sound.midi.MidiDevice;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
@@ -34,7 +35,10 @@ import ubiquisense.iorx.registry.PortsRegistry;
 import ubiquisense.iorx.registry.ProtocolRegistry;
 import ubiquisense.iorx.topology.core.TopologyCache;
 import ubiquisense.iorx.topology.core.impl.TopologyCacheImpl;
+import ubiquisense.iorx.topology.ledger.XCPAddress;
+import ubiquisense.iorx.topology.ledger.XCPAddressUtils;
 
+@Singleton
 public final class Ubq 
 {
 	private Supervisor supervisor;
@@ -48,7 +52,7 @@ public final class Ubq
 	public Ubq() {
 		lifecycleListeners = new ConcurrentLinkedQueue<ICmdPipeLifecycleListener>();
 		localPipes = new HashSet<CmdPipe>();
-//		genesis();
+		genesis();
 	}
 	
 	public ConcurrentLinkedQueue<ICmdPipeLifecycleListener> getLifecycleListeners() {
@@ -824,6 +828,13 @@ public final class Ubq
         }
 
         return cmdEngine;
+	}
+	
+	
+	public void recordPipe(CmdPipe pipe)
+	{
+		XCPAddress addr = XCPAddressUtils.INSTANCE.createXCPAddress(pipe);
+		addr.getPrimeName();
 	}
 
 }

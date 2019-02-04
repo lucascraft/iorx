@@ -71,7 +71,7 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 			e.printStackTrace();
 		}
 
-		String[] list = new String[] { "_ezmojo._udp.local." };
+		String[] list = new String[] { "_iorx._udp.local." };
 
 		for (int i = 0; i < list.length; i++) {
 			dnsSdRegistry.registerServiceType(list[i]);
@@ -89,7 +89,6 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	public void removeDeviceListener(IXCPDeviceLifecycleListener listener) {
 		deviceListeners.remove(listener);
 	}
-
 
 	public Set<ISmartDnsServiceManager> getDsDnsServicesRegistrations() {
 		Set<ISmartDnsServiceManager> configs = Sets.newHashSet();
@@ -145,7 +144,7 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	}
 
 	public static void checkForDistantPipes(ServiceInfo info) {
-		// buiild cross topology by querying distant ubiquisense agent for its services
+		// TODO : to build cross topology by querying distant ubiquisense agent for its services
 	}
 
 

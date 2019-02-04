@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.topology.ledger.XCPAddress;
 
 public class XCPAddressImpl implements XCPAddress {
@@ -101,4 +102,7 @@ public class XCPAddressImpl implements XCPAddress {
 		name = value;
 	}
 
+	public String getPrimeName() {
+		return TRANSPORT_PROTOCOL.get(getTransportID()).getName()+"_"+getProtocolID()+"_"+getAddr().replace(":", "__")+"-"+getPort();
+	}
 }
