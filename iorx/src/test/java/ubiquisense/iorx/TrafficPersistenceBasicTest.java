@@ -43,11 +43,12 @@ public class TrafficPersistenceBasicTest
 		}
 	}
 	
-	
-	@Test
-	public void testPersitence02TrafficLoadOSC()
-	{
-		tp.load();
-	}
+//	
+//	@Test
+//	public void testPersitence02TrafficLoadOSC()
+//	{
+//		tp.load();
+//	}
+//
 
 }
