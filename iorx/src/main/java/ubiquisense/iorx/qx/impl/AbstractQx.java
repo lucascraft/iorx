@@ -87,15 +87,16 @@ public class AbstractQx implements Qx {
 
 			@Override
 			public boolean removeAll(Collection<?> arg0) {
-				Observable.just(arg0).subscribe(new Action1<Collection<?>>() {
-					@Override
-					public void call(Collection<?> s) {
-						List<Cmd> cmds = (List<Cmd>) Lists.newArrayList(arg0);
-						cmds.stream().forEach(q -> q.setQx(Instance));
-						pipe.eAdapters().forEach(a -> a
-								.notifyManyChanged(new RemoveMany<Cmd>(Lists.newArrayList((Collection<Cmd>) arg0))));
-					}
-				});
+//				Observable.just(arg0).subscribe(new Action1<Collection<?>>() {
+//					@Override
+//					public void call(Collection<?> s) {
+//						arg0.stream().forEach(q -> ((Cmd)q).setQx(Instance));
+//						arg0.stream().forEach(x -> {
+//						    pipe.eAdapters().forEach(a -> a
+//								.notifyManyChanged(new Remove<Cmd>((Cmd)x)));
+//						});
+//					}
+//				});
 				return super.removeAll(arg0);
 			}
 		};
