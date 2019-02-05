@@ -94,15 +94,15 @@ public class DmxAppTest extends GuiceInjectionTest
 	@Test
 	public void testDmxFadeToRaimbowOnChannel064Step100()
 	{
-		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "/dev/ttyUSB0", 57600);
-		assertNotNull(dmxUsbCom4);
+		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "/dev/ttyUSB0", 115200);
 		
+		assertNotNull(dmxUsbCom4);
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
 		
 		for (int n=0;n<10;n+=1)
 		{
-			for (int i=0;i<255;i+=1)
+			for (int i=0;i<255;i+=3)
 			{
 				List<OpenDMXCmd> stack = Lists.newArrayList();
 				for (int c=0;c<450;c+=3)
@@ -113,13 +113,11 @@ public class DmxAppTest extends GuiceInjectionTest
 				dmxUsbCom4.send(new ByteCmdImpl(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack)));
 				
 				try {
-					Thread.sleep(25l);
+					Thread.sleep(10l);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
-
 }
