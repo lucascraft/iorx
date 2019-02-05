@@ -6,7 +6,25 @@
 	<artifactId>iorx</artifactId>
 	<version>0.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
+	
+	<profiles>
+	  <profile>
+		<id>Default</id>
+		<activation>
+		  <activeByDefault>true</activeByDefault>
+		</activation>
+		<properties> 		
+			<surfireArgLine>-Djava.library.path=${project.basedir}src/libs/natives/linux/arm/;${project.basedir}/src/jars</surfireArgLine>
+		</properties>
+	  </profile>	  
+	  <profile>
+		<id>Raspberry</id>
+		<properties> 		
+			<surfireArgLine>-cp /usr/share/java/RXTXcomm.jar -Djava.library.path=/usr/lib/jni:${project.basedir}src/libs/natives/linux/arm/:${project.basedir}/src/jars</surfireArgLine>
+		</properties> 		
+	  </profile>
+	</profiles>
+	
 	<name>iorx</name>
 	<url>https://github.com/lucascraft/iorx.git</url>
 
@@ -15,8 +33,8 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
 				<configuration>
+				    <encoding>utf8</encoding>	
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
@@ -27,7 +45,7 @@
 				<version>2.12.4</version>
 				<configuration>
 					<forkMode>once</forkMode>
-					<argLine>-Djava.library.path="${project.basedir}/src/libs/natives/win32/x86_64;${project.basedir}/src/jars"</argLine>
+					<argLine>${surfireArgLine}</argLine>
 					<skipTests>false</skipTests>
 				</configuration>
 			</plugin>
@@ -65,7 +83,7 @@
 						<configuration>
 							<!-- must match the server's id -->
 							<server>github</server>
-
+					
 							<!-- The commit message -->
 							<message>Building Iorx site</message>
 							<!-- The location where the site is uploaded -->
@@ -170,13 +188,19 @@
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/NativeFmodDesigner-win64.jar</systemPath>
 		</dependency>	
-		
 		<dependency>
 		    <groupId>rxtx</groupId>
 		    <artifactId>rxtx-win32-x86_64</artifactId>
 		    <version>rxtx-2.1.7</version>
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/RXTXcomm.jar</systemPath>
+		</dependency>	
+		<dependency>
+		    <groupId>rxtx</groupId>
+		    <artifactId>rxtx-win32-x86_64</artifactId>
+		    <version>rxtx-2.2pe1</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/jars/RXTXcomm-2.2pre2.jar</systemPath>
 		</dependency>	
 		<dependency>
 		    <groupId>bluecove</groupId>
@@ -200,6 +224,7 @@
 		    <systemPath>${project.basedir}/src/jars/bluecove-2.1.1.jar</systemPath>
 		</dependency>	
 	</dependencies>
+	
 	<organization>
 		<name>ubiquisense</name>
 		<url>ubiquisense.com</url>

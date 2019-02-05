@@ -70,7 +70,7 @@ public class DmxAppTest extends GuiceInjectionTest
 	//@Test
 	public void testDmxFadeToRedOnChannel001()
 	{
-		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "COM5", 57600);
+		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "/dev/ttyUSB0", 57600);
 		assertNotNull(dmxUsbCom4);
 		
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
@@ -94,7 +94,7 @@ public class DmxAppTest extends GuiceInjectionTest
 	@Test
 	public void testDmxFadeToRaimbowOnChannel064Step100()
 	{
-		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "COM5", 57600);
+		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "/dev/ttyUSB0", 57600);
 		assertNotNull(dmxUsbCom4);
 		
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
@@ -107,7 +107,7 @@ public class DmxAppTest extends GuiceInjectionTest
 				List<OpenDMXCmd> stack = Lists.newArrayList();
 				for (int c=0;c<450;c+=3)
 				{
-					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, 255-i, (2*i)%255));
+					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, (c+255-i)%255, (2*i)%255));
 				}				
 				
 				dmxUsbCom4.send(new ByteCmdImpl(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack)));
