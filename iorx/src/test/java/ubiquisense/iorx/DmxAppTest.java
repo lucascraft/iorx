@@ -94,7 +94,21 @@ public class DmxAppTest extends GuiceInjectionTest
 	@Test
 	public void testDmxFadeToRaimbowOnChannel064Step100()
 	{
-		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "/dev/ttyUSB0", 115200);
+		String port = "";
+		String OSName = System.getProperty("os.name");
+		
+		System.out.println("OS Name : " + OSName);
+		
+		if (OSName.equalsIgnoreCase("Windows 10"))
+		{
+			port = "COM5";
+		}
+		else
+		{
+			port = "/dev/ttyUSB0";
+		}
+		
+		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", port, 115200);
 		
 		assertNotNull(dmxUsbCom4);
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);

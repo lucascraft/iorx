@@ -14,7 +14,7 @@
 		  <activeByDefault>true</activeByDefault>
 		</activation>
 		<properties> 		
-			<surfireArgLine>-Djava.library.path=${project.basedir}src/libs/natives/linux/arm/;${project.basedir}/src/jars</surfireArgLine>
+			<surfireArgLine>-Djava.library.path="${project.basedir}/src/libs/natives/win32/x86_64;${project.basedir}/src/jars"</surfireArgLine>
 		</properties>
 	  </profile>	  
 	  <profile>
@@ -195,13 +195,15 @@
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/RXTXcomm.jar</systemPath>
 		</dependency>	
+		<!-- 
 		<dependency>
 		    <groupId>rxtx</groupId>
 		    <artifactId>rxtx-win32-x86_64</artifactId>
 		    <version>rxtx-2.2pe1</version>
 		    <scope>system</scope>
 		    <systemPath>${project.basedir}/src/jars/RXTXcomm-2.2pre2.jar</systemPath>
-		</dependency>	
+		</dependency>
+		-->	
 		<dependency>
 		    <groupId>bluecove</groupId>
 		    <artifactId>bluecove-win32-x86_64</artifactId>
