@@ -2,21 +2,66 @@ package ubiquisense.iorx.discovery;
 
 import java.net.DatagramSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import artnet4j.iorx.ArtNet;
+import artnet4j.iorx.ArtNetException;
+import artnet4j.iorx.ArtNetNode;
+import artnet4j.iorx.events.ArtNetDiscoveryListener;
+import artnet4j.iorx.packets.ArtDmxPacket;
 import gnu.io.CommPort;
 import ubiquisense.iorx.discovery.visitors.ITopologyVisitor;
+import ubiquisense.iorx.nojunit.PollTest;
 import ubiquisense.iorx.topology.core.AbstractTopologyItem;
 import ubiquisense.iorx.topology.core.TopologyGroup;
 import ubiquisense.iorx.topology.core.TopologyNode;
 import ubiquisense.iorx.topology.ledger.XCPDevice;
 import ubiquisense.iorx.topology.ledger.XCPDeviceAdapterManager;
 
-public class TopologyManager implements IDeviceManager {
-	public final static TopologyManager INSTANCE = new TopologyManager();
-	
+public class TopologyManager implements IDeviceManager, ArtNetDiscoveryListener {
+
+    private ArtNetNode netLynx;
+
+    public ArtNetNode getArtNetNode() {
+		return netLynx;
+	}
+    
+    private int sequenceID;
+
+    @Override
+    public void discoveredNewNode(ArtNetNode node) {
+        if (netLynx == null) {
+            netLynx = node;
+            System.out.println("found net lynx");
+        }
+    }
+
+    @Override
+    public void discoveredNodeDisconnected(ArtNetNode node) {
+        System.out.println("node disconnected: " + node);
+        if (node == netLynx) {
+            netLynx = null;
+        }
+    }
+
+    @Override
+    public void discoveryCompleted(List<ArtNetNode> nodes) {
+        System.out.println(nodes.size() + " nodes found:");
+        for (ArtNetNode n : nodes) {
+            System.out.println(n);
+        }
+    }
+
+    @Override
+    public void discoveryFailed(Throwable t) {
+        System.out.println("discovery failed");
+    }
+
+ 	public final static TopologyManager INSTANCE = new TopologyManager();
+	public final static ArtNet ArtNet = new ArtNet();
+
 	//private TopologyCache cache;
 	private ContinuousDiscoveryAgent discoAgent;
 	

@@ -125,7 +125,7 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	void scanServices() {
 		Map<String, ServiceInfo> servicesMap = dnsSdRegistry.getServices();
 		for (String key : servicesMap.keySet()) {
-			if (key.startsWith("_touchosc") || key.startsWith("_osc") || key.startsWith("_ezmojo")) { 
+			if (key.startsWith("_touchosc") || key.startsWith("_osc") || key.startsWith("_iorx")) { 
 				handleOSCServiceInfo(servicesMap.get(key));
 			}
 		}
@@ -224,7 +224,7 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 
 		} else if (aType.startsWith("_ubqt._udp.") && !aType.endsWith(".localhost")) {
 			// distant ubqt : going distributed ?!?
-		} else if (aType.startsWith("_ezmojo._udp.") && !aType.endsWith(".localhost")) {
+		} else if (aType.startsWith("_iorx._udp.") && !aType.endsWith(".localhost")) {
 			// distant ubqt : going distributed ?!?
 		}
 

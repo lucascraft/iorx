@@ -15,6 +15,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 
+import artnet4j.iorx.ArtNet;
 import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.comm.TRANSPORT_PROTOCOL;
 import ubiquisense.iorx.comm.http.io.HttpCommunicator;
@@ -28,6 +29,7 @@ import ubiquisense.iorx.io.IXFrameInterpreter;
 import ubiquisense.iorx.io.Port;
 import ubiquisense.iorx.protocols.midi.internal.MidiSystemUtils;
 import ubiquisense.iorx.qx.QxProcessingStrategy;
+import ubiquisense.iorx.registry.ArtNetRegistry;
 import ubiquisense.iorx.registry.CommProtocolConfig;
 import ubiquisense.iorx.registry.ConfigurationModule;
 import ubiquisense.iorx.registry.DnsSdRegistry;
@@ -42,6 +44,7 @@ import ubiquisense.iorx.topology.ledger.XCPAddressUtils;
 public final class Ubq 
 {
 	private Supervisor supervisor;
+	private ArtNetRegistry artNetRegistry;
 	private TopologyCache topology;
 	private ConcurrentLinkedQueue<ICmdPipeLifecycleListener> lifecycleListeners;
 	private Set<CmdPipe> localPipes;
@@ -52,7 +55,7 @@ public final class Ubq
 	public Ubq() {
 		lifecycleListeners = new ConcurrentLinkedQueue<ICmdPipeLifecycleListener>();
 		localPipes = new HashSet<CmdPipe>();
-		genesis();
+//		genesis();
 	}
 	
 	public ConcurrentLinkedQueue<ICmdPipeLifecycleListener> getLifecycleListeners() {
@@ -69,15 +72,13 @@ public final class Ubq
 	
 	void genesis() {	
 		topology = new TopologyCacheImpl();
+		supervisor = new Supervisor(topology);
 		
 		TopologyManager.INSTANCE.startContinuousDiscovery();
 		
-		initTopologyAgentAndSupervisor();
-	}
-	
-	void initTopologyAgentAndSupervisor() {
-		supervisor = new Supervisor(topology);
 		DnsSdRegistry dsnSD = DnsSdRegistry.INSTANCE;
+		artNetRegistry = ArtNetRegistry.INSTANCE;
+		
 		dsnSD.addDeviceListener(supervisor);
 	}
 	

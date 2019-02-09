@@ -35,7 +35,6 @@ public class QuanticMojoBasicTest extends GuiceInjectionTest
 
 		assertNotNull(midiIoPipe);
 		assertNotNull(midiIoPipe.getAddr());
-		assertNotNull(midiIoPipe.getPort());
 		assertNotNull(midiIoPipe.getPorts());
 		assertNotNull(midiIoPipe.getPort());
 		assertNotNull(midiIoPipe.getPort().getChannel());
