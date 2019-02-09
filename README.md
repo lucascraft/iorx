@@ -2,6 +2,13 @@
 
 # iorx 
 
+Mutli protocol communication hub
+
+Windows  (osc/dmx/midi) / Raspberry (osc/dmx) over udp/tcp/us)
+
+
+#iorx.ui
+
 RX IO queues and multitouch UI
 
 Multitouch OSC UI alpha demo :
