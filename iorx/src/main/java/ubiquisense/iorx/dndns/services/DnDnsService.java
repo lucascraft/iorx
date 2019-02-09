@@ -7,4 +7,5 @@ public interface DnDnsService  extends ISmartDnsServiceManager{
 	String getProtocol();
 	String getDomain();
 	int getPort();
+	String getServiceName();
 } // Services

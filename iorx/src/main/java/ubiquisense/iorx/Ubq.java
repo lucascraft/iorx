@@ -44,7 +44,7 @@ import ubiquisense.iorx.topology.ledger.XCPAddressUtils;
 public final class Ubq 
 {
 	private Supervisor supervisor;
-	private ArtNetRegistry artNetRegistry;
+//	private ArtNetRegistry artNetRegistry;
 	private TopologyCache topology;
 	private ConcurrentLinkedQueue<ICmdPipeLifecycleListener> lifecycleListeners;
 	private Set<CmdPipe> localPipes;
@@ -77,7 +77,7 @@ public final class Ubq
 		TopologyManager.INSTANCE.startContinuousDiscovery();
 		
 		DnsSdRegistry dsnSD = DnsSdRegistry.INSTANCE;
-		artNetRegistry = ArtNetRegistry.INSTANCE;
+//		artNetRegistry = ArtNetRegistry.INSTANCE;
 		
 		dsnSD.addDeviceListener(supervisor);
 	}

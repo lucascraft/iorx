@@ -18,6 +18,7 @@ import ubiquisense.iorx.comm.udp.io.UdpTransportCommunicator;
 import ubiquisense.iorx.comm.usb.io.UsbSerialTransportCommunicator;
 import ubiquisense.iorx.dndns.services.DaapService;
 import ubiquisense.iorx.dndns.services.DnDnsService;
+import ubiquisense.iorx.dndns.services.IorxService;
 import ubiquisense.iorx.event.Event;
 import ubiquisense.iorx.event.IQxEventHandler;
 import ubiquisense.iorx.event.impl.EventImpl;
@@ -130,6 +131,7 @@ public class ConfigurationModule extends AbstractModule
 		//
 		
 		bind(DnDnsService.class).annotatedWith(Names.named("daap")).to(DaapService.class);
+		bind(DnDnsService.class).annotatedWith(Names.named("iorx")).to(IorxService.class);
 
 	}
 }
