@@ -6,8 +6,17 @@ Mutli protocol communication hub
 
 Windows  (osc/dmx/midi) / Raspberry (osc/dmx) over udp/tcp/us)
 
+On raspberry install rxtx first :
 
-#iorx.ui
+$ sudo apt-get install librxtx-java
+
+connect a USB DMX comm (Enttec DMX USB Pro Interface in my case).
+
+Update DmxAppTest.java with correct usb port and led channels.
+
+mvn clean test -P Raspberry -test=DmxAppTest 
+
+# iorx.ui
 
 RX IO queues and multitouch UI
 
