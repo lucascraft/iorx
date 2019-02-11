@@ -23,6 +23,8 @@ mvn clean test -P Raspberry -test=DmxAppTest
 	{
 		String port = "/dev/ttyUSB0";
 		
+		Ubq mojo = new Ubq();
+	
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", port, 115200);
 		
 		for (int n=0;n<10;n+=1)
