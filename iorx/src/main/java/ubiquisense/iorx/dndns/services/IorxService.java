@@ -6,18 +6,18 @@ import javax.jmdns.impl.ServiceInfoImpl;
 
 import com.google.inject.Inject;
 
-@Named("daap")
-public class DaapService implements DnDnsService {
+@Named("iorx")
+public class IorxService implements DnDnsService {
 	ServiceInfo serviceInfo;
 	
 	@Inject
-	public DaapService() {
-		serviceInfo = new ServiceInfoImpl("udp", "daap", "", 3568, 1, 1, false, "");
+	public IorxService() {
+		serviceInfo = new ServiceInfoImpl("udp", "iorx", "", 5555, 1, 1, false, "");
 	}	
 	
 	@Override
 	public String getName() {
-		return "daap";
+		return "iorx";
 	}
 
 	@Override
@@ -32,18 +32,18 @@ public class DaapService implements DnDnsService {
 	
 	@Override
 	public int getPort() {
-		return 3568;
+		return 5555;
 	}
 
 	@Override
 	public String getServiceName() {
-		return "_daap._udp._localhost";
+		return "_iorx._udp._localhost";
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return "_daap._udp._localhost[3568]";
+		return "_iorx._udp._localhost[3568]";
 	}
 
 	@Override

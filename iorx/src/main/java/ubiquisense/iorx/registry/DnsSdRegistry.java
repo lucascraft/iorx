@@ -24,10 +24,16 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 import com.illposed.osc.utility.OSCByteArrayToJavaConverter;
 
+import ubiquisense.iorx.Ubq;
+import ubiquisense.iorx.cmd.CmdEngine;
+import ubiquisense.iorx.cmd.CmdPipe;
 import ubiquisense.iorx.discovery.IXCPDeviceLifecycleListener;
 import ubiquisense.iorx.discovery.SupervisorUtils;
 import ubiquisense.iorx.dndns.ISmartDnsServiceManager;
 import ubiquisense.iorx.dndns.services.DnDnsService;
+import ubiquisense.iorx.event.Event;
+import ubiquisense.iorx.event.IQxEventHandler;
+import ubiquisense.iorx.protocols.osc.internal.OscCmd;
 import ubiquisense.iorx.topology.ledger.XCPServiceStatus;
 
 public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, ServiceTypeListener {
@@ -65,17 +71,23 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	}
 
 	public void initRegistry() {
+		
 		try {
 			dnsSdRegistry.addServiceTypeListener(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		String[] list = new String[] { "_iorx._udp.local." };
-
-		for (int i = 0; i < list.length; i++) {
-			dnsSdRegistry.registerServiceType(list[i]);
-		}
+		Set<DnDnsService> sdnsServices = getDsDnsServicesRegistrations();
+		
+		sdnsServices.stream().forEach(s -> {
+			try {
+				dnsSdRegistry.registerService(
+						s.getServiceInfo());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	public List<IXCPDeviceLifecycleListener> getDeviceListeners() {
@@ -90,17 +102,17 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 		deviceListeners.remove(listener);
 	}
 
-	public Set<ISmartDnsServiceManager> getDsDnsServicesRegistrations() {
-		Set<ISmartDnsServiceManager> configs = Sets.newHashSet();
+	public Set<DnDnsService> getDsDnsServicesRegistrations() {
+		Set<DnDnsService> configs = Sets.newHashSet();
 		Set<Class<?>> annotatedClasses = new Reflections("").getTypesAnnotatedWith(javax.inject.Named.class, true);
 		annotatedClasses.stream().filter(c -> Sets.newHashSet(c.getInterfaces()).contains(DnDnsService.class)).forEach(
 				c -> configs.add(getDsDnsServicesDescritionl(c.getAnnotation(javax.inject.Named.class).value())));
 		return configs.stream().filter(p -> p != null).collect(Collectors.toSet());
 	}
 
-	public ISmartDnsServiceManager getDsDnsServicesDescritionl(String servicename) {
+	public DnDnsService getDsDnsServicesDescritionl(String servicename) {
 		try {
-			return (ISmartDnsServiceManager) injector
+			return (DnDnsService) injector
 					.getInstance(Key.get(DnDnsService.class, Names.named(servicename)));
 		} catch (Exception e) {
 			System.out.println("Not a service");
@@ -110,9 +122,10 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 
 	private void initServicesFromRegistry() {
 		getDsDnsServicesRegistrations().stream().
-			filter(r ->  r instanceof ISmartDnsServiceManager  &&	r.getServiceInfo() instanceof ServiceInfo ).
+			filter(r -> r instanceof ISmartDnsServiceManager && r.getServiceInfo() instanceof ServiceInfo ).
 				forEach(r -> {try {
 					dnsSdRegistry.registerService(r.getServiceInfo());
+					dnsSdRegistry.registerServiceType(r.getServiceInfo().getTypeWithSubtype());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} r.init(); r.connect();});
@@ -125,7 +138,7 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	void scanServices() {
 		Map<String, ServiceInfo> servicesMap = dnsSdRegistry.getServices();
 		for (String key : servicesMap.keySet()) {
-			if (key.startsWith("_touchosc") || key.startsWith("_osc") || key.startsWith("_ezmojo")) { 
+			if (key.startsWith("_touchosc") || key.startsWith("_osc") || key.startsWith("_iorx")) { 
 				handleOSCServiceInfo(servicesMap.get(key));
 			}
 		}
@@ -144,7 +157,8 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	}
 
 	public static void checkForDistantPipes(ServiceInfo info) {
-		// TODO : to build cross topology by querying distant ubiquisense agent for its services
+		System.out.println("Check for service");
+		dislayInfo(info);
 	}
 
 
@@ -182,50 +196,38 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 
 		@SuppressWarnings("unused")
 		ServiceInfo service = null;
-		if (aType.startsWith("_osc._udp.")) {
+		if (aType.startsWith("_iorx.")) {
 			// connect and retrieve Service API contracts
 			@SuppressWarnings("unused")
-			String name = event.getName();
-			// if (name == null) {
-			// System.out.println("");
-			// } else {
-			// if (!name.endsWith(".")) {
-			// name = name + "." + event.getType();
-			// }
-			// service = registry.getServiceInfo(event.getType(), name);
-			// if (service == null) {
-			// System.out.println("service not found");
-			// } else {
-			// if (!name.endsWith(".")) {
-			// name = name + "." + event.getType();
-			// }
-			// registry.requestServiceInfo(event.getType(), name);
-			// }
-			// }
+			String name = "_iorx._udp._local";
+			 System.out.println("Get service info : " + name);
+			 service = dnsSdRegistry.getServiceInfo(event.getType(), name);
+			 if (service == null) {
+				 System.out.println("service not found : request");
+			 } else {
+				 dnsSdRegistry.requestServiceInfo(event.getType(), name);
+			 }
 
-			// service = registry.getServiceInfo(event.getType(), event.getType());
+			 service = dnsSdRegistry.getServiceInfo(event.getType(), event.getType());
 
-			// This is actually redundant. getServiceInfo will force the resolution of the
-			// service and call serviceResolved
-			// this.dislayInfo(service);
+			 this.dislayInfo(service);
 
-			// CmdEngine oscDevice = QuanticMojo.INSTANCE.openUdpPipe(COMM_PROTOCOL.OSC10,
-			// event.getInfo().getInetAddress().getHostAddress());
-			// oscDevice.addQxEventHandler(new AbstractQxEventHandlerImpl() {
-			// @Override
-			// public void handleQxEvent(Event event) {
-			// if (event.getCmd() instanceof OscCmd) {
-			// handleCommand(((OscCmd)event.getCmd()).getMsg());
-			// }
-			// }
-			// });
-			//
-			// oscDevice.send(OscCmdUtils.INSTANCE.createOscCmd("/ubqt/bonjour"));
-
-		} else if (aType.startsWith("_ubqt._udp.") && !aType.endsWith(".localhost")) {
-			// distant ubqt : going distributed ?!?
-		} else if (aType.startsWith("_ezmojo._udp.") && !aType.endsWith(".localhost")) {
-			// distant ubqt : going distributed ?!?
+			 CmdPipe oscDevice = Ubq.Reactor.openUdpPipe("osc",
+			 event.getInfo().getInetAddress().getHostAddress());
+			 oscDevice.addQxEventHandler(new IQxEventHandler() {
+				
+				@Override
+				public void handleQxEvent(Event event) {
+					if (event.getCmd() instanceof OscCmd) {
+						 //handleCommand(((OscCmd)event.getCmd()).getMsg());
+					}					
+				}
+				
+				@Override
+				public String getID() {
+					return "osc";
+				}
+			});
 		}
 
 	}
@@ -272,7 +274,7 @@ public class DnsSdRegistry extends GuiceRegistery implements ServiceListener, Se
 	// }
 
 	@SuppressWarnings("unused")
-	private void dislayInfo(ServiceInfo service) {
+	private static void dislayInfo(ServiceInfo service) {
 		System.out.println("INFO: " + service);
 		if (service == null) {
 			System.out.println("service not found");

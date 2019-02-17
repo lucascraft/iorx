@@ -73,7 +73,7 @@ public class Supervisor extends TimerTask implements IXCPDeviceLifecycleListener
 	 * or a group of devices.
 	 */
 	void checkToplogy() {
-		for (ServiceInfo info : DnsSdRegistry.INSTANCE.getDnsSdRegistry().list("_iorx._udp.local.")) {
+		for (ServiceInfo info : DnsSdRegistry.INSTANCE.getDnsSdRegistry().list("_iorx._udp.local")) {
 			if (info instanceof ServiceInfo) {
 				DnsSdRegistry.INSTANCE.checkForDistantPipes(info);
 			}
