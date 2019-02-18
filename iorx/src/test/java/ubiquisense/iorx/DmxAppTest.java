@@ -17,6 +17,7 @@ import ubiquisense.iorx.protocols.dmx.internal.model.OpenDMXCmd;
 import ubiquisense.iorx.protocols.dmx.internal.util.OpenDmxCmdUtils;
 import ubiquisense.iorx.protocols.osc.OSCQxCmdHandler;
 import ubiquisense.iorx.protocols.osc.internal.OscCmd;
+import ubiquisense.iorx.protocols.raw.internal.ByteCmd;
 import ubiquisense.iorx.protocols.raw.internal.impl.ByteCmdImpl;
 import ubiquisense.iorx.qx.Rx;
 import ubiquisense.iorx.qx.Tx;
@@ -35,42 +36,22 @@ import com.google.common.collect.Lists;
 /**
  * Unit test for simple App.
  */
-public class DmxAppTest extends GuiceInjectionTest
-{
+public class DmxAppTest extends GuiceInjectionTest {
 	private CmdPipe pipe;
 	private CmdEngine engineClient;
 	private Ubq mojo;
 
-	private static DmxAppTest INSTANCE = new DmxAppTest();
-	
 	public DmxAppTest() {
 	}
 
-	public static void main(String[] args) {
-		INSTANCE.testRcvDmxFadeToRaimbowOnChannel064Step100();
-		Scanner scanner = new Scanner(System.in);
-		String line = "";
-		while(!line.equals("stop"))
-		{
-			 line = scanner.nextLine();
-			try {
-				Thread.sleep(25l);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			scanner.close();
-		}
-	}
-
 	@Before
-	public void initEngines()
-	{
+	public void initEngines() {
 		pipe = injector.getInstance(CmdPipe.class);
 		engineClient = injector.getInstance(CmdEngine.class);
 		mojo = new Ubq();
 	}
-	
-	//@Test
+
+	// @Test
 	public void testBuildEngineApp() {
 		CmdPipe engine = mojo.buildEngineApp("dmxMood", "dmx");
 		assertEquals("dmx", engine.getCommunicationProtocolIn());
@@ -78,21 +59,18 @@ public class DmxAppTest extends GuiceInjectionTest
 		assertTrue(engine.getInputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(engine.getOutputInterpreter() instanceof DMXQxCmdHandler);
 	}
-	
-	@Test
-	public void testDmxFadeToRedOnChannel001()
-	{
+
+	// @Test
+	public void testDmxFadeToRedOnChannel001() {
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", "/dev/ttyUSB0", 57600);
 		assertNotNull(dmxUsbCom4);
-		
+
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
 
-		for (int n=0;n<10;n+=1)
-		{
-			for (int i=0;i<255;i+=1)
-			{
-				OpenDMXCmd c1 = OpenDmxCmdUtils.INSTANCE.createFadeBRG(1, i, 255-i, (2*i)%255);
+		for (int n = 0; n < 10; n += 1) {
+			for (int i = 0; i < 255; i += 1) {
+				OpenDMXCmd c1 = OpenDmxCmdUtils.INSTANCE.createFadeBRG(1, i, 255 - i, (2 * i) % 255);
 				dmxUsbCom4.send(c1);
 				try {
 					Thread.sleep(50);
@@ -102,72 +80,74 @@ public class DmxAppTest extends GuiceInjectionTest
 			}
 		}
 	}
-	
+
 	@Test
-	public void testRcvDmxFadeToRaimbowOnChannel064Step100()
-	{
+	public void testRcvDmxFadeToRaimbowOnChannel064Step100() {
 		String port = "";
 		String OSName = System.getProperty("os.name");
-		
+
 		System.out.println("OS Name : " + OSName);
-		
-		if (OSName.equalsIgnoreCase("Windows 10"))
-		{
+
+		if (OSName.equalsIgnoreCase("Windows 10")) {
 			port = "COM5";
-		}
-		else
-		{
+		} else {
 			port = "/dev/ttyUSB0";
 		}
-		
+
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", port, 115200);
 
-		CmdPipe oscControlPipe = mojo.openUdpPipe( "osc", 6789);
-		
+		CmdPipe oscControlPipe = mojo.openUdpPipe("osc", 6789);
+
 		oscControlPipe.addQxEventHandler(new OSCQxCmdHandler() {
 			@Override
 			public void handleQxEvent(Event event) {
-				//if (EVENT_KIND.RX_READY.equals(event.getKind()))
-				{
-					System.out.println("msg");
-					OscCmd cmd = (OscCmd) event.getCmd();
-					OSCMessage message = (OSCMessage) cmd.getMsg();
-					if(message.getAddress().startsWith("/play"))
-					{
-						System.out.println("message : " + message.getAddress());
-						String command = message.getAddress().split("/")[2];
-						if ("raimbow".equals(command))
+				if (EVENT_KIND.RX_READY.equals(event.getKind())) {
+					if (event.getCmd() instanceof OscCmd) {
+						System.out.println("msg");
+						OscCmd cmd = (OscCmd) event.getCmd();
+						OSCMessage message = (OSCMessage) cmd.getMsg();
+						if (message.getAddress().startsWith("/play")) {
+							System.out.println("message : " + message.getAddress());
+							String command = message.getAddress().split("/")[2];
+							if ("raimbow".equals(command)) {
+								System.out.println("before raimbow");
+								rainbow(dmxUsbCom4);
+								System.out.println("after raimbow");
+							} else if ("blink".equals(command)) {
+								System.out.println("before blink");
+								blink(dmxUsbCom4);
+								System.out.println("after blink");
+							} else if ("shut".equals(command)) {
+								System.out.println("before shut");
+								shut(dmxUsbCom4);
+								System.out.println("after shut");
+							} else if ("dmx".equals(command)) {
+								// todo
+							}
+						} else if (message.getAddress().startsWith("/set/led"))
 						{
-							System.out.println("before raimbow");
-							rainbow(dmxUsbCom4);
-							System.out.println("after raimbow");
-						} 
-						else if ("blink".equals(command))
-						{
-							System.out.println("before blink");
-							blink(dmxUsbCom4);
-							System.out.println("after blink");
-						} 
-						else if ("dmx".equals(command))
-						{
-							//todo
+							int c = (int) message.getArguments().get(0);
+							int r = (int) message.getArguments().get(1);
+							int g = (int) message.getArguments().get(2);
+							int b = (int) message.getArguments().get(3);  
+							System.out.println("set led on channel " + c + " with : [" + r+ ", " + g +", "+ b + "]");
+							dmxUsbCom4.send(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c + 64, r, g, b));
 						}
+					} else if (event.getCmd() instanceof ByteCmd) {
+						dmxUsbCom4.send(event.getCmd());
 					}
-
 				}
 			}
 		});
-		
+
 		assertNotNull(dmxUsbCom4);
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
-		
-		
+
 		Scanner scanner = new Scanner(System.in);
 		String line = "";
-		while(!line.equals("stop"))
-		{
-			 line = scanner.nextLine();
+		while (!line.equals("stop")) {
+			line = scanner.nextLine();
 			try {
 				Thread.sleep(25l);
 			} catch (InterruptedException e) {
@@ -178,50 +158,40 @@ public class DmxAppTest extends GuiceInjectionTest
 
 	}
 
-	
-	@Test
-	public void testDmxFadeToRaimbowOnChannel064Step100()
-	{
+	// @Test
+	public void testDmxFadeToRaimbowOnChannel064Step100() {
 		String port = "";
 		String OSName = System.getProperty("os.name");
-		
+
 		System.out.println("OS Name : " + OSName);
-		
-		if (OSName.equalsIgnoreCase("Windows 10"))
-		{
+
+		if (OSName.equalsIgnoreCase("Windows 10")) {
 			port = "COM5";
-		}
-		else
-		{
+		} else {
 			port = "/dev/ttyUSB0";
 		}
-		
+
 		CmdPipe dmxUsbCom4 = mojo.openUsbPipe("dmx", "dmxMood1", port, 115200);
-		
+
 		assertNotNull(dmxUsbCom4);
 		assertTrue(dmxUsbCom4.getOutputInterpreter() instanceof DMXQxCmdHandler);
 		assertTrue(dmxUsbCom4.getPort().getChannel() instanceof UsbSerialTransportCommunicator);
-		
+
 //		rainbow(dmxUsbCom4);
 		blink(dmxUsbCom4);
 
 	}
-	
-	
-	private void blink(CmdPipe pipe)
-	{
-		for (int n=0;n<10;n+=1)
-		{
-			for (int i=0;i<255;i+=3)
-			{
+
+	private void blink(CmdPipe pipe) {
+		for (int n = 0; n < 10; n += 1) {
+			for (int i = 0; i < 255; i += 3) {
 				List<OpenDMXCmd> stack = Lists.newArrayList();
-				for (int c=0;c<450;c+=3)
-				{
-					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, 0, 125));
-				}				
-				
+				for (int c = 0; c < 450; c += 3) {
+					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c + 64, i, 0, 125));
+				}
+
 				pipe.send(new ByteCmdImpl(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack)));
-				
+
 				try {
 					Thread.sleep(10l);
 				} catch (InterruptedException e) {
@@ -231,27 +201,37 @@ public class DmxAppTest extends GuiceInjectionTest
 		}
 	}
 
-	
-	private void rainbow(CmdPipe pipe)
-	{
-		for (int n=0;n<10;n+=1)
-		{
-			for (int i=0;i<255;i+=3)
-			{
+	private void rainbow(CmdPipe pipe) {
+		for (int n = 0; n < 10; n += 1) {
+			for (int i = 0; i < 255; i += 3) {
 				List<OpenDMXCmd> stack = Lists.newArrayList();
-				for (int c=0;c<450;c+=3)
-				{
-					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c+64, i, (c+255-i)%255, (2*i)%255));
-				}				
-				
+				for (int c = 0; c < 450; c += 3) {
+					stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c + 64, i, (c + 255 - i) % 255, (2 * i) % 255));
+				}
+
 				pipe.send(new ByteCmdImpl(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack)));
-				
+
 				try {
 					Thread.sleep(10l);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+
+	private void shut(CmdPipe pipe) {
+		List<OpenDMXCmd> stack = Lists.newArrayList();
+		for (int c = 0; c < 450; c += 3) {
+			stack.add(OpenDmxCmdUtils.INSTANCE.createFadeBRG(c + 64, 0, 0, 0));
+		}
+
+		pipe.send(new ByteCmdImpl(OpenDmxCmdUtils.INSTANCE.dumpOpenDMXCmd(stack)));
+
+		try {
+			Thread.sleep(10l);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -9,7 +9,7 @@
 
 # Specification
 # A faire
-# - "/prog/led/0-150/,r(0-255),g(0-255),b(0-255)"
+# - "/set/led/channel(0-150)/r(0-255)/g(0-255)/b(0-255)"
 
 import socket
 

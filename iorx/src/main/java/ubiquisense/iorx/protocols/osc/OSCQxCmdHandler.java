@@ -65,8 +65,9 @@ public class OSCQxCmdHandler implements IQxEventHandler, IXCmdInterpreter, IXFra
 
 	@Override
 	public void handleQxEvent(Event event) {
-		//if (event.getKind()==EVENT_KIND.TX_DONE || event.getKind()==EVENT_KIND.TX_READY) 
+		if (event.getKind()==EVENT_KIND.TX_DONE || event.getKind()==EVENT_KIND.TX_READY) 
 		{
+			System.out.println("tx osc cmd");
 			TransportChannel obj = event.getQx().getEngine().getPort().getChannel();
 			if (obj instanceof TransportChannel) {
 				synchronized (event.getQx().getEngine().getOutputInterpreter()) {
