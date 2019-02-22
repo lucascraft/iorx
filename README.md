@@ -4,7 +4,7 @@
 
 Mutli protocol communication hub
 
-Windows  (osc/dmx/midi) / Raspberry (osc/dmx) over udp/tcp/us)
+Windows  (osc/dmx/midi) / Raspberry (osc/dmx) over udp/tcp/usb)
 
 On raspberry install rxtx first :
 
