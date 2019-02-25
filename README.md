@@ -170,6 +170,8 @@ mvn clean test -P Raspberry -test=DmxAppTest
 
 # iorx Midi
 
+Midi sequencer/synthetiser commands
+
 public class MidiDeviceAndPipesControlTest {
 
 	static Sequencer seq;
